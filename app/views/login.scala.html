@@ -1,0 +1,37 @@
+@import helper._
+
+@main("Main") {
+    <div class="container login_page">
+        <div class="header">
+            <a class="logo" href="@routes.Application.index"></a>
+            <div class="cielo_logo"></div>
+        </div>
+
+        <ul class="dropdown menu">
+            <li>
+                <a class="login active" href="#">LOGIN</a>
+            </li>
+        </ul>
+
+        <div style="clear: both"></div>
+            <div class="login">
+                <label>First Name:</label>
+                <input type="text" name="firstName"/>
+                <br/>
+                <label>Last Name:</label>
+                <input type="text" name="lastName"/>
+                <br/>
+                <label>Login:</label>
+                <input type="text" name="login"/>
+                <br/>
+                <label>Password:</label>
+                <input type="password" name="password"/>
+                <br/>
+                <label>Verify Password:</label>
+                <input type="password" name="verifyPassword"/>
+                <br/>
+
+                <input type="submit" value="Registration"/>
+            </div>
+    </div>
+}
