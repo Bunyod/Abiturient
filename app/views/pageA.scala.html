@@ -1,0 +1,53 @@
+@(request:Request[Any])
+
+@import helper._
+
+@main("Page A") {
+	<h1>Welcome @request.session.get("user")</h1>
+	
+	<a id="logout" href=@routes.Application.logout>logout</a> <br />
+	<a id="pageB" href=@routes.Application.pageB>page B</a>
+	
+	<div id="div1">
+		<button id="btn1">Press Me 1</button>
+	</div>
+
+	<div id="div2">
+		<button id="btn2">Press Me 2</button>
+	</div>
+	
+	<script>
+	function doAjax(buttonID) {
+		var dataToSend, json;
+		
+		dataToSend = {};
+	    dataToSend.buttonID = buttonID;
+
+	    json = JSON.stringify(dataToSend);
+
+        $.ajax({
+            url : "ajaxText",
+            contentType : 'application/json',
+            dataType : "json", // server return is expected to be JSON
+            type : "post",
+            data : json,
+            success : function(data) {
+                // "data" is the JSON response from the server
+                $("#div" + data.divID).text(data.text);
+            },
+            error : function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+	}
+
+	$(function() {
+		$("#btn1").click(function() {
+			doAjax(1);
+        });
+		$("#btn2").click(function() {
+			doAjax(2);
+        });        
+	});
+	</script>
+}

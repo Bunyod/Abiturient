@@ -9,8 +9,9 @@ import dao.UsersDao
 import scala.concurrent.duration.DurationInt
 
 /**
- * Created by bunyod on 11/17/15.
+ * @author Bunyod (bunyodreal@gmail.com). Created at 11/17/15.
  */
+
 
 object MyActor {
   def props(usersDao: UsersDao) =

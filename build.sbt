@@ -23,6 +23,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % "2.3.12",
   "com.typesafe.akka" %% "akka-remote" % "2.3.12",
   "com.typesafe.play" %% "play-json" % "2.4.2",
+  "be.objectify" %% "deadbolt-scala" % "2.4.2",
   // Logging
   "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
   "ch.qos.logback" % "logback-classic" % "1.1.3",

@@ -1,14 +1,11 @@
 package controllers
 
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.Controller
 
 /**
- * Created by bunyod on 11/17/15.
+ * @author Bunyod (bunyodreal@gmail.com). Created at 11/17/15.
  */
-class LessonController extends Controller {
 
-  def login() = Action {
-    Ok(views.html.login())
-  }
+class LessonController extends Controller {
 
 }

@@ -4,6 +4,7 @@ import java.util.Date
 import javax.inject.{Inject, Singleton}
 
 import ab.utils.Date2SqlDate
+import be.objectify.deadbolt.core.models.Subject
 import com.google.inject.ImplementedBy
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import common.entities._
@@ -13,7 +14,7 @@ import slick.driver.JdbcProfile
 import scala.concurrent.Future
 
 /**
- * Created by bunyod on 11/17/15.
+ * @author Bunyod (bunyodreal@gmail.com). Created at 11/17/15.
  */
 
 trait UsersComponent
@@ -37,6 +38,7 @@ trait UsersComponent
 
 @ImplementedBy(classOf[UsersDaoImpl])
 trait UsersDao {
+  def user(userName: String): Option[Subject]
   def create(user: User): Future[Int]
 }
 
@@ -56,6 +58,11 @@ class UsersDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfigProv
   override def create(user: User): Future[Int] = {
     logger.info(s"Dao: Creating user=$user")
     db.run(users += user)
+  }
+
+  override def user(userName: String): Option[Subject] = {
+//    Some(Subject)
+    None
   }
 }
 
