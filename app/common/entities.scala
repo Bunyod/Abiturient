@@ -28,5 +28,11 @@ object entities {
     bDay: Date
   )
 
+  case class SessionUser
+  (
+    login: String,
+    password: String
+    )
+
   case class RegUser(user: User)
 }

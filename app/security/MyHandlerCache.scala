@@ -1,6 +1,6 @@
 package security
 
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
 
 import be.objectify.deadbolt.scala.cache.HandlerCache
 import be.objectify.deadbolt.scala.{DeadboltHandler, HandlerKey}
@@ -11,7 +11,7 @@ import dao.UsersDao
  */
 
 @Singleton
-class MyHandlerCache(usersDao: UsersDao) extends HandlerCache {
+class MyHandlerCache @Inject() (usersDao: UsersDao) extends HandlerCache {
 
   val defaultHandler: DeadboltHandler = new MyDeadboltHandler
 

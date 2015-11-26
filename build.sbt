@@ -46,12 +46,4 @@ libraryDependencies ++= Seq(
   "org.webjars" % "momentjs" % "2.10.6"
 )
 
-includeFilter in (Assets, LessKeys.less) := "*.less"
-excludeFilter in (Assets, LessKeys.less) := "_*.less"
-
-
-unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
-
 routesGenerator := InjectedRoutesGenerator
-
-fork in run := true

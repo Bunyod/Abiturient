@@ -1,8 +1,8 @@
-package module
+package modules
 
 import be.objectify.deadbolt.scala.cache.HandlerCache
-import play.api.{Environment, Configuration}
 import play.api.inject.{Binding, Module}
+import play.api.{Configuration, Environment}
 import security.MyHandlerCache
 
 /**

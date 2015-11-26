@@ -5,10 +5,15 @@ import javax.inject.{Inject, Singleton}
 import akka.actor.ActorSystem
 import akka.util.Timeout
 import be.objectify.deadbolt.scala.DeadboltActions
+import common.entities.SessionUser
 import dao.UsersDao
+import play.api.Play.current
 import play.api._
 import play.api.data.Forms._
 import play.api.data._
+import play.api.i18n.Messages.Implicits._
+import play.api.i18n.MessagesApi
+import play.api.libs.json.Json
 import play.api.mvc._
 import security.MyDeadboltHandler
 
@@ -22,7 +27,7 @@ import scala.concurrent.duration.DurationInt
 
 
 @Singleton
-class Application @Inject() (actorSystem: ActorSystem, usersDao: UsersDao, deadbolt: DeadboltActions)
+class Application @Inject() (val messagesApi: MessagesApi, actorSystem: ActorSystem, usersDao: UsersDao, deadbolt: DeadboltActions)
                            (implicit ec: ExecutionContext) extends Controller {
   implicit val defaultTimeout = Timeout(5.seconds)
   //  val config = current.configuration.getConfig("web-server").get
@@ -31,6 +36,7 @@ class Application @Inject() (actorSystem: ActorSystem, usersDao: UsersDao, deadb
   val logger = Logger(this.getClass())
 
   logger.info("In AppController")
+  implicit val sessionUserFormat = Json.format[SessionUser]
 
   val loginForm = Form(
     tuple(
@@ -55,8 +61,8 @@ class Application @Inject() (actorSystem: ActorSystem, usersDao: UsersDao, deadb
         },
         user => {
           // update the session BEFORE the view is rendered
-          val modifiedRequest = updateRequestSession(request, List(("user" -> user._1)))
-          Ok(views.html.pageA(modifiedRequest)).withSession(modifiedRequest.session)
+//          val modifiedRequest = updateRequestSession(request, List(("user" -> user._1)))
+          Ok(views.html.pageA(request)).withSession("user" -> Json.prettyPrint(Json.toJson(SessionUser(user._1, user._2))))
         })
     }
   }

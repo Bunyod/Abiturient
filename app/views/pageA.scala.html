@@ -5,8 +5,8 @@
 @main("Page A") {
 	<h1>Welcome @request.session.get("user")</h1>
 	
-	<a id="logout" href=@routes.Application.logout>logout</a> <br />
-	<a id="pageB" href=@routes.Application.pageB>page B</a>
+	<a id="logout" href="@routes.Application.logout">logout</a> <br />
+	<a id="pageB" href="@routes.Application.pageB">page B</a>
 	
 	<div id="div1">
 		<button id="btn1">Press Me 1</button>

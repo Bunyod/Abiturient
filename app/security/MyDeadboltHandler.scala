@@ -22,8 +22,13 @@ class MyDeadboltHandler(dynamicResourceHandler: Option[DynamicResourceHandler] =
 
   override def getSubject[A](request: Request[A]): Future[Option[Subject]] = {
     // e.g. request.session.get("user")
-    val userName = request.session.get("user").getOrElse("Unknown")
-    Future(Some(new UserAuth(userName)))
+    Future {
+      request.session.get("user") match {
+        case Some(username) =>
+          Some(UserAuth(username))
+        case None => None
+      }
+    }
   }
 
   def onAuthFailure[A](request: Request[A]): Future[Result] = {

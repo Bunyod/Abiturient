@@ -1,7 +1,26 @@
-@(frm: Form[(String,String)])
+@(frm: Form[(String,String)])(implicit messages: Messages)
+
+@import helper._
 
 @main("Welcome to Play") {
+    @form(action = routes.Application.login, args = 'id -> "loginform") {
 
-    @play20.welcome("asd")
+        @frm.globalError.map { error =>
+            <p style="color: red">
+                @error.message
+            </p>
+        }
+
+        @inputText(
+            field = frm("username"),
+            args = '_label -> "Username:"
+        )
+        @inputPassword(
+            field = frm("password"),
+            args = '_label -> "Password:"
+        )
+
+        <input type="submit" id="submit" value="Log in">
+    }
 
 }
