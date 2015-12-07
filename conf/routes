@@ -5,9 +5,11 @@
 # Home page
 GET     /                           @controllers.Application.index
 
-POST	/login						@controllers.Application.login
+POST	/login						@controllers.Application.loginPost
 GET		/logout						@controllers.Application.logout
 GET		/pageB						@controllers.Application.pageB
+GET		/pageC						@controllers.Application.pageC
+GET		/pageD						@controllers.Application.pageD
 POST	/ajaxText					@controllers.Application.ajaxText
 
 

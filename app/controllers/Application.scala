@@ -1,13 +1,13 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-import akka.actor._
-import akka.pattern.ask
+
 import akka.actor.ActorSystem
+import akka.pattern.ask
 import akka.util.Timeout
 import be.objectify.deadbolt.scala.DeadboltActions
 import common.AppProtocol.LoginUser
-import common.entities.{User, SessionUser}
+import common.entities.SessionUser
 import dao.UsersDao
 import models.UserAuthenticate
 import play.api.Play.current
@@ -23,8 +23,8 @@ import play.api.mvc._
 import security.MyDeadboltHandler
 
 import scala.collection.mutable.ListBuffer
-import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.DurationInt
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
  * @author Bunyod (bunyodreal@gmail.com). Created at 11/17/15.
@@ -35,6 +35,14 @@ import scala.concurrent.duration.DurationInt
 class Application @Inject() (val messagesApi: MessagesApi, mailer: MailerClient, ws: WSClient,
                              actorSystem: ActorSystem, usersDao: UsersDao, deadbolt: DeadboltActions)
                            (implicit ec: ExecutionContext) extends Controller {
+
+
+  case class LoginForm
+  (
+    login: String = "",
+    password: String = ""
+    )
+
   implicit val defaultTimeout = Timeout(5.seconds)
   //  val config = current.configuration.getConfig("web-server").get
   val authActor = actorSystem.actorOf(UserAuthenticate.props(mailer, ws, usersDao), "user-manager")
@@ -44,37 +52,48 @@ class Application @Inject() (val messagesApi: MessagesApi, mailer: MailerClient,
   logger.info("In AppController")
   implicit val sessionUserFormat = Json.format[SessionUser]
 
-  val loginForm = Form(
-    tuple(
+  val loginPlayForm = Form {
+    mapping(
       "username" -> nonEmptyText,
-      "password" -> text)
-//      verifying("Invalid username or password", result => result match {
-//      case (username, password) =>
-//        (authActor ? LoginUser(username, password)).mapTo[User]
-//          .map { user =>
-//          if(user.login) true else false
-//        }
-//    })
-  )
-
-  def index = Action {
-    //    Redirect(routes.UsersController.showRegisterForm())
-    Ok(views.html.index(loginForm))
+      "password" -> text) (LoginForm.apply)(LoginForm.unapply)
   }
 
-  def login = {
-    Action { implicit request =>
-      loginForm.bindFromRequest.fold(
-        formWithErrors => { // binding failure
-          Logger.error("Login failed for user " + formWithErrors.data("username"))
-          BadRequest(views.html.index(formWithErrors))
-        },
-        user => {
-          // update the session BEFORE the view is rendered
-//          val modifiedRequest = updateRequestSession(request, List(("user" -> user._1)))
-          Ok(views.html.pageA(request)).withSession("user" -> Json.prettyPrint(Json.toJson(SessionUser(user._1, user._2))))
-        })
-    }
+  def index = Action { implicit request =>
+    Ok(views.html.index(loginPlayForm))
+  }
+
+  def loginPost = Action.async { implicit request =>
+      loginPlayForm.bindFromRequest.fold(
+      errorForm => { // binding failure
+        Logger.error("Login failed for user " + errorForm.data("username"))
+//        Future.successful(Redirect(routes.Application.pageB()))
+        Future.successful(Redirect(routes.Application.index()).flashing("error" -> "loginFailed"))
+      },
+      {
+        case LoginForm(username, password) =>
+          (authActor ? LoginUser(username, password)).mapTo[String]
+          .map { user =>
+            logger.info(s"UUUUhhhhhhhhh=$user")
+            Redirect(routes.Application.pageB())
+          }
+        case _ =>
+          Future.successful(Redirect(routes.Application.index()).flashing("error" -> "loginFailed"))
+
+//          Future.successful(Redirect(routes.Application.pageB()))
+
+        //        ,
+//        {
+//          case LoginForm(username, password) =>
+//            (authActor ? LoginUser(username, password)).mapTo[User]
+//              .map { user =>
+//              Future.successful(Redirect(routes.Application.pageB()))
+//            }
+//          case _ =>
+//            Future.successful(Redirect(routes.Application.pageB()))
+//          //          Redirect(routes.Application.index()).flashing("error" -> "loginFailed")
+//        }
+      }
+      )
   }
 
 
@@ -102,14 +121,25 @@ class Application @Inject() (val messagesApi: MessagesApi, mailer: MailerClient,
     Request[Any](request.copy(headers = theHeaders), request.body)
   }
 
-  def logout =
-    Action { implicit request =>
-      Ok(views.html.index(loginForm)).withNewSession
-    }
+  def logout = Action { implicit request =>
+    Ok(views.html.index(loginPlayForm)).withNewSession
+  }
 
   def pageB = deadbolt.SubjectPresent(new MyDeadboltHandler) {
     Action { implicit request =>
       Ok(views.html.pageB())
+    }
+  }
+
+  def pageC = deadbolt.SubjectPresent(new MyDeadboltHandler) {
+    Action { implicit request =>
+      Ok(views.html.pageC())
+    }
+  }
+
+  def pageD = deadbolt.SubjectPresent(new MyDeadboltHandler) {
+    Action { implicit request =>
+      Ok(views.html.pageD())
     }
   }
 

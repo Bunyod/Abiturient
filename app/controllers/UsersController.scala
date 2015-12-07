@@ -85,7 +85,7 @@ class UsersController @Inject() (val actorSystem: ActorSystem)
       .map { userId =>
         logger.info(s"NewUserId=$userId")
       }
-    Redirect(routes.Application.login())
+    Redirect(routes.Application.loginPost())
   }
 
 }

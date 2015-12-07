@@ -1,16 +1,14 @@
-@(frm: Form[(String,String)])(implicit messages: Messages)
-
+@(frm: Form[_])(implicit msgsI18N: Messages, flash: Flash)
+@import views.html._
 @import helper._
 
 @main("Welcome to Play") {
-    @form(action = routes.Application.login, args = 'id -> "loginform") {
-
-        @frm.globalError.map { error =>
-            <p style="color: red">
-                @error.message
-            </p>
-        }
-
+    @flash.get("errorText").map { error =>
+        <p style="color: red">
+            @error
+        </p>
+    }
+    @form(action = routes.Application.loginPost, args = 'id -> "loginform") {
         @inputText(
             field = frm("username"),
             args = '_label -> "Username:"

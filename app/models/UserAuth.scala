@@ -4,7 +4,6 @@ import akka.pattern.pipe
 import akka.util.Timeout
 import be.objectify.deadbolt.core.models.Subject
 import common.AppProtocol.{GeneralAuthFailure, LoginUser, UserAuthFailure}
-import common.entities.User
 import dao.UsersDao
 import play.api.libs.mailer.MailerClient
 import play.api.libs.ws.WSClient
@@ -49,21 +48,18 @@ class UserAuthenticate(val mailer: MailerClient, val ws: WSClient, val usersDao:
 
   }
 
-  def checkLoginPassword(login: String, password: String): Future[Either[UserAuthFailure, User]] = {
+  private def checkLoginPassword(login: String, password: String): Future[Either[UserAuthFailure, String]] = {
     require(!login.isEmpty)
     (for {
       user <- usersDao.findByLogin(login)
     } yield user)
       .map {
       case user =>
-        if (user.isDefined) {
-          if (user.get.password == password) {
-            Right(user.get)
-          } else {
-            Left(GeneralAuthFailure("password does not match"))
-          }
+        log.info(s"Yuuuuuuuuu=${user.get.login}")
+        if (user.get.password == password) {
+          Right(user.get.login)
         } else {
-          Left(GeneralAuthFailure("user not found"))
+          Left(GeneralAuthFailure("password does not match"))
         }
       case _ =>
         Left(GeneralAuthFailure("user not found"))

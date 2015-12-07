@@ -12,7 +12,7 @@ import scala.concurrent.Future
 /**
  * Created by comp17 on 11/19/15.
  */
-class SubjectDao extends UsersDao{
+class SubjectDao {
 
   val subjects: Map[String, Subject] = Map("greet" -> new SecuritySubject("greet",
     List(SecurityRole("foo"),
@@ -33,6 +33,7 @@ class SubjectDao extends UsersDao{
         SecurityRole("hurdy")).toList,
       List[SecurityPermission]().toList))
 
-  override def user(userName: String): Option[Subject] = subjects.get(userName)
-  override   def create(user: User): Future[Int] = ???
+//  override def user(userName: String): Option[Subject] = subjects.get(userName)
+//  override   def create(user: User): Future[Int] = ???
+//  override   def findByLogin(login: String): Future[Option[User]] = ???
 }
