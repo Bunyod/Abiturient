@@ -38,6 +38,7 @@ trait UsersComponent
 
 @ImplementedBy(classOf[UsersDaoImpl])
 trait UsersDao {
+  def findByLogin(login: String): Future[Option[User]]
   def user(userName: String): Option[Subject]
   def create(user: User): Future[Int]
 }
@@ -63,6 +64,12 @@ class UsersDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfigProv
   override def user(userName: String): Option[Subject] = {
 //    Some(Subject)
     None
+  }
+
+  override   def findByLogin(login: String): Future[Option[User]] = {
+    db.run {
+      users.filter(_.login === login).result.headOption
+    }
   }
 }
 

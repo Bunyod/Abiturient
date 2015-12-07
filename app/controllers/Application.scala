@@ -1,12 +1,15 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-
+import akka.actor._
+import akka.pattern.ask
 import akka.actor.ActorSystem
 import akka.util.Timeout
 import be.objectify.deadbolt.scala.DeadboltActions
-import common.entities.SessionUser
+import common.AppProtocol.LoginUser
+import common.entities.{User, SessionUser}
 import dao.UsersDao
+import models.UserAuthenticate
 import play.api.Play.current
 import play.api._
 import play.api.data.Forms._
@@ -14,6 +17,8 @@ import play.api.data._
 import play.api.i18n.Messages.Implicits._
 import play.api.i18n.MessagesApi
 import play.api.libs.json.Json
+import play.api.libs.mailer.MailerClient
+import play.api.libs.ws.WSClient
 import play.api.mvc._
 import security.MyDeadboltHandler
 
@@ -27,11 +32,12 @@ import scala.concurrent.duration.DurationInt
 
 
 @Singleton
-class Application @Inject() (val messagesApi: MessagesApi, actorSystem: ActorSystem, usersDao: UsersDao, deadbolt: DeadboltActions)
+class Application @Inject() (val messagesApi: MessagesApi, mailer: MailerClient, ws: WSClient,
+                             actorSystem: ActorSystem, usersDao: UsersDao, deadbolt: DeadboltActions)
                            (implicit ec: ExecutionContext) extends Controller {
   implicit val defaultTimeout = Timeout(5.seconds)
   //  val config = current.configuration.getConfig("web-server").get
-  val myActor = actorSystem.actorOf(MyActor.props(usersDao), "user-manager")
+  val authActor = actorSystem.actorOf(UserAuthenticate.props(mailer, ws, usersDao), "user-manager")
 
   val logger = Logger(this.getClass())
 
@@ -42,10 +48,14 @@ class Application @Inject() (val messagesApi: MessagesApi, actorSystem: ActorSys
     tuple(
       "username" -> nonEmptyText,
       "password" -> text)
-      verifying("Invalid username or password", result => result match {
-      case (username, password) =>
-        models.User.authenticate(username, password).isDefined
-    }))
+//      verifying("Invalid username or password", result => result match {
+//      case (username, password) =>
+//        (authActor ? LoginUser(username, password)).mapTo[User]
+//          .map { user =>
+//          if(user.login) true else false
+//        }
+//    })
+  )
 
   def index = Action {
     //    Redirect(routes.UsersController.showRegisterForm())
