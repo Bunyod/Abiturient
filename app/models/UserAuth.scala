@@ -11,9 +11,10 @@ import play.libs.Scala
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
+
 /**
  *
- * @author Bunyod Bobojonov (bunyodreal@gmail.com)
+ * @author Bunyod Bobojonov (bunyodreal@gmail.com). Created at 11/17/15.
  */
 
 case class UserAuth(userName: String) extends Subject {
@@ -64,14 +65,3 @@ class UserAuthenticate(val mailer: MailerClient, val ws: WSClient, val usersDao:
     )
   }
 }
-//class User @Inject() (usersDao: UsersDao) {
-//  import play.api.Play
-//  private lazy val adminUsername = Play.current.configuration.getString("login.username").getOrElse("")
-//  private lazy val adminPassword = Play.current.configuration.getString("login.password").getOrElse("")
-//
-//  def authenticate(username: String, password: String): Option[UserAuth] =
-//    if ((adminUsername == username) && (adminPassword == password))
-//      Some(UserAuth(username))
-//    else
-//      None
-//}

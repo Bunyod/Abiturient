@@ -1,8 +1,10 @@
 package common
 
 /**
- * Created by comp17 on 12/7/15.
+ *
+ * @author Bunyod Bobojonov (bunyodreal@gmail.com). Created at 11/17/15.
  */
+
 object AppProtocol {
 
   case class LoginUser(login: String, password: String)

@@ -75,10 +75,8 @@ class Application @Inject() (val messagesApi: MessagesApi, mailer: MailerClient,
             .map {
               case Right(user)=>
                 val modifiedRequest = updateRequestSession(request, List(("user" -> user)))
-                Ok(views.html.pageA(modifiedRequest)).withSession(request.session + ("ab-user", "usr"))
-                Ok(views.html.pageA(modifiedRequest)).withSession(request.session + ("ab-user", "usr"))
+                Ok(views.html.pageA(modifiedRequest)).withSession(request.session + ("ab-user", username))
               case Left(GeneralAuthFailure(_)) =>
-                logger.info(s"UUUUhhhhhhhhh=$GeneralAuthFailure")
                 Redirect(routes.Application.pageC())
 
             }
@@ -100,7 +98,7 @@ class Application @Inject() (val messagesApi: MessagesApi, mailer: MailerClient,
     else
       updatedSession
 
-    val cookies = Cookies.decodeCookieHeader(request.headers.get(COOKIE).get)
+//    val cookies = Cookies.decodeCookieHeader(request.headers.get(COOKIE).get)
     val myCookies = Seq(Session.COOKIE_NAME -> Session.encodeAsCookie(newSession))
     val headerMap = request.headers.toMap +
       (COOKIE -> Seq(Cookies.encodeSetCookieHeader(myCookies.map(_._2))))

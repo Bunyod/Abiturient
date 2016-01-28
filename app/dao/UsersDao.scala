@@ -67,7 +67,6 @@ class UsersDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfigProv
   }
 
   override def findByLogin(login: String): Future[Option[User]] = {
-    logger.info(s"loggggggg=$login")
     db.run {
       users.filter(_.login === login).result.headOption
     }

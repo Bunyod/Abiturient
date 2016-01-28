@@ -4,9 +4,9 @@ import java.util.Date
 
 import ab.utils.EnumMappedToDb
 
-
 /**
- * Created by bunyod on 11/17/15.
+ *
+ * @author Bunyod Bobojonov (bunyodreal@gmail.com). Created at 11/17/15.
  */
 
 object entities {
