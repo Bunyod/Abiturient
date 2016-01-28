@@ -19,13 +19,13 @@ object entities {
   case class User
   (
     id: Option[Int] = None,
-    firstName: String,
-    lastName: String,
-    secondName: String,
+    firstName: Option[String],
+    lastName: Option[String],
+    secondName: Option[String],
     login: String,
     password: String,
-    gender: GenderType.Value,
-    bDay: Date
+    gender: Option[GenderType.Value],
+    bDay: Option[Date]
   )
 
   case class SessionUser

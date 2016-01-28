@@ -6,7 +6,7 @@ import akka.actor.ActorSystem
 import akka.pattern.ask
 import akka.util.Timeout
 import be.objectify.deadbolt.scala.DeadboltActions
-import common.AppProtocol.LoginUser
+import common.AppProtocol.{UserAuthFailure, GeneralAuthFailure, LoginUser}
 import common.entities.SessionUser
 import dao.UsersDao
 import models.UserAuthenticate
@@ -64,35 +64,27 @@ class Application @Inject() (val messagesApi: MessagesApi, mailer: MailerClient,
 
   def loginPost = Action.async { implicit request =>
       loginPlayForm.bindFromRequest.fold(
-      errorForm => { // binding failure
-        Logger.error("Login failed for user " + errorForm.data("username"))
-//        Future.successful(Redirect(routes.Application.pageB()))
-        Future.successful(Redirect(routes.Application.index()).flashing("error" -> "loginFailed"))
-      },
-      {
-        case LoginForm(username, password) =>
-          (authActor ? LoginUser(username, password)).mapTo[String]
-          .map { user =>
-            logger.info(s"UUUUhhhhhhhhh=$user")
-            Redirect(routes.Application.pageB())
-          }
-        case _ =>
+        errorForm => { // binding failure
+          Logger.error("Login failed for user " + errorForm.data("username"))
+  //        Future.successful(Redirect(routes.Application.pageB()))
           Future.successful(Redirect(routes.Application.index()).flashing("error" -> "loginFailed"))
+        },
+        {
+          case LoginForm(username, password) =>
+            (authActor ? LoginUser(username, password)).mapTo[Either[UserAuthFailure, String]]
+            .map {
+              case Right(user)=>
+                val modifiedRequest = updateRequestSession(request, List(("user" -> user)))
+                Ok(views.html.pageA(modifiedRequest)).withSession(request.session + ("ab-user", "usr"))
+                Ok(views.html.pageA(modifiedRequest)).withSession(request.session + ("ab-user", "usr"))
+              case Left(GeneralAuthFailure(_)) =>
+                logger.info(s"UUUUhhhhhhhhh=$GeneralAuthFailure")
+                Redirect(routes.Application.pageC())
 
-//          Future.successful(Redirect(routes.Application.pageB()))
-
-        //        ,
-//        {
-//          case LoginForm(username, password) =>
-//            (authActor ? LoginUser(username, password)).mapTo[User]
-//              .map { user =>
-//              Future.successful(Redirect(routes.Application.pageB()))
-//            }
-//          case _ =>
-//            Future.successful(Redirect(routes.Application.pageB()))
-//          //          Redirect(routes.Application.index()).flashing("error" -> "loginFailed")
-//        }
-      }
+            }
+          case _ =>
+            Future.successful(Redirect(routes.Application.index()).flashing("error" -> "loginFailed"))
+        }
       )
   }
 

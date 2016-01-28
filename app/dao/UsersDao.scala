@@ -31,8 +31,8 @@ trait UsersComponent
     def gender = column[GenderType.Value]("gender",  O.Default(GenderType.Male))
     def bDay = column[Date]("bDay", O.Default(new Date()))
 
-    def * = (id.?, firstName, lastName,
-      secondName, login, password, gender, bDay) <>(User.tupled, User.unapply)
+    def * = (id.?, firstName.?, lastName.?,
+      secondName.?, login, password, gender.?, bDay.?) <>(User.tupled, User.unapply)
   }
 }
 

@@ -80,7 +80,8 @@ class UsersController @Inject() (val actorSystem: ActorSystem)
 
   def registration = Action(parse.form(regsPlayForm)) { implicit request =>
     val regData = request.body
-    val user = User(None, regData.firstName, regData.lastName, regData.lastName, regData.login, regData.password, GenderType.Male, new Date)
+    val user = User(None, Some(regData.firstName), Some(regData.lastName), Some(regData.lastName),
+      regData.login, regData.password, Some(GenderType.Male), Some(new Date))
     (myActor ? RegUser(user)).mapTo[Int]
       .map { userId =>
         logger.info(s"NewUserId=$userId")

@@ -49,21 +49,19 @@ class UserAuthenticate(val mailer: MailerClient, val ws: WSClient, val usersDao:
   }
 
   private def checkLoginPassword(login: String, password: String): Future[Either[UserAuthFailure, String]] = {
+
     require(!login.isEmpty)
-    (for {
-      user <- usersDao.findByLogin(login)
-    } yield user)
-      .map {
-      case user =>
-        log.info(s"Yuuuuuuuuu=${user.get.login}")
-        if (user.get.password == password) {
-          Right(user.get.login)
-        } else {
-          Left(GeneralAuthFailure("password does not match"))
-        }
-      case _ =>
+
+    usersDao.findByLogin(login).map(_.map { user =>
+      if (user.password == password) {
+        Right(login)
+      } else {
+        Left(GeneralAuthFailure("password does not match"))
+      }
+    }.getOrElse {
         Left(GeneralAuthFailure("user not found"))
-    }
+      }
+    )
   }
 }
 //class User @Inject() (usersDao: UsersDao) {

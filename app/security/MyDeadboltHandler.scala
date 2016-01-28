@@ -23,7 +23,7 @@ class MyDeadboltHandler(dynamicResourceHandler: Option[DynamicResourceHandler] =
   override def getSubject[A](request: Request[A]): Future[Option[Subject]] = {
     // e.g. request.session.get("user")
     Future {
-      request.session.get("user") match {
+      request.session.get("ab-user") match {
         case Some(username) =>
           Some(UserAuth(username))
         case None => None
