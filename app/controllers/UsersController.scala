@@ -6,6 +6,7 @@ import javax.inject._
 import akka.actor._
 import akka.pattern.ask
 import akka.util.Timeout
+import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import common.entities.{GenderType, RegUser, User}
 import play.api.Play.current
@@ -40,7 +41,9 @@ object UsersController {
   )
 }
 
-class UsersController @Inject() (val actorSystem: ActorSystem)
+class UsersController @Inject() (val actorSystem: ActorSystem,
+                                 deadbolt: DeadboltActions,
+                                 actionBuilders: ActionBuilders)
                                 (implicit ec: ExecutionContext) extends Controller with LazyLogging {
   import controllers.UsersController._
 

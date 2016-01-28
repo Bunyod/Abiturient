@@ -5,8 +5,8 @@ import javax.inject.{Inject, Singleton}
 import akka.actor.ActorSystem
 import akka.pattern.ask
 import akka.util.Timeout
-import be.objectify.deadbolt.scala.DeadboltActions
-import common.AppProtocol.{UserAuthFailure, GeneralAuthFailure, LoginUser}
+import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
+import common.AppProtocol.{GeneralAuthFailure, LoginUser, UserAuthFailure}
 import common.entities.SessionUser
 import dao.UsersDao
 import models.UserAuthenticate
@@ -32,8 +32,13 @@ import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
-class Application @Inject() (val messagesApi: MessagesApi, mailer: MailerClient, ws: WSClient,
-                             actorSystem: ActorSystem, usersDao: UsersDao, deadbolt: DeadboltActions)
+class Application @Inject() (val messagesApi: MessagesApi,
+                             mailer: MailerClient,
+                             ws: WSClient,
+                             actorSystem: ActorSystem,
+                             usersDao: UsersDao,
+                             deadbolt: DeadboltActions,
+                             actionBuilder: ActionBuilders)
                            (implicit ec: ExecutionContext) extends Controller {
 
 
@@ -78,7 +83,6 @@ class Application @Inject() (val messagesApi: MessagesApi, mailer: MailerClient,
                 Ok(views.html.pageA(modifiedRequest)).withSession(request.session + ("ab-user", username))
               case Left(GeneralAuthFailure(_)) =>
                 Redirect(routes.Application.pageC())
-
             }
           case _ =>
             Future.successful(Redirect(routes.Application.index()).flashing("error" -> "loginFailed"))
@@ -127,7 +131,7 @@ class Application @Inject() (val messagesApi: MessagesApi, mailer: MailerClient,
     }
   }
 
-  def pageD = deadbolt.SubjectPresent(new MyDeadboltHandler) {
+  def pageD = deadbolt.Restrict(List(Array("ADMIN"))) {
     Action { implicit request =>
       Ok(views.html.pageD())
     }
