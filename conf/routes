@@ -4,8 +4,8 @@
 
 # Home page
 GET     /                              @controllers.Application.index
-GET     /login                         @controllers.LessonController.login
-
+#GET     /login                         @controllers.LessonController.login
+POST	/login						    @controllers.Application.loginPost
 #GET     /lesson/dashboard/            controllers.LessonController.index
 #POST    /lesson/dashboard/login       controllers.LessonController.loginPost
 #GET     /lesson/dashboard/logout      controllers.LessonController.logout

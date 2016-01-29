@@ -13,7 +13,7 @@ import slick.driver.JdbcProfile
 import scala.concurrent.Future
 
 /**
- * Created by bunyod on 11/17/15.
+ * @author Bunyod (bunyodreal@gmail.com). Created at 11/17/15.
  */
 
 trait UsersComponent
@@ -30,13 +30,14 @@ trait UsersComponent
     def gender = column[GenderType.Value]("gender",  O.Default(GenderType.Male))
     def bDay = column[Date]("bDay", O.Default(new Date()))
 
-    def * = (id.?, firstName, lastName,
-      secondName, login, password, gender, bDay) <>(User.tupled, User.unapply)
+    def * = (id.?, firstName.?, lastName.?,
+      secondName.?, login, password, gender.?, bDay.?) <>(User.tupled, User.unapply)
   }
 }
 
 @ImplementedBy(classOf[UsersDaoImpl])
 trait UsersDao {
+  def findByLogin(login: String): Future[Option[User]]
   def create(user: User): Future[Int]
 }
 
@@ -56,6 +57,13 @@ class UsersDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfigProv
   override def create(user: User): Future[Int] = {
     logger.info(s"Dao: Creating user=$user")
     db.run(users += user)
+  }
+
+
+  override def findByLogin(login: String): Future[Option[User]] = {
+    db.run {
+      users.filter(_.login === login).result.headOption
+    }
   }
 }
 

@@ -8,7 +8,7 @@ import dao.UsersDao
 import play.api.Logger
 import play.api.mvc._
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{Future, ExecutionContext}
 import scala.concurrent.duration.DurationInt
 
 /**
@@ -29,5 +29,8 @@ class Application @Inject() (actorSystem: ActorSystem, usersDao: UsersDao)
     Redirect(routes.UsersController.showRegisterForm())
   }
 
+  def loginPost = Action.async { implicit request =>
+    Future.successful(Ok("ok"))
+  }
 
 }

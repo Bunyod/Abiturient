@@ -29,6 +29,8 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-core" % "1.1.3",
   "org.slf4j" % "log4j-over-slf4j" % "1.7.12",
   filters,
+  "com.typesafe.play" %% "play-ws" % "2.4.2",
+  "com.typesafe.play" %% "play-mailer" % "3.0.1",
   "com.artofsolving" % "jodconverter" % "2.2.1",
   specs2 % Test,
   // WebJars pull in client-side web libraries(will be used :))
@@ -45,12 +47,4 @@ libraryDependencies ++= Seq(
   "org.webjars" % "momentjs" % "2.10.6"
 )
 
-includeFilter in (Assets, LessKeys.less) := "*.less"
-excludeFilter in (Assets, LessKeys.less) := "_*.less"
-
-
-unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
-
 routesGenerator := InjectedRoutesGenerator
-
-fork in run := true
