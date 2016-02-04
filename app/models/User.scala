@@ -17,12 +17,8 @@ import scala.concurrent.duration.DurationInt
  * @author Bunyod Bobojonov (bunyodreal@gmail.com). Created at 11/17/15.
  */
 
-case class UserAuth(userName: String) extends Subject {
-  def getRoles: java.util.List[SecurityRole] = {
-    Scala.asJava(List(SecurityRole("ADMIN"),
-                      SecurityRole("USER"),
-                      SecurityRole("ADMINISTATOR")))
-  }
+case class User(userName: String, roles: List[SecurityRole]) extends Subject {
+  def getRoles: java.util.List[SecurityRole] = Scala.asJava(roles)
 
   def getPermissions: java.util.List[SecurityPermission] = {
     Scala.asJava(List[SecurityPermission]())

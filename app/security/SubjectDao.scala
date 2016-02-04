@@ -1,13 +1,9 @@
 package security
 
 import be.objectify.deadbolt.core.models.Subject
-import common.entities.User
+import models.{SecurityPermission, SecurityRole, SecuritySubject}
+
 import scala.collection.JavaConversions._
-
-import dao.UsersDao
-import models.{SecurityPermission, SecuritySubject, SecurityRole}
-
-import scala.concurrent.Future
 
 /**
  * Created by comp17 on 11/19/15.

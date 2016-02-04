@@ -21,7 +21,7 @@ trait UsersComponent
 { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
   import driver.api._
-  class Users(tag: Tag) extends Table[User](tag, "Users") with Date2SqlDate {
+  class Users(tag: Tag) extends Table[AbUser](tag, "Users") with Date2SqlDate {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def firstName = column[String]("firstName")
     def lastName = column[String]("lastName")
@@ -30,17 +30,19 @@ trait UsersComponent
     def password = column[String]("password")
     def gender = column[GenderType.Value]("gender",  O.Default(GenderType.Male))
     def bDay = column[Date]("bDay", O.Default(new Date()))
+    def roles = column[String]("roles")
 
     def * = (id.?, firstName.?, lastName.?,
-      secondName.?, login, password, gender.?, bDay.?) <>(User.tupled, User.unapply)
+      secondName.?, login, password, gender.?, bDay.?, roles) <>(AbUser.tupled, AbUser.unapply)
   }
 }
 
 @ImplementedBy(classOf[UsersDaoImpl])
 trait UsersDao {
-  def findByLogin(login: String): Future[Option[User]]
+  def findByLogin(login: String): Future[Option[AbUser]]
+  def findRolesByUserName(userName: String): Future[Option[String]]
   def user(userName: String): Option[Subject]
-  def create(user: User): Future[Int]
+  def create(user: AbUser): Future[Int]
 }
 
 @Singleton
@@ -56,7 +58,7 @@ class UsersDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfigProv
 
   val users = TableQuery[Users]
 
-  override def create(user: User): Future[Int] = {
+  override def create(user: AbUser): Future[Int] = {
     logger.info(s"Dao: Creating user=$user")
     db.run(users += user)
   }
@@ -66,9 +68,18 @@ class UsersDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfigProv
     None
   }
 
-  override def findByLogin(login: String): Future[Option[User]] = {
+  override def findByLogin(login: String): Future[Option[AbUser]] = {
     db.run {
       users.filter(_.login === login).result.headOption
+    }
+  }
+
+  override def findRolesByUserName(userName: String): Future[Option[String]] = {
+    db.run {
+      users.filter(_.login === userName)
+        .map(_.roles)
+        .result
+        .headOption
     }
   }
 }

@@ -8,7 +8,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
 import com.typesafe.scalalogging.slf4j.LazyLogging
-import common.entities.{GenderType, RegUser, User}
+import common.entities.{AbUser, GenderType, RegUser}
 import play.api.Play.current
 import play.api.data.Form
 import play.api.data.Forms._
@@ -81,15 +81,21 @@ class UsersController @Inject() (val actorSystem: ActorSystem,
     Ok(views.html.register(regsPlayForm))
   }
 
-  def registration = Action(parse.form(regsPlayForm)) { implicit request =>
+  def registration = Action.async(parse.form(regsPlayForm)) { implicit request =>
     val regData = request.body
-    val user = User(None, Some(regData.firstName), Some(regData.lastName), Some(regData.lastName),
-      regData.login, regData.password, Some(GenderType.Male), Some(new Date))
+    val user = AbUser(None, Some(regData.firstName), Some(regData.lastName), Some(regData.lastName),
+      regData.login, regData.password, Some(GenderType.Male), Some(new Date), "USER")
+    logger.info(s"NewUser=$user")
+
     (myActor ? RegUser(user)).mapTo[Int]
       .map { userId =>
         logger.info(s"NewUserId=$userId")
-      }
-    Redirect(routes.Application.loginPost())
+        Ok("yyy")
+    }
+//    .recover { case error =>
+//      logger.info("error", error)
+//      Future.successful(Ok(""))
+//    }
   }
 
 }

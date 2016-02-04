@@ -13,11 +13,11 @@ import dao.UsersDao
 @Singleton
 class MyHandlerCache @Inject() (usersDao: UsersDao) extends HandlerCache {
 
-  val defaultHandler: DeadboltHandler = new MyDeadboltHandler
+  val defaultHandler: DeadboltHandler = new MyDeadboltHandler(None, usersDao)
 
   val handlers: Map[Any, DeadboltHandler] = Map(HandlerKeys.defaultHandler -> defaultHandler,
-                                                HandlerKeys.altHandler -> new MyDeadboltHandler(Some(MyAlternativeDynamicResourceHandler)),
-                                                HandlerKeys.userlessHandler -> new MyUserlessDeadboltHandler
+                                                HandlerKeys.altHandler -> new MyDeadboltHandler(Some(MyAlternativeDynamicResourceHandler), usersDao),
+                                                HandlerKeys.userlessHandler -> new MyUserlessDeadboltHandler(usersDao)
                                                 )
   override def apply(): DeadboltHandler = defaultHandler
 

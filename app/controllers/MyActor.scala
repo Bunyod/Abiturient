@@ -3,7 +3,7 @@ package controllers
 import akka.actor._
 import akka.pattern.pipe
 import akka.util.Timeout
-import common.entities.{RegUser, User}
+import common.entities.{RegUser, AbUser}
 import dao.UsersDao
 
 import scala.concurrent.duration.DurationInt
@@ -24,12 +24,13 @@ class MyActor (usersDao: UsersDao) extends Actor with ActorLogging {
   implicit val defaultTimeout = Timeout(5.seconds)
   override def receive: Receive = {
     case RegUser(user) =>
+      log.info(s"RegUser=$user")
       register(user).pipeTo(sender)
     case _ =>
       log.info(s"Receive: None")
   }
 
-  private def register(user: User) = {
+  private def register(user: AbUser) = {
     usersDao.create(user)
   }
 }

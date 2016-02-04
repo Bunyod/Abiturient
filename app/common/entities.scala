@@ -16,7 +16,7 @@ object entities {
     val Female = Value(1)
   }
 
-  case class User
+  case class AbUser
   (
     id: Option[Int] = None,
     firstName: Option[String],
@@ -25,7 +25,8 @@ object entities {
     login: String,
     password: String,
     gender: Option[GenderType.Value],
-    bDay: Option[Date]
+    bDay: Option[Date],
+    roles: String
   )
 
   case class SessionUser
@@ -34,5 +35,5 @@ object entities {
     password: String
     )
 
-  case class RegUser(user: User)
+  case class RegUser(user: AbUser)
 }

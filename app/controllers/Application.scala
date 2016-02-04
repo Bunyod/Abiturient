@@ -119,19 +119,19 @@ class Application @Inject() (val messagesApi: MessagesApi,
     Ok(views.html.index(loginPlayForm)).withNewSession
   }
 
-  def pageB = deadbolt.SubjectPresent(new MyDeadboltHandler) {
+  def pageB = deadbolt.SubjectPresent(new MyDeadboltHandler(None, usersDao)) {
     Action { implicit request =>
       Ok(views.html.pageB())
     }
   }
 
-  def pageC = deadbolt.SubjectPresent(new MyDeadboltHandler) {
+  def pageC = deadbolt.SubjectPresent(new MyDeadboltHandler(None, usersDao)) {
     Action { implicit request =>
       Ok(views.html.pageC())
     }
   }
 
-  def pageD = deadbolt.Restrict(List(Array("ADMIN"))) {
+  def pageD = deadbolt.Restrict(List(Array("USER"))) {
     Action { implicit request =>
       Ok(views.html.pageD())
     }
@@ -141,7 +141,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
 
   val ajaxTextRds = (__ \ 'buttonID).read[Long]
 
-  def ajaxText = deadbolt.SubjectPresent(new MyDeadboltHandler) {
+  def ajaxText = deadbolt.SubjectPresent(new MyDeadboltHandler(None, usersDao)) {
     Action(parse.json) { request =>
       request.body.validate[Long](ajaxTextRds).map {
         case (buttonID) => {
