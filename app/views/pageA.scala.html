@@ -15,37 +15,4 @@
 	</div>
 	
 	<script>
-	function doAjax(buttonID) {
-		var dataToSend, json;
-		
-		dataToSend = {};
-	    dataToSend.buttonID = buttonID;
-
-	    json = JSON.stringify(dataToSend);
-
-        $.ajax({
-            url : "ajaxText",
-            contentType : 'application/json',
-            dataType : "json", // server return is expected to be JSON
-            type : "post",
-            data : json,
-            success : function(data) {
-                // "data" is the JSON response from the server
-                $("#div" + data.divID).text(data.text);
-            },
-            error : function(jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
-            }
-        });
-	}
-
-	$(function() {
-		$("#btn1").click(function() {
-			doAjax(1);
-        });
-		$("#btn2").click(function() {
-			doAjax(2);
-        });        
-	});
-	</script>
 }

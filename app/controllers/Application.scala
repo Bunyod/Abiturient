@@ -9,7 +9,6 @@ import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
 import common.AppProtocol.{GeneralAuthFailure, LoginUser, UserAuthFailure}
 import common.entities.SessionUser
 import dao.UsersDao
-import models.UserAuthenticate
 import play.api.Play.current
 import play.api._
 import play.api.data.Forms._
@@ -125,7 +124,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
     }
   }
 
-  def pageC = deadbolt.SubjectPresent(new MyDeadboltHandler(None, usersDao)) {
+  def pageC = deadbolt.Restrict(List(Array("ADMIN"))) {
     Action { implicit request =>
       Ok(views.html.pageC())
     }
@@ -137,20 +136,4 @@ class Application @Inject() (val messagesApi: MessagesApi,
     }
   }
 
-  import play.api.libs.json._
-
-  val ajaxTextRds = (__ \ 'buttonID).read[Long]
-
-  def ajaxText = deadbolt.SubjectPresent(new MyDeadboltHandler(None, usersDao)) {
-    Action(parse.json) { request =>
-      request.body.validate[Long](ajaxTextRds).map {
-        case (buttonID) => {
-          val text = "Pressed " + buttonID + " at " + new java.util.Date()
-          Ok(Json.obj("status" -> "OK", "divID" -> buttonID, "text" -> text))
-        }
-      }.recoverTotal {
-        e => BadRequest(Json.obj("status" -> "KO", "message" -> JsError.toFlatJson(e)))
-      }
-    }
-  }
 }
