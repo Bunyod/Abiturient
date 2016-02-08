@@ -49,7 +49,7 @@ class UsersController @Inject() (val actorSystem: ActorSystem,
 
   implicit val defaultTimeout = Timeout(5.seconds)
   val config = current.configuration.getConfig("web-server").get
-  val myActor = actorSystem.actorSelection(config.getString("user-manager-actor-path").get)
+  val userManger = actorSystem.actorSelection(config.getString("user-manager-actor-path").get)
 
   val regsPlayForm: Form[RegsForm] = Form {
     mapping(
@@ -84,10 +84,9 @@ class UsersController @Inject() (val actorSystem: ActorSystem,
   def registration = Action(parse.form(regsPlayForm)) { implicit request =>
     val regData = request.body
     val user = AbUser(None, Some(regData.firstName), Some(regData.lastName), Some(regData.lastName),
-      regData.login, regData.password, Some(GenderType.Male), Some(new Date), "ADMIN")
-    logger.info(s"NewUser=$user")
+      regData.login, regData.password, Some(GenderType.Male), Some(new Date), "USER")
 
-    (myActor ? RegUser(user)).mapTo[Int]
+    (userManger ? RegUser(user)).mapTo[Int]
       .map { userId =>
         logger.info(s"NewUserId=$userId")
       }
