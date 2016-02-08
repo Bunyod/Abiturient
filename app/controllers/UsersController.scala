@@ -81,21 +81,17 @@ class UsersController @Inject() (val actorSystem: ActorSystem,
     Ok(views.html.register(regsPlayForm))
   }
 
-  def registration = Action.async(parse.form(regsPlayForm)) { implicit request =>
+  def registration = Action(parse.form(regsPlayForm)) { implicit request =>
     val regData = request.body
     val user = AbUser(None, Some(regData.firstName), Some(regData.lastName), Some(regData.lastName),
-      regData.login, regData.password, Some(GenderType.Male), Some(new Date), "USER")
+      regData.login, regData.password, Some(GenderType.Male), Some(new Date), "ADMIN")
     logger.info(s"NewUser=$user")
 
     (myActor ? RegUser(user)).mapTo[Int]
       .map { userId =>
         logger.info(s"NewUserId=$userId")
-        Ok("yyy")
-    }
-//    .recover { case error =>
-//      logger.info("error", error)
-//      Future.successful(Ok(""))
-//    }
+      }
+    Redirect(routes.Application.index())
   }
 
 }

@@ -25,7 +25,7 @@ class MyActor (usersDao: UsersDao) extends Actor with ActorLogging {
   override def receive: Receive = {
     case RegUser(user) =>
       log.info(s"RegUser=$user")
-      register(user).pipeTo(sender)
+      register(user).pipeTo(sender())
     case _ =>
       log.info(s"Receive: None")
   }

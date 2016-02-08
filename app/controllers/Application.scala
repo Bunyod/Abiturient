@@ -51,6 +51,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
   implicit val defaultTimeout = Timeout(5.seconds)
   //  val config = current.configuration.getConfig("web-server").get
   val authActor = actorSystem.actorOf(UserAuthenticate.props(mailer, ws, usersDao), "user-manager")
+  val myActor = actorSystem.actorOf(MyActor.props(usersDao), "my-actor")
 
   val logger = Logger(this.getClass())
 

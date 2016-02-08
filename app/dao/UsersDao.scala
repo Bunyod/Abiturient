@@ -60,6 +60,7 @@ class UsersDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfigProv
 
   override def create(user: AbUser): Future[Int] = {
     logger.info(s"Dao: Creating user=$user")
+    logger.debug(s"Dao: Creating user=$user")
     db.run(users += user)
   }
 

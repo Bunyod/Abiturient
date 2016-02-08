@@ -16,6 +16,11 @@ object entities {
     val Female = Value(1)
   }
 
+  object UserRoleType extends EnumMappedToDb {
+    val User = Value(0)
+    val Admin = Value(1)
+  }
+
   case class AbUser
   (
     id: Option[Int] = None,
