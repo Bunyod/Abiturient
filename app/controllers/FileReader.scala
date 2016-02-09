@@ -5,7 +5,7 @@ package controllers
   */
 
 
-import java.io.File
+import java.io.{FileOutputStream, File}
 import java.util.Date
 
 import org.apache.poi.openxml4j.opc.OPCPackage
@@ -30,13 +30,16 @@ class FileReader extends Controller {
       val paragraph = paragraphs.get(i)
       val element = paragraph.getRuns
       for (i <- 0 to element.size() - 1) {
-        val embPic = element.get(i)
-        val pics= embPic.getEmbeddedPictures
-        val ss= embPic.text()
+        val paragraph = element.get(i)
+        val pics= paragraph.getEmbeddedPictures
         if (pics.size() > 0) {
           val picName = pics.get(0).getPictureData.getFileName
           val now = new Date()
-          embPic.setText(s"%%${now.getTime}$picName%% ")
+          val genName = s"${now.getTime}$picName"
+          val placeholder = s"%%$genName%%"
+          val out = new FileOutputStream(new File(Play.getFile("public/quest_files/"), genName))
+          out.write(pics.get(0).getPictureData.getData)
+          paragraph.setText(s"$placeholder ")
         }
       }
 
@@ -45,9 +48,7 @@ class FileReader extends Controller {
 
     val wx = new XWPFWordExtractor(docx)
 
-    val tt = wx.getText
-
-    Logger.debug(s"TTTT = $tt")
+    Logger.debug(s"TTTT = ${wx.getText}")
 
     Ok("asdf")
   }
