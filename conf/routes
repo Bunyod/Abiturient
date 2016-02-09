@@ -19,6 +19,7 @@ GET		/pageD						@controllers.Application.pageD
 
 POST     /user/registration            @controllers.UsersController.registration
 GET      /user/register                @controllers.UsersController.showRegisterForm
+GET      /test/                        @controllers.FileReader.ind
 
 
 # Map static resources from the /public folder to the /assets URL path

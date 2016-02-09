@@ -33,6 +33,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-ws" % "2.4.2",
   "com.typesafe.play" %% "play-mailer" % "3.0.1",
   "com.artofsolving" % "jodconverter" % "2.2.1",
+  "org.apache.poi" % "poi" % "3.13",
+  "org.apache.poi" % "poi-ooxml" % "3.13",
   specs2 % Test,
   // WebJars pull in client-side web libraries(will be used :))
   "org.webjars" % "webjars-play_2.11" % "2.4.0-1",

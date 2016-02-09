@@ -105,7 +105,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
     val myCookies = Seq(Session.COOKIE_NAME -> Session.encodeAsCookie(newSession))
     val headerMap = request.headers.toMap +
       (COOKIE -> Seq(Cookies.encodeSetCookieHeader(myCookies.map(_._2))))
-    var tmpHeaderList: ListBuffer[Tuple2[String, String]] = new ListBuffer[(String, String)]();
+    var tmpHeaderList: ListBuffer[Tuple2[String, String]] = new ListBuffer[(String, String)]()
     for((k,v) <- headerMap){
       tmpHeaderList += new Tuple2(k, v.head)
     }
