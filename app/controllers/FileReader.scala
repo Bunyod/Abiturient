@@ -26,7 +26,6 @@ class FileReader extends Controller {
     ansC: Option[String],
     ansD: Option[String]
   )
-  val buf = scala.collection.mutable.ListBuffer.empty[Question]
 
   def ind() = Action { implicit req =>
 
@@ -64,21 +63,23 @@ class FileReader extends Controller {
     val m = pattern.findAllIn(wx.getText).toList
 
     val quest = Question(None,None,None,None,None)
+    val quests = List[Question](quest)
 
-    val res = recQuest(m, quest)
+    val res = recQuest(m, quests)
     Logger.debug(s"RESSS = $res")
 
     Ok("asdf")
   }
 
   @tailrec
-  private def recQuest(lst: List[String], quest: Question): List[Question] = {
+  private def recQuest(lst: List[String], quests: List[Question]): List[Question] = {
     lst match {
-      case Nil => buf.toList
+      case Nil => quests
       case h :: tail =>
 
         if (tail.isDefinedAt(3) && tail(3).contains("D)")) {
 
+          val quest = quests.last
           val q = quest.copy(
             question = Some(quest.question.getOrElse("") + h),
             ansA = Some(tail(0)),
@@ -86,14 +87,14 @@ class FileReader extends Controller {
             ansC = Some(tail(2)),
             ansD = Some(tail(3))
           )
-          buf += q
-          recQuest(tail.takeRight(tail.size - 5), Question(None,None,None,None,None))
+          recQuest(tail.takeRight(tail.size - 5), quests ::: List(q))
         } else {
-          val q = quest.copy(
-            question = Some(quest.question.getOrElse("") + h)
+          val quest = quests.last
+          val q = quests.last.copy(
+            question = Some(quests.last.question.getOrElse("") + h)
           )
-
-          recQuest(tail.takeRight(tail.size - 1), q)
+          //TODO substitute this element with last element of the quests list
+          recQuest(tail.takeRight(tail.size - 1), quests)
         }
     }
   }
