@@ -64,7 +64,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
   }
 
   def index = Action { implicit request =>
-    Ok(views.html.index(loginPlayForm))
+    Ok(views.html.index())
   }
 
   def loginPost = Action.async { implicit request =>
@@ -116,7 +116,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
   }
 
   def logout = Action { implicit request =>
-    Ok(views.html.index(loginPlayForm)).withNewSession
+    Ok(views.html.index()).withNewSession
   }
 
   def pageB = deadbolt.SubjectPresent(new MyDeadboltHandler(None, usersDao)) {
