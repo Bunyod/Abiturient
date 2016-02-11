@@ -67,6 +67,18 @@ class Application @Inject() (val messagesApi: MessagesApi,
     Ok(views.html.index())
   }
 
+  def about = Action { implicit request =>
+    Ok(views.html.about())
+  }
+
+  def services = Action { implicit request =>
+    Ok(views.html.services())
+  }
+
+  def portfolio = Action { implicit request =>
+    Ok(views.html.portfolio())
+  }
+
   def loginPost = Action.async { implicit request =>
       loginPlayForm.bindFromRequest.fold(
         errorForm => { // binding failure

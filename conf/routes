@@ -10,6 +10,10 @@ GET		/logout						@controllers.Application.logout
 GET		/pageB						@controllers.Application.pageB
 GET		/pageC						@controllers.Application.pageC
 GET		/pageD						@controllers.Application.pageD
+GET		/pageD						@controllers.Application.about
+GET		/pageD						@controllers.Application.services
+GET		/pageD						@controllers.Application.portfolio
+
 
 
 #GET     /lesson/dashboard/            controllers.LessonController.index

@@ -41,26 +41,26 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a id="logo" class="pull-left" href="index.scala.html"></a>
+                    <a id="logo" class="pull-left" href="@routes.Application.index()"></a>
                     <div class="nav-collapse collapse pull-right">
                         <ul class="nav">
-                            <li class="active"><a href="index.scala.html">Home</a></li>
-                            <li><a href="about-us.html">About Us</a></li>
-                            <li><a href="services.html">Services</a></li>
-                            <li><a href="portfolio.html">Portfolio</a></li>
+                            <li class="active"><a href="@routes.Application.index()">Home</a></li>
+                            <li><a href="@routes.Application.about()">About Us</a></li>
+                            <li><a href="@routes.Application.services()">Services</a></li>
+                            <li><a href="@routes.Application.portfolio()">Portfolio</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pages <i class="icon-angle-down"></i></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="career.html">Career</a></li>
-                                    <li><a href="blog-item.html">Blog Single</a></li>
-                                    <li><a href="faq.html">FAQ</a></li>
-                                    <li><a href="pricing.html">Pricing</a></li>
-                                    <li><a href="404.html">404</a></li>
-                                    <li><a href="typography.html">Typography</a></li>
-                                    <li><a href="registration.html">Registration</a></li>
+                                    <li><a href="@routes.Application.career()">Career</a></li>
+                                    <li><a href="@routes.Application.blog-item()">Blog Single</a></li>
+                                    <li><a href="@routes.Application.faq()">FAQ</a></li>
+                                    <li><a href="@routes.Application.pricing()">Pricing</a></li>
+                                    <li><a href="@routes.Application.e404()">404</a></li>
+                                    <li><a href="@routes.Application.typography()">Typography</a></li>
+                                    <li><a href="@routes.Application.registration()">Registration</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="privacy.html">Privacy Policy</a></li>
-                                    <li><a href="terms.html">Terms of Use</a></li>
+                                    <li><a href="@routes.Application.privacy()">Privacy Policy</a></li>
+                                    <li><a href="@routes.Application.terms()">Terms of Use</a></li>
                                 </ul>
                             </li>
                             <li><a href="blog.html">Blog</a></li>
