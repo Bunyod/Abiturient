@@ -68,15 +68,51 @@ class FileReader @Inject() (val actorSystem: ActorSystem)
 
     val m = pattern.findAllIn(wx.getText).toList
 
-    val quest = Question(None,None,None,None,None,None)
+    val quest = Question(None,None,None,None,None,None, None)
     val quests = List[Question](quest)
 
-    val res = recQuest(m, quests)
-//    Logger.debug(s"RESSS = $m")
-    (quizManger ? CreateQuestions(res)).map { _ =>
-      Ok("asdf")
+    val result = recQuest(m, quests).filter(_.question.isDefined).map { q =>
+
+      if (q.ansA.get.contains("A)*")) {
+          q.copy(
+            ansA = q.ansA.map(_.substring(3)),
+            ansB = q.ansB.map(_.substring(2)),
+            ansC = q.ansC.map(_.substring(2)),
+            ansD = q.ansD.map(_.substring(2)),
+            rAns = Some("A")
+          )
+      } else if(q.ansB.get.contains("B)*")) {
+          q.copy(
+            ansA = q.ansA.map(_.substring(2)),
+            ansB = q.ansB.map(_.substring(3)),
+            ansC = q.ansC.map(_.substring(2)),
+            ansD = q.ansD.map(_.substring(2)),
+            rAns = Some("B")
+          )
+      } else if(q.ansC.get.contains("C)*")) {
+          q.copy(
+            ansA = q.ansA.map(_.substring(2)),
+            ansB = q.ansB.map(_.substring(2)),
+            ansC = q.ansC.map(_.substring(3)),
+            ansD = q.ansD.map(_.substring(2)),
+            rAns = Some("C")
+          )
+      } else if(q.ansD.get.contains("D)*")) {
+          q.copy(
+            ansA = q.ansA.map(_.substring(2)),
+            ansB = q.ansB.map(_.substring(2)),
+            ansC = q.ansC.map(_.substring(2)),
+            ansD = q.ansD.map(_.substring(3)),
+            rAns = Some("D")
+          )
+      } else {
+        q
+      }
     }
 
+    (quizManger ? CreateQuestions(result)).map { _ =>
+      Ok("asdf")
+    }
 
   }
 
@@ -88,15 +124,16 @@ class FileReader @Inject() (val actorSystem: ActorSystem)
 
         if (tail.isDefinedAt(3) && tail(3).contains("D)")) {
 
-          val quest = quests.last
-          val q = quest.copy(
-            question = Some(quest.question.getOrElse("") + h.replaceAll("\r\n", "")),
-            ansA = Some(tail(0).replaceAll("\r\n", "")),
-            ansB = Some(tail(1).replaceAll("\r\n", "")),
-            ansC = Some(tail(2).replaceAll("\r\n", "")),
-            ansD = Some(tail(3).replaceAll("\r\n", ""))
+          val question = quests.last
+          val quest = question.copy(
+            question = Some(question.question.getOrElse("") + h.replaceAll("\r\n", "")),
+            ansA = Some(tail(0).replaceAll("\n", "")),
+            ansB = Some(tail(1).replaceAll("\n", "")),
+            ansC = Some(tail(2).replaceAll("\n", "")),
+            ansD = Some(tail(3).replaceAll("\n", ""))
           )
-          val withEmpty =  List(q) ::: List(Question(None,None,None,None,None,None))
+
+          val withEmpty =  List(quest) ::: List(Question(None,None,None,None,None,None, None))
           recQuest(tail.takeRight(tail.size - 4), quests.take(quests.size - 1) ::: withEmpty)
         } else {
           val quest = quests.last

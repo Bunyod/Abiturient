@@ -26,8 +26,9 @@ trait QuestionsComponent
     def ansB = column[String]("ansB")
     def ansC = column[String]("ansC")
     def ansD= column[String]("ansD")
+    def rAns = column[String]("rAns")
 
-    def * = (id.?, question.?, ansA.?, ansB.?, ansC.?, ansD.?) <>(Question.tupled, Question.unapply)
+    def * = (id.?, question.?, ansA.?, ansB.?, ansC.?, ansD.?, rAns.?) <>(Question.tupled, Question.unapply)
   }
 }
 

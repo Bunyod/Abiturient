@@ -18,7 +18,8 @@ object AppProtocol {
     ansA: Option[String],
     ansB: Option[String],
     ansC: Option[String],
-    ansD: Option[String]
+    ansD: Option[String],
+    rAns: Option[String]
   )
 
   case class CreateQuestions(questions: List[Question])
