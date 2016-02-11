@@ -11,4 +11,15 @@ object AppProtocol {
   sealed trait UserAuthFailure
   case class GeneralAuthFailure(failReason: String) extends UserAuthFailure
   case object UserRoleFailure extends UserAuthFailure
+  case class Question
+  (
+    id: Option[Int] = None,
+    question: Option[String],
+    ansA: Option[String],
+    ansB: Option[String],
+    ansC: Option[String],
+    ansD: Option[String]
+  )
+
+  case class CreateQuestions(questions: List[Question])
 }
