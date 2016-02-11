@@ -72,8 +72,7 @@ class FileReader @Inject() (val actorSystem: ActorSystem)
     val quests = List[Question](quest)
 
     val res = recQuest(m, quests)
-    Logger.debug(s"RESSS = $res")
-
+//    Logger.debug(s"RESSS = $m")
     (quizManger ? CreateQuestions(res)).map { _ =>
       Ok("asdf")
     }
@@ -97,14 +96,15 @@ class FileReader @Inject() (val actorSystem: ActorSystem)
             ansC = Some(tail(2).replaceAll("\r\n", "")),
             ansD = Some(tail(3).replaceAll("\r\n", ""))
           )
-          recQuest(tail.takeRight(tail.size - 5), quests ::: List(q))
+          val withEmpty =  List(q) ::: List(Question(None,None,None,None,None,None))
+          recQuest(tail.takeRight(tail.size - 4), quests.take(quests.size - 1) ::: withEmpty)
         } else {
           val quest = quests.last
-          val q = quests.last.copy(
-            question = Some(quests.last.question.getOrElse("") + h.replaceAll("\r\n", ""))
+          val q = quest.copy(
+            question = Some(quest.question.getOrElse("") + h.replaceAll("\r\n", ""))
           )
-          //TODO substitute this element with last element of the quests list
-          recQuest(tail.takeRight(tail.size - 1), quests)
+
+          recQuest(tail, quests.take(quests.size - 1) ::: List(q))
         }
     }
   }
