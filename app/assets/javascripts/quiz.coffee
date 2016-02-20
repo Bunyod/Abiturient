@@ -24,11 +24,11 @@ $ ->
 
       @initFields()
 
-      @questions = ko.obserableArray([])
+      @questions = ko.observableArray([])
 
       @onSubmit = (=>
 
-        $.post('/quizes')
+        $.get('/quizes')
         .done (returnedData) =>
           @questions.removeAll()
           console.log(returnedData)
