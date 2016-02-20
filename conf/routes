@@ -1,0 +1,40 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           @controllers.Application.index
+
+POST	/login						@controllers.Application.loginPost
+GET		/logout						@controllers.Application.logout
+GET		/pageB						@controllers.Application.pageB
+GET		/pageC						@controllers.Application.pageC
+GET		/pageD						@controllers.Application.pageD
+GET		/about						@controllers.Application.about
+GET		/services					@controllers.Application.services
+GET		/portfolio					@controllers.Application.portfolio
+GET		/career						@controllers.Application.career
+GET		/blogItem					@controllers.Application.blogItem
+GET		/faq						@controllers.Application.faq
+GET		/typography					@controllers.Application.typography
+GET		/privacy					@controllers.Application.privacy
+GET		/terms						@controllers.Application.terms
+GET		/blog						@controllers.Application.blog
+GET		/contact-us					@controllers.Application.contactUs
+GET		/registration				@controllers.Application.registration
+
+
+#GET     /lesson/dashboard/            controllers.LessonController.index
+#POST    /lesson/dashboard/login       controllers.LessonController.loginPost
+#GET     /lesson/dashboard/logout      controllers.LessonController.logout
+#POST    /lesson/dashboard/report      controllers.LessonController.report
+
+POST     /user/registration            @controllers.UsersController.registration
+GET      /user/register                @controllers.UsersController.showRegisterForm
+GET      /test/                        @controllers.FileReader.ind
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET     /webjars/*file              controllers.WebJarAssets.at(file)
+    
