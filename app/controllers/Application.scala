@@ -133,7 +133,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
             .map {
               case Right(user)=>
                 val modifiedRequest = updateRequestSession(request, List(("user" -> user)))
-                Ok(views.html.pageA(modifiedRequest)).withSession(request.session + ("ab-user", username))
+                Ok(views.html.testing()).withSession(request.session + ("ab-user", username))
               case Left(GeneralAuthFailure(_)) =>
                 Redirect(routes.Application.pageC())
             }

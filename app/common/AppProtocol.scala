@@ -1,5 +1,7 @@
 package common
 
+import play.api.libs.json.Json
+
 /**
  *
  * @author Bunyod Bobojonov (bunyodreal@gmail.com). Created at 11/17/15.
@@ -22,5 +24,9 @@ object AppProtocol {
     rAns: Option[String]
   )
 
+  implicit val questionsFormat = Json.format[Question]
+
   case class CreateQuestions(questions: List[Question])
+  case object GetQuestions
+
 }

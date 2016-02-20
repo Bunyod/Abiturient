@@ -22,7 +22,7 @@ GET		/terms						@controllers.Application.terms
 GET		/blog						@controllers.Application.blog
 GET		/contact-us					@controllers.Application.contactUs
 GET		/registration				@controllers.Application.registration
-
+GET     /quizes                     @controllers.QuizController.getQuestions()
 
 #GET     /lesson/dashboard/            controllers.LessonController.index
 #POST    /lesson/dashboard/login       controllers.LessonController.loginPost

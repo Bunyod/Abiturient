@@ -3,7 +3,7 @@ package controllers
 import akka.actor.{Actor, ActorLogging, Props}
 import akka.util.Timeout
 import akka.pattern.pipe
-import common.AppProtocol.{CreateQuestions, Question}
+import common.AppProtocol.{GetQuestions, CreateQuestions, Question}
 import dao.QuestionsDao
 
 import scala.concurrent.Future
@@ -31,6 +31,9 @@ class QuizManager (questionsDao: QuestionsDao) extends Actor with ActorLogging {
       log.info("CreateQuestions")
       createQuestions(questions).pipeTo(sender())
 
+    case GetQuestions =>
+      getQuestions.pipeTo(sender())
+
     case _ =>
       log.info(s"Receive: None")
 
@@ -42,6 +45,10 @@ class QuizManager (questionsDao: QuestionsDao) extends Actor with ActorLogging {
     }
     Future.successful(())
 
+  }
+
+  private def getQuestions() = {
+    questionsDao.getQuestions()
   }
 
 }
