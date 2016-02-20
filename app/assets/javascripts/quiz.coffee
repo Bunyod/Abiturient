@@ -14,8 +14,8 @@ $ ->
   emptyServerData =
     spacialization: ""
 
-  convertIntToDateTime = (intDate)->
-    moment(intDate).format('MMM DD, YYYY HH:mm:ss')
+#  convertIntToDateTime = (intDate)->
+#    moment(intDate).format('MMM DD, YYYY HH:mm:ss')
 
   class ReportViewModel
     constructor: ->
@@ -33,7 +33,7 @@ $ ->
           @questions.removeAll()
           console.log(returnedData)
           for value in returnedData
-            questions.push(value)
+            @questions.push(value)
         .fail (returnedData) =>
       ).bind(this)
 
