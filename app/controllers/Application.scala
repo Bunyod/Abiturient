@@ -129,8 +129,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
         },
         {
           case LoginForm(username, password) =>
-            (userManager ? LoginUser(username, password)).mapTo[Either[UserAuthFailure, String]]
-            .map {
+            (userManager ? LoginUser(username, password)).mapTo[Either[UserAuthFailure, String]].map {
               case Right(user)=>
                 val modifiedRequest = updateRequestSession(request, List(("user" -> user)))
                 Ok(views.html.testing()).withSession(request.session + ("ab-user", username))
