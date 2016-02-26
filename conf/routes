@@ -10,11 +10,19 @@ GET		/logout						@controllers.Application.logout
 GET		/pageB						@controllers.Application.pageB
 GET		/pageC						@controllers.Application.pageC
 GET		/pageD						@controllers.Application.pageD
-GET		/pageD						@controllers.Application.about
-GET		/pageD						@controllers.Application.services
-GET		/pageD						@controllers.Application.portfolio
-
-
+GET		/about						@controllers.Application.about
+GET		/services					@controllers.Application.services
+GET		/portfolio					@controllers.Application.portfolio
+GET		/career						@controllers.Application.career
+GET		/blogItem					@controllers.Application.blogItem
+GET		/faq						@controllers.Application.faq
+GET		/typography					@controllers.Application.typography
+GET		/privacy					@controllers.Application.privacy
+GET		/terms						@controllers.Application.terms
+GET		/blog						@controllers.Application.blog
+GET		/contact-us					@controllers.Application.contactUs
+GET		/registration				@controllers.Application.registration
+GET     /quizes                     @controllers.QuizController.getQuestions()
 
 #GET     /lesson/dashboard/            controllers.LessonController.index
 #POST    /lesson/dashboard/login       controllers.LessonController.loginPost

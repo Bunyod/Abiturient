@@ -20,7 +20,7 @@ object UserManager {
     Props(new UserManager(usersDao))
 }
 
-class UserManager (usersDao: UsersDao) extends Actor with ActorLogging {
+class UserManager(usersDao: UsersDao) extends Actor with ActorLogging {
 
   log.info("Entry")
   implicit val executionContext = context.dispatcher
@@ -33,8 +33,6 @@ class UserManager (usersDao: UsersDao) extends Actor with ActorLogging {
     case RegUser(user) =>
       log.info(s"RegUser=$user")
       register(user).pipeTo(sender())
-    case _ =>
-      log.info(s"Receive: None")
   }
 
   private def register(user: AbUser) = {

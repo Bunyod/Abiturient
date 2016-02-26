@@ -79,6 +79,47 @@ class Application @Inject() (val messagesApi: MessagesApi,
     Ok(views.html.portfolio())
   }
 
+
+  def career = Action { implicit request =>
+    Ok(views.html.career())
+  }
+
+
+  def blogItem = Action { implicit request =>
+    Ok(views.html.blogItem())
+  }
+
+
+  def faq = Action { implicit request =>
+    Ok(views.html.faq())
+  }
+
+
+  def typography = Action { implicit request =>
+    Ok(views.html.typography())
+  }
+
+
+  def privacy = Action { implicit request =>
+    Ok(views.html.privacy())
+  }
+
+  def blog = Action { implicit request =>
+    Ok(views.html.blog())
+  }
+
+  def contactUs = Action { implicit request =>
+    Ok(views.html.contactUs())
+  }
+
+  def terms = Action { implicit request =>
+    Ok(views.html.terms())
+  }
+
+  def registration = Action { implicit request =>
+    Ok(views.html.registration())
+  }
+
   def loginPost = Action.async { implicit request =>
       loginPlayForm.bindFromRequest.fold(
         errorForm => { // binding failure
@@ -88,11 +129,10 @@ class Application @Inject() (val messagesApi: MessagesApi,
         },
         {
           case LoginForm(username, password) =>
-            (userManager ? LoginUser(username, password)).mapTo[Either[UserAuthFailure, String]]
-            .map {
+            (userManager ? LoginUser(username, password)).mapTo[Either[UserAuthFailure, String]].map {
               case Right(user)=>
                 val modifiedRequest = updateRequestSession(request, List(("user" -> user)))
-                Ok(views.html.pageA(modifiedRequest)).withSession(request.session + ("ab-user", username))
+                Ok(views.html.testing()).withSession(request.session + ("ab-user", username))
               case Left(GeneralAuthFailure(_)) =>
                 Redirect(routes.Application.pageC())
             }

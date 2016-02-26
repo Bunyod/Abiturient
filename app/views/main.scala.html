@@ -1,37 +1,41 @@
+@import helper._
 @(title: String)(content: Html)
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Abiturient testing system: @title</title>
+            <title>Abiturient testing system: @title</title>
 
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="@routes.Assets.versioned("lib/nova_temp/css/bootstrap.min.css")">
-        <link rel="stylesheet" href="@routes.Assets.versioned("lib/nova_temp/css/bootstrap-responsive.min.css")">
-        <link rel="stylesheet" href="@routes.Assets.versioned("lib/nova_temp/css/font-awesome.min.css")">
-        <link rel="stylesheet" href="@routes.Assets.versioned("lib/nova_temp/css/main.css")"/>
-        <link rel="stylesheet" href="@routes.Assets.versioned("lib/nova_temp/css/sl-slide.css")">
+            <link rel="stylesheet" href="@routes.Assets.versioned("lib/nova_temp/css/bootstrap.min.css")">
+            <link rel="stylesheet" href="@routes.Assets.versioned("lib/nova_temp/css/bootstrap-responsive.min.css")">
+            <link rel="stylesheet" href="@routes.Assets.versioned("lib/nova_temp/css/font-awesome.min.css")">
+            <link rel="stylesheet" href="@routes.Assets.versioned("lib/nova_temp/css/main.css")"/>
+            <link rel="stylesheet" href="@routes.Assets.versioned("lib/nova_temp/css/sl-slide.css")">
 
-        <!-- Le fav and touch icons -->
-        <link rel="shortcut icon" type="image/ico" href="@routes.Assets.versioned("lib/nova_temp/images/ico/favicon.ico")"/>
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" type="image/png" href="@routes.Assets.versioned("lib/nova_temp/images/ico/apple-touch-icon-144-precomposed.png")"/>
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" type="image/png" href="@routes.Assets.versioned("lib/nova_temp/images/ico/apple-touch-icon-114-precomposed.png")"/>
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" type="image/png" href="@routes.Assets.versioned("lib/nova_temp/images/ico/apple-touch-icon-72-precomposed.png")"/>
-        <link rel="apple-touch-icon-precomposed" type="image/png" href="@routes.Assets.versioned("lib/nova_temp/images/ico/apple-touch-icon-57-precomposed.png")"/>
+                <!-- Le fav and touch icons -->
+            <link rel="shortcut icon" type="image/ico" href="@routes.Assets.versioned("lib/nova_temp/images/ico/favicon.ico")"/>
+            <link rel="apple-touch-icon-precomposed" sizes="144x144" type="image/png" href="@routes.Assets.versioned("lib/nova_temp/images/ico/apple-touch-icon-144-precomposed.png")"/>
+            <link rel="apple-touch-icon-precomposed" sizes="114x114" type="image/png" href="@routes.Assets.versioned("lib/nova_temp/images/ico/apple-touch-icon-114-precomposed.png")"/>
+            <link rel="apple-touch-icon-precomposed" sizes="72x72" type="image/png" href="@routes.Assets.versioned("lib/nova_temp/images/ico/apple-touch-icon-72-precomposed.png")"/>
+            <link rel="apple-touch-icon-precomposed" type="image/png" href="@routes.Assets.versioned("lib/nova_temp/images/ico/apple-touch-icon-57-precomposed.png")"/>
 
-        <script src="@routes.Assets.versioned("lib/nova_temp/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js")"></script>
+            <script src="@routes.Assets.versioned("lib/nova_temp/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js")"></script>
+            <script src="@routes.WebJarAssets.at(WebJarAssets.locate("1.11.3/jquery.min.js"))"></script>
+            <script src="@routes.Assets.versioned("lib/nova_temp/js/vendor/bootstrap.min.js")"></script>
+            <script src="@routes.Assets.versioned("lib/nova_temp/js/main.js")"></script>
+                <!-- Required javascript files for Slider -->
+            <script src="@routes.Assets.versioned("lib/nova_temp/js/jquery.ba-cond.min.js")"></script>
+            <script src="@routes.Assets.versioned("lib/nova_temp/js/jquery.slitslider.js")"></script>
+                <!-- /Required javascript files for Slider -->
+            <script src="@routes.WebJarAssets.at(WebJarAssets.locate("knockout.js"))"></script>
+            <script src="@routes.Assets.versioned("lib/knockout.mapping-latest.js")"></script>
+            <script src="@routes.WebJarAssets.at(WebJarAssets.locate("lodash.min.js"))"></script>
+            <script src="@routes.Assets.versioned("javascripts/common.assist.js")"></script>
 
-        <script src="@routes.Assets.versioned("lib/nova_temp/js/vendor/jquery-1.9.1.min.js")"></script>
-        <script src="@routes.Assets.versioned("lib/nova_temp/js/vendor/bootstrap.min.js")"></script>
-        <script src="@routes.Assets.versioned("lib/nova_temp/js/main.js")"></script>
-            <!-- Required javascript files for Slider -->
-        <script src="@routes.Assets.versioned("lib/nova_temp/js/jquery.ba-cond.min.js")"></script>
-        <script src="@routes.Assets.versioned("lib/nova_temp/js/jquery.slitslider.js")"></script>
-            <!-- /Required javascript files for Slider -->
-
-    </head>
+        </head>
     <body>
         <header class="navbar navbar-fixed-top">
             <div class="navbar-inner">
@@ -52,10 +56,8 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pages <i class="icon-angle-down"></i></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="@routes.Application.career()">Career</a></li>
-                                    <li><a href="@routes.Application.blog-item()">Blog Single</a></li>
+                                    <li><a href="@routes.Application.blogItem()">Blog Single</a></li>
                                     <li><a href="@routes.Application.faq()">FAQ</a></li>
-                                    <li><a href="@routes.Application.pricing()">Pricing</a></li>
-                                    <li><a href="@routes.Application.e404()">404</a></li>
                                     <li><a href="@routes.Application.typography()">Typography</a></li>
                                     <li><a href="@routes.Application.registration()">Registration</a></li>
                                     <li class="divider"></li>
@@ -63,8 +65,8 @@
                                     <li><a href="@routes.Application.terms()">Terms of Use</a></li>
                                 </ul>
                             </li>
-                            <li><a href="blog.html">Blog</a></li>
-                            <li><a href="contact-us.html">Contact</a></li>
+                            <li><a href="@routes.Application.blog()">Blog</a></li>
+                            <li><a href="@routes.Application.contactUs()">Contact</a></li>
                             <li class="login">
                                 <a data-toggle="modal" href="#loginForm"><i class="icon-lock"></i></a>
                             </li>
@@ -74,5 +76,62 @@
             </div>
         </header>
         @content
+
+            <!--Footer-->
+        <footer id="footer">
+            <div class="container">
+                <div class="row-fluid">
+                    <div class="span5 cp">
+                            &copy; 2013 <a target="_blank" href="http://shapebootstrap.net/" title="Free Twitter Bootstrap WordPress Themes and HTML templates">ShapeBootstrap</a>. All Rights Reserved.
+                    </div>
+                        <!--/Copyright-->
+
+                    <div class="span6">
+                        <ul class="social pull-right">
+                            <li><a href="#"><i class="icon-facebook"></i></a></li>
+                            <li><a href="#"><i class="icon-twitter"></i></a></li>
+                            <li><a href="#"><i class="icon-pinterest"></i></a></li>
+                            <li><a href="#"><i class="icon-linkedin"></i></a></li>
+                            <li><a href="#"><i class="icon-google-plus"></i></a></li>
+                            <li><a href="#"><i class="icon-youtube"></i></a></li>
+                            <li><a href="#"><i class="icon-tumblr"></i></a></li>
+                            <li><a href="#"><i class="icon-dribbble"></i></a></li>
+                            <li><a href="#"><i class="icon-rss"></i></a></li>
+                            <li><a href="#"><i class="icon-github-alt"></i></a></li>
+                            <li><a href="#"><i class="icon-instagram"></i></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="span1">
+                        <a id="gototop" class="gototop pull-right" href="#"><i class="icon-angle-up"></i></a>
+                    </div>
+                        <!--/Goto Top-->
+                </div>
+            </div>
+        </footer>
+            <!--/Footer-->
+
+            <!--  Login form -->
+
+        <div class="modal hide fade in" id="loginForm" aria-hidden="false">
+            <div class="modal-header">
+                <i class="icon-remove" data-dismiss="modal" aria-hidden="true"></i>
+                <h4>Login Form</h4>
+            </div>
+                <!--Modal Body-->
+            <div class="modal-body">
+            @form(action=routes.Application.loginPost()) {
+                <input type="text" name="username" class="input-small" placeholder="Email">
+                <input type="password" name="password" class="input-small" placeholder="Password">
+                <label class="checkbox">
+                    <input type="checkbox"> Remember me
+                </label>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+                <a href="#">Forgot your password?</a>
+            }
+            </div>
+                <!--/Modal Body-->
+        </div>
+            <!--  /Login form -->
     </body>
 </html>

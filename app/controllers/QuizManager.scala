@@ -3,7 +3,7 @@ package controllers
 import akka.actor.{Actor, ActorLogging, Props}
 import akka.util.Timeout
 import akka.pattern.pipe
-import common.AppProtocol.{CreateQuestions, Question}
+import common.AppProtocol.{GetQuestions, CreateQuestions, Question}
 import dao.QuestionsDao
 
 import scala.concurrent.Future
@@ -31,6 +31,9 @@ class QuizManager (questionsDao: QuestionsDao) extends Actor with ActorLogging {
       log.info("CreateQuestions")
       createQuestions(questions).pipeTo(sender())
 
+    case GetQuestions =>
+      getQuestions.pipeTo(sender())
+
     case _ =>
       log.info(s"Receive: None")
 
@@ -42,6 +45,48 @@ class QuizManager (questionsDao: QuestionsDao) extends Actor with ActorLogging {
     }
     Future.successful(())
 
+  }
+
+  def replacer(repr: String) = {
+    val rowRegex = "(?s)(%%.+?%%)".r
+    val repVal = rowRegex.findAllIn(repr).matchData map { m =>
+      val a = m.toString()
+      val imgName = a.substring(2, a.length-2)
+      val b = s"&lt;img src='@routes.Assets.versioned('quest_files/$imgName')'/&lt;>"
+      repr.replaceAllLiterally(a, b)
+    }
+
+    if (repVal.hasNext) {
+      repVal.next()
+    } else {
+      repr
+    }
+
+  }
+
+
+  private def getQuestions() = {
+    questionsDao.getQuestions().map(_.map { question =>
+      val quest = question.question
+      val ansA = question.ansA
+      val ansB = question.ansB
+      val ansC = question.ansC
+      val ansD = question.ansD
+
+      val rQuest = replacer(quest.get)
+      val rAnsA = replacer(ansA.get)
+      val rAnsB = replacer(ansB.get)
+      val rAnsC = replacer(ansC.get)
+      val rAnsD = replacer(ansD.get)
+
+      question.copy(
+        question = Some(rQuest.toString()),
+        ansA = Some(rAnsA.toString()),
+        ansB = Some(rAnsB.toString()),
+        ansC = Some(rAnsC.toString()),
+        ansD = Some(rAnsD.toString())
+      )
+    })
   }
 
 }

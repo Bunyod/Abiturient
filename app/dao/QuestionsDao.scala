@@ -35,6 +35,7 @@ trait QuestionsComponent
 @ImplementedBy(classOf[QuestionsDaoImpl])
 trait QuestionsDao {
   def create(question: Question): Future[Int]
+  def getQuestions(): Future[Seq[Question]]
 }
 
 @Singleton
@@ -53,6 +54,12 @@ class QuestionsDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfig
   override def create(question: Question): Future[Int] = {
     logger.info(s"Dao: Creating user=$question")
     db.run(questions += question)
+  }
+
+  override def getQuestions(): Future[Seq[Question]] = {
+    db.run {
+      questions.result
+    }
   }
 
 }
