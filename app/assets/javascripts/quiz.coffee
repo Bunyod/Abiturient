@@ -1,6 +1,13 @@
 $ ->
   my.initAjax()
 
+  ko.bindingHandlers.htmlWithBinding =
+    'init': ->
+      { 'controlsDescendantBindings': true }
+    'update': (element, valueAccessor, allBindings, viewModel, bindingContext) ->
+      element.innerHTML = valueAccessor()
+      ko.applyBindingsToDescendants bindingContext, element
+
   logout = ->
     window.alert("Your session has been expired!\nPlease log in.")
     window.location.href = '/logout'

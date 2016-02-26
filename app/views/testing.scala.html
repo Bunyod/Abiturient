@@ -8,13 +8,13 @@
     <div class="container">
       <div class="row">
         <div class="col-md-7 col-md-offset-3" data-bind="foreach: questions">
-          <h3 class="text-center" data-bind="text: question"></h3>
+          <div class="text-center h3" data-bind="html: question"></div>
 
           <div class="row">
             <form action="testing">
               <div class="col-md-1 form-control-static"><input type="radio" class="form-control-static"/></div>
               <div class="col-md-1 form-control-static"><h4><b>A.</b></h4></div>
-              <div class="col-md-10 form-control-static"><h4 data-bind="text: ansA"></h4></div>
+              <div class="col-md-10 form-control-static h4" data-bind="html: ansA"></div>
             </form>
           </div>
 
@@ -22,7 +22,7 @@
             <form action="testing">
               <div class="col-md-1 col-md-offset-1 form-control-static"><input type="radio" class="form-control-static"/></div>
               <div class="col-md-1 form-control-static"><h4><b>B.</b></h4></div>
-              <div class="col-md-9 form-control-static"><h4 data-bind="text: ansB"></h4></div>
+              <div class="col-md-9 form-control-static h4" data-bind="html: ansB"></div>
             </form>
           </div>
 
@@ -30,7 +30,7 @@
             <form action="testing">
               <div class="col-md-1 form-control-static"><input type="radio" class="form-control-static"/></div>
               <div class="col-md-1 form-control-static"><h4><b>C.</b></h4></div>
-              <div class="col-md-10 form-control-static"><h4 data-bind="text: ansC"></h4></div>
+              <div class="col-md-10 form-control-static h4" data-bind="html: ansC"></div>
             </form>
           </div>
 
@@ -38,7 +38,7 @@
             <form action="testing">
               <div class="col-md-1 col-md-offset-1 form-control-static"><input type="radio" class="form-control-static"/></div>
               <div class="col-md-1 form-control-static"><h4><b>D.</b></h4></div>
-              <div class="col-md-9 form-control-static"><h4 data-bind="text: ansD"></h4></div>
+              <div class="col-md-9 form-control-static h4" data-bind="html: ansD"></div>
             </form>
           </div>
 

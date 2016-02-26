@@ -52,7 +52,9 @@ class QuizManager (questionsDao: QuestionsDao) extends Actor with ActorLogging {
     val repVal = rowRegex.findAllIn(repr).matchData map { m =>
       val a = m.toString()
       val imgName = a.substring(2, a.length-2)
-      val b = s"&lt;img src='@routes.Assets.versioned('quest_files/$imgName')'/&lt;>"
+      val imgPath = s"/public/quest_files"
+      log.info(s"imgPath=$imgPath")
+      val b = s"<img src=@routes.Assets.at(&quot;/public/images/quest_files/&quot;&#44;&quot;$imgName&quot;)>"
       repr.replaceAllLiterally(a, b)
     }
 

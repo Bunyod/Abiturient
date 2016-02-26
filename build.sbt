@@ -51,3 +51,4 @@ libraryDependencies ++= Seq(
 )
 
 routesGenerator := InjectedRoutesGenerator
+pipelineStages := Seq(rjs, digest, gzip)
