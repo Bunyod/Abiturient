@@ -6,6 +6,7 @@ import akka.pattern.pipe
 import common.AppProtocol.{GetQuestions, CreateQuestions, Question}
 import dao.QuestionsDao
 
+import scala.annotation.tailrec
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
@@ -47,7 +48,8 @@ class QuizManager (questionsDao: QuestionsDao) extends Actor with ActorLogging {
 
   }
 
-  def replacer(str: String): String = {
+  @tailrec
+  private def replacer(str: String): String = {
     if (str.contains("%%")) {
       val rowRegex = """(?s)(%%.+?%%)""".r
       val repVal = rowRegex.findAllIn(str).matchData.map { m =>
