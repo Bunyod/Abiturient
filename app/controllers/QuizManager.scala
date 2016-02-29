@@ -54,7 +54,8 @@ class QuizManager (questionsDao: QuestionsDao) extends Actor with ActorLogging {
       val imgName = a.substring(2, a.length-2)
       val imgPath = s"/public/quest_files"
       log.info(s"imgPath=$imgPath")
-      val b = s"<img src=@routes.Assets.at(&quot;/public/images/quest_files/&quot;&#44;&quot;$imgName&quot;)>"
+//      <img src="@routes.Assets.versioned("images/td_disclosure/download-PDF.png")" width="150"/>
+      val b = s"<img src=/assets/quest_files/$imgName>"
       repr.replaceAllLiterally(a, b)
     }
 

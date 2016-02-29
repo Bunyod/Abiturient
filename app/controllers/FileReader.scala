@@ -55,7 +55,7 @@ class FileReader @Inject() (val actorSystem: ActorSystem)
           val genName = s"${now.getTime}$picName"
           val placeholder = s"%%$genName%%"
           val out = new FileOutputStream(new File(Play.getFile("public/quest_files/"), genName))
-          //          out.write(pics.get(0).getPictureData.getData)
+          out.write(pics.get(0).getPictureData.getData)
           paragraph.setText(s"$placeholder ")
         }
       }
