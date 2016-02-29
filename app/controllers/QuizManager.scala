@@ -47,26 +47,20 @@ class QuizManager (questionsDao: QuestionsDao) extends Actor with ActorLogging {
 
   }
 
-  def replacer(repr: String) = {
-    val rowRegex = "(?s)(%%.+?%%)".r
-    val repVal = rowRegex.findAllIn(repr).matchData map { m =>
-      val a = m.toString()
-      val imgName = a.substring(2, a.length-2)
-      val imgPath = s"/public/quest_files"
-      log.info(s"imgPath=$imgPath")
-//      <img src="@routes.Assets.versioned("images/td_disclosure/download-PDF.png")" width="150"/>
-      val b = s"<img src=/assets/quest_files/$imgName>"
-      repr.replaceAllLiterally(a, b)
-    }
-
-    if (repVal.hasNext) {
-      repVal.next()
+  def replacer(str: String): String = {
+    if (str.contains("%%")) {
+      val rowRegex = """(?s)(%%.+?%%)""".r
+      val repVal = rowRegex.findAllIn(str).matchData.map { m =>
+        val a = m.toString()
+        val imgName = a.substring(2, a.length-2)
+        val b = s"<img src=/assets/quest_files/$imgName>"
+        str.replaceAllLiterally(a, b)
+      }
+      replacer(repVal.next())
     } else {
-      repr
+      str
     }
-
   }
-
 
   private def getQuestions() = {
     questionsDao.getQuestions().map(_.map { question =>
