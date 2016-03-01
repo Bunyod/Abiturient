@@ -95,9 +95,9 @@ class Application @Inject() (val messagesApi: MessagesApi,
   }
 
 
-  def typography = Action { implicit request =>
-    Ok(views.html.typography())
-  }
+//  def typography = Action { implicit request =>
+//    Ok(views.html.typography())
+//  }
 
 
   def privacy = Action { implicit request =>
@@ -118,6 +118,9 @@ class Application @Inject() (val messagesApi: MessagesApi,
 
   def registration = Action { implicit request =>
     Ok(views.html.registration())
+  }
+  def results = Action { implicit request =>
+    Ok(views.html.results())
   }
 
   def loginPost = Action.async { implicit request =>

@@ -1,36 +1,42 @@
-@import views.html
 @()
 
-    @main("") {
+@main("") {
 
-        <section class="title">
-            <div class="container">
-                <div class="row-fluid">
-                    <div class="span6">
-                        <h1>Registration</h1>
-                    </div>
-                    <div class="span6">
-                        <ul class="breadcrumb pull-right">
-                            <li><a href="index.scala.html">Home</a> <span class="divider">/</span></li>
-                            <li><a href="#">Pages</a> <span class="divider">/</span></li>
-                            <li class="active">Registration</li>
-                        </ul>
-                    </div>
+    <section class="title title-top">
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span6">
+                    <h1>Registration</h1>
+                </div>
+                <div class="span6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="@routes.Application.index()">Home</a> <span class="divider">/</span></li>
+                        <li><a href="#">Pages</a> <span class="divider">/</span></li>
+                        <li class="active">Registration</li>
+                    </ul>
                 </div>
             </div>
-        </section>
-            <!-- / .title -->
+        </div>
+    </section>
+        <!-- / .title -->
 
 
-        <section id="registration-page" class="container">
-            <form class="center" action='' method="POST">
-                <fieldset class="registration-form">
-                    <div class="control-group">
-                            <!-- Username -->
-                        <div class="controls">
-                            <input type="text" id="username" name="username" placeholder="Username" class="input-xlarge">
-                        </div>
+    <section id="registration-page" class="container">
+        <form class="center" action='' method="POST">
+            <fieldset class="registration-form">
+                <div class="control-group">
+                        <!-- Firstname -->
+                    <div class="controls">
+                        <input type="text" id="firstName" name="firstName" placeholder="FirstName" class="input-xlarge">
                     </div>
+                </div>
+                <div class="control-group">
+                        <!-- Lastname -->
+                    <div class="controls">
+                        <input type="text" id="lastName" name="lastName" placeholder="LastName" class="input-xlarge">
+                    </div>
+                </div>
+                <div class="control-group">
 
                     <div class="control-group">
                             <!-- E-mail -->
@@ -47,28 +53,37 @@
                     </div>
 
                     <div class="control-group">
-                            <!-- Password -->
+                            <!--Confirm Password -->
                         <div class="control-group">
                             <div class="controls">
                                 <input type="password" id="password_confirm" name="password_confirm" placeholder="Password (Confirm)" class="input-xlarge">
                             </div>
                         </div>
-                        <div class="control-group">
-                                <!-- Birthday -->
-                            <div class="controls">
-                                <input type="date" id="birthday" name="birthday" placeholder="Birthday" class="input-xlarge">
-                            </div>
-                        </div>
-
-                        <div class="control-group">
-                                <!-- Button -->
-                            <div class="controls">
-                                <button class="btn btn-success btn-large btn-block">Register</button>
-                            </div>
+                    </div>
+                    <div class="control-group">
+                            <!-- Birthday -->
+                        <div class="controls">
+                            <input type="date" id="birthday" name="birthday" placeholder="Birthday" class="input-xlarge">
                         </div>
                     </div>
-                </fieldset>
-            </form>
-        </section>
+                    <div class="control-group">
+                            <!-- Gender -->
+                        <div class="controls" >
+                            <label for="genderMale" class="inline-element" ><b>Male </b></label>
+                            <input type="radio" id="genderMale" name="genderMale">
+                            <label for="genderFemale" class="inline-element"><b>Female</b></label>
+                            <input type="radio" id="genderFemale" name="genderFemale" >
+                        </div>
+                    </div>
+                    <div class="control-group">
+                            <!-- Button -->
+                        <div class="controls">
+                            <button class="btn btn-success btn-large btn-block">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </section>
 
-    }
+}

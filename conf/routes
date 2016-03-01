@@ -16,7 +16,7 @@ GET		/portfolio					@controllers.Application.portfolio
 GET		/career						@controllers.Application.career
 GET		/blogItem					@controllers.Application.blogItem
 GET		/faq						@controllers.Application.faq
-GET		/typography					@controllers.Application.typography
+GET		/results    				@controllers.Application.results
 GET		/privacy					@controllers.Application.privacy
 GET		/terms						@controllers.Application.terms
 GET		/blog						@controllers.Application.blog
