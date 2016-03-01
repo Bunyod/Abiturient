@@ -94,12 +94,6 @@ class Application @Inject() (val messagesApi: MessagesApi,
     Ok(views.html.faq())
   }
 
-
-//  def typography = Action { implicit request =>
-//    Ok(views.html.typography())
-//  }
-
-
   def privacy = Action { implicit request =>
     Ok(views.html.privacy())
   }
@@ -127,7 +121,6 @@ class Application @Inject() (val messagesApi: MessagesApi,
       loginPlayForm.bindFromRequest.fold(
         errorForm => { // binding failure
           Logger.error("Login failed for user " + errorForm.data("username"))
-  //        Future.successful(Redirect(routes.Application.pageB()))
           Future.successful(Redirect(routes.Application.index()).flashing("error" -> "loginFailed"))
         },
         {
