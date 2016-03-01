@@ -122,6 +122,10 @@ class Application @Inject() (val messagesApi: MessagesApi,
   def results = Action { implicit request =>
     Ok(views.html.results())
   }
+  def addQuestion = Action { implicit  request =>
+    Ok(views.html.addQuestion())
+
+  }
 
   def loginPost = Action.async { implicit request =>
       loginPlayForm.bindFromRequest.fold(
