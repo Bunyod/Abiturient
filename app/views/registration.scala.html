@@ -1,6 +1,8 @@
 @()
 
-@main("") {
+@main("Registration") {
+    <script type='text/javascript' src='@controllers.routes.Assets.versioned("javascripts/registration.js")'
+    xmlns="http://www.w3.org/1999/html"></script>
 
     <section class="title title-top">
         <div class="container">
@@ -20,20 +22,19 @@
     </section>
         <!-- / .title -->
 
-
     <section id="registration-page" class="container">
-        <form class="center" action='' method="POST">
+        <form class="center" data-bind="submit: onSubmit">
             <fieldset class="registration-form">
                 <div class="control-group">
                         <!-- Firstname -->
                     <div class="controls">
-                        <input type="text" id="firstName" name="firstName" placeholder="FirstName" class="input-xlarge">
+                        <input type="text" id="firstName" data-bind="value: firstName" placeholder="FirstName" class="input-xlarge">
                     </div>
                 </div>
                 <div class="control-group">
                         <!-- Lastname -->
                     <div class="controls">
-                        <input type="text" id="lastName" name="lastName" placeholder="LastName" class="input-xlarge">
+                        <input type="text" id="lastName" data-bind="value: lastName" placeholder="LastName" class="input-xlarge">
                     </div>
                 </div>
                 <div class="control-group">
@@ -41,14 +42,14 @@
                     <div class="control-group">
                             <!-- E-mail -->
                         <div class="controls">
-                            <input type="text" id="email" name="email" placeholder="E-mail" class="input-xlarge">
+                            <input type="text" id="email" data-bind="value: email" placeholder="E-mail" class="input-xlarge">
                         </div>
                     </div>
 
                     <div class="control-group">
                             <!-- Password-->
                         <div class="controls">
-                            <input type="password" id="password" name="password" placeholder="Password" class="input-xlarge">
+                            <input type="password" id="password" data-bind="value: password" placeholder="Password" class="input-xlarge">
                         </div>
                     </div>
 
@@ -56,23 +57,27 @@
                             <!--Confirm Password -->
                         <div class="control-group">
                             <div class="controls">
-                                <input type="password" id="password_confirm" name="password_confirm" placeholder="Password (Confirm)" class="input-xlarge">
+                                <input type="password" id="confirmPassword" data-bind="value: confirmPassword" placeholder="Password (Confirm)" class="input-xlarge">
                             </div>
                         </div>
                     </div>
                     <div class="control-group">
-                            <!-- Birthday -->
-                        <div class="controls">
-                            <input type="date" id="birthday" name="birthday" placeholder="Birthday" class="input-xlarge">
+                        <!-- Birthday -->
+                        <div style="width: 270px" class='input-group' id='birthDate' data-bind="datetimepicker: birthDate,
+                        dateTimePickerOptions: {format: 'MM/DD/YYYY', pickTime: false}">
+                            <input type='text' class="form-control" data-bind="value: birthDate"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
                         </div>
                     </div>
                     <div class="control-group">
                             <!-- Gender -->
                         <div class="controls" >
                             <label for="genderMale" class="inline-element" ><b>Male </b></label>
-                            <input type="radio" id="genderMale" name="genderMale">
+                            <input type="radio" value="male" checked data-bind="checked: gender">
                             <label for="genderFemale" class="inline-element"><b>Female</b></label>
-                            <input type="radio" id="genderFemale" name="genderFemale" >
+                            <input type="radio" value="female" data-bind="checked: gender">
                         </div>
                     </div>
                     <div class="control-group">
