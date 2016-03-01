@@ -30,7 +30,6 @@ GET     /quizes                     @controllers.QuizController.getQuestions()
 #POST    /lesson/dashboard/report      controllers.LessonController.report
 
 POST     /user/registration            @controllers.UsersController.registration
-GET      /user/register                @controllers.UsersController.showRegisterForm
 GET      /test/                        @controllers.FileReader.ind
 
 

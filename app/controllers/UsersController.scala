@@ -3,6 +3,7 @@ package controllers
 import java.util.Date
 import javax.inject._
 
+import ab.utils.JsonFormatUtils._
 import akka.actor._
 import akka.pattern.ask
 import akka.util.Timeout
@@ -27,12 +28,24 @@ import scala.concurrent.duration.DurationInt
 object UsersController {
   case class RegsForm
   (
-    firstName: String = "",
-    lastName: String = "",
-    login: String = "",
-    password: String = "",
-    verifyPassword: String = ""
+    firstName: Option[String] = None,
+    lastName: Option[String] = None,
+    email: String,
+    password: String,
+    confirmPassword: String,
+    birthDate: Option[Date],
+    gender: String
   )
+
+  implicit val regsFormReads: Reads[RegsForm] = (
+    optStringRead("firstName") and
+      optStringRead("lastName") and
+      (__ \ "email").read [String] and
+      (__ \ "password").read [String] and
+      (__ \ "confirmPassword").read [String] and
+      optDateTimeFormat("birthDate") and
+      (__ \ "gender").read [String]
+    )(RegsForm)
 
   case class LoginForm
   (
@@ -51,24 +64,6 @@ class UsersController @Inject() (val actorSystem: ActorSystem,
   val config = current.configuration.getConfig("web-server").get
   val userManger = actorSystem.actorSelection(config.getString("user-manager-actor-path").get)
 
-  val regsPlayForm: Form[RegsForm] = Form {
-    mapping(
-      "firstName" -> nonEmptyText,
-      "lastName" -> nonEmptyText,
-      "login" -> nonEmptyText,
-      "password" -> nonEmptyText,
-      "verifyPassword" -> nonEmptyText
-    )(RegsForm.apply)(RegsForm.unapply)
-  }
-
-  implicit val regsFormReads: Reads[RegsForm] = (
-    (__ \ "firstName").read[String] and
-    (__ \ "lastName").read[String] and
-    (__ \ "login").read[String] and
-    (__ \ "password").read[String] and
-    (__ \ "verifyPassword").read[String]
-  )(RegsForm)
-
 
   val loginPlayForm: Form[LoginForm] = Form {
     mapping(
@@ -77,14 +72,10 @@ class UsersController @Inject() (val actorSystem: ActorSystem,
     )(LoginForm.apply)(LoginForm.unapply)
   }
 
-  def showRegisterForm = Action {
-    Ok(views.html.register(regsPlayForm))
-  }
-
-  def registration = Action(parse.form(regsPlayForm)) { implicit request =>
+  def registration = Action(parse.json[RegsForm]) { implicit request =>
     val regData = request.body
-    val user = AbUser(None, Some(regData.firstName), Some(regData.lastName), Some(regData.lastName),
-      regData.login, regData.password, Some(GenderType.Male), Some(new Date), "USER")
+    val user = AbUser(None, regData.firstName, regData.lastName, None,
+      regData.email, regData.password, Some(GenderType.Male), Some(new Date), "USER")
 
     (userManger ? RegUser(user)).mapTo[Int]
       .map { userId =>
