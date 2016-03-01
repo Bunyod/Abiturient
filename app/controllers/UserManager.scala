@@ -35,7 +35,7 @@ class UserManager(usersDao: UsersDao) extends Actor with ActorLogging {
       register(user).pipeTo(sender())
   }
 
-  private def register(user: AbUser) = {
+  private def register(user: AbUser): Future[Int] = {
     usersDao.create(user)
   }
 

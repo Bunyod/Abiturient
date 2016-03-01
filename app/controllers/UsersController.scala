@@ -72,16 +72,15 @@ class UsersController @Inject() (val actorSystem: ActorSystem,
     )(LoginForm.apply)(LoginForm.unapply)
   }
 
-  def registration = Action(parse.json[RegsForm]) { implicit request =>
+  def registration = Action.async(parse.json[RegsForm]) { implicit request =>
     val regData = request.body
-    val user = AbUser(None, regData.firstName, regData.lastName, None,
+    val user = AbUser(None, regData.firstName, regData.lastName, regData.lastName,
       regData.email, regData.password, Some(GenderType.Male), Some(new Date), "USER")
 
-    (userManger ? RegUser(user)).mapTo[Int]
-      .map { userId =>
-        logger.info(s"NewUserId=$userId")
-      }
-    Redirect(routes.Application.index())
+    (userManger ? RegUser(user)).mapTo[Int].map { userId =>
+      logger.info(s"NewUserId=$userId")
+      Ok(Json.toJson(userId))
+    }
   }
 
 }
