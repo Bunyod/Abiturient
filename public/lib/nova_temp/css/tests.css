@@ -1,0 +1,52 @@
+.TestNumb{
+    margin-left: 20px;
+}
+.TestRow{
+    margin-left: 20px;
+}
+a.test:hover{
+    border:none;
+    text-underline: none;
+    text-decoration: none;
+    color:#000;
+}
+
+a.test>span.label:hover{
+    border:none;
+    background-color:#31b0d5;
+    color:white;
+    text-underline: none;
+    text-decoration: none;
+}
+
+a.test>span.label:active{
+    border:none;
+    background-color:green;
+    color:white;
+    text-underline: none;
+    text-decoration: none;
+}
+
+a.test{
+    text-decoration: none;
+    text-underline: none;
+    color:#000;
+}
+.TestNumb>button{
+    width: 37px;
+    font-size: 12px;
+    margin-bottom: 5px;
+    background-color: mediumpurple;
+}
+
+.TestNumb>button:active{
+    background-color:green;
+}
+
+.marg{
+    margin-left: 10px;
+}
+
+.answers{
+    margin-left: 20px;
+}

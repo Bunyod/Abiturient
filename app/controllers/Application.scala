@@ -71,6 +71,10 @@ class Application @Inject() (val messagesApi: MessagesApi,
     Ok(views.html.about())
   }
 
+  def tests = Action {
+    implicit request => Ok(views.html.tests())
+  }
+
   def services = Action { implicit request =>
     Ok(views.html.services())
   }

@@ -11,6 +11,7 @@ GET		/pageB						@controllers.Application.pageB
 GET		/pageC						@controllers.Application.pageC
 GET		/pageD						@controllers.Application.pageD
 GET		/about						@controllers.Application.about
+GET     /tests                      @controllers.Application.tests
 GET		/services					@controllers.Application.services
 GET		/portfolio					@controllers.Application.portfolio
 GET		/career						@controllers.Application.career
