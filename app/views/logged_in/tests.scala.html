@@ -1,6 +1,8 @@
-@import views.html
-  @()
-  @main(""){
+@import views.html.logged_in
+@()(implicit session: play.api.mvc.Session)
+
+@main("") {
+  @logged_in.userNavbar()
     <div class="container">
       <div class="row">
         <div class="span12">
