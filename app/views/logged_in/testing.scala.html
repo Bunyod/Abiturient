@@ -1,7 +1,9 @@
 @import views.html
-@()
+@()(implicit session: play.api.mvc.Session)
 
 @main("") {
+@userNavbar()
+
   <script type='text/javascript' src='@controllers.routes.Assets.versioned("javascripts/quiz.js")'></script>
   <div class="control-group">
       <!-- Password -->

@@ -1,7 +1,12 @@
-@import views.html
-@()
+@import views.html.logged_in
+@()(implicit session: play.api.mvc.Session)
 
-@main("") {
+@main("Services") {
+    @if(session.get("ab-user")) {
+        @logged_in.userNavbar()
+    } else {
+        @navbar()
+    }
     <section class="title">
         <div class="container">
             <div class="row-fluid">

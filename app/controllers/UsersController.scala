@@ -11,8 +11,6 @@ import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import common.entities.{AbUser, GenderType, RegUser}
 import play.api.Play.current
-import play.api.data.Form
-import play.api.data.Forms._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json.{Reads, _}
@@ -47,11 +45,6 @@ object UsersController {
       (__ \ "gender").read [String]
     )(RegsForm)
 
-  case class LoginForm
-  (
-    login: String = "",
-    password: String = ""
-  )
 }
 
 class UsersController @Inject() (val actorSystem: ActorSystem,
@@ -64,14 +57,6 @@ class UsersController @Inject() (val actorSystem: ActorSystem,
   val config = current.configuration.getConfig("web-server").get
   val userManger = actorSystem.actorSelection(config.getString("user-manager-actor-path").get)
 
-
-  val loginPlayForm: Form[LoginForm] = Form {
-    mapping(
-      "login" -> nonEmptyText,
-      "password" -> nonEmptyText
-    )(LoginForm.apply)(LoginForm.unapply)
-  }
-
   def registration = Action.async(parse.json[RegsForm]) { implicit request =>
     val regData = request.body
     val user = AbUser(None, regData.firstName, regData.lastName, regData.lastName,
@@ -82,5 +67,11 @@ class UsersController @Inject() (val actorSystem: ActorSystem,
       Ok(Json.toJson(userId))
     }
   }
+
+  def logout = Action { implicit request =>
+    Ok(views.html.index()).withNewSession
+  }
+
+
 
 }

@@ -1,8 +1,12 @@
-@import views.html
-@()
+@import views.html.logged_in
+@()(implicit session: play.api.mvc.Session)
 
 @main("") {
-@navbar()
+@if(session.get("ab-user")) {
+    @logged_in.userNavbar()
+} else {
+    @navbar()
+}
 <!--Slider-->
 <section id="slide-show">
  <div id="slider" class="sl-slider-wrapper">

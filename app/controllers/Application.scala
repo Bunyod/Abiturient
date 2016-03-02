@@ -132,7 +132,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
             (userManager ? LoginUser(username, password)).mapTo[Either[UserAuthFailure, String]].map {
               case Right(user)=>
                 val modifiedRequest = updateRequestSession(request, List(("user" -> user)))
-                Ok(views.html.testing()).withSession(request.session + ("ab-user", username))
+                Ok(views.html.logged_in.testing()).withSession(request.session + ("ab-user", username))
               case Left(GeneralAuthFailure(_)) =>
                 Redirect(routes.Application.pageC())
             }
@@ -165,10 +165,6 @@ class Application @Inject() (val messagesApi: MessagesApi,
     val theHeaders = Headers(tmpHeaderList(0))
 
     Request[Any](request.copy(headers = theHeaders), request.body)
-  }
-
-  def logout = Action { implicit request =>
-    Ok(views.html.index()).withNewSession
   }
 
   def pageB = deadbolt.SubjectPresent(new MyDeadboltHandler(None, usersDao)) {
