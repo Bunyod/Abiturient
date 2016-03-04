@@ -32,16 +32,20 @@ $ ->
       @initFields()
 
       @questions = ko.observableArray([])
+      @currentQuestion = ko.observable()
 
-      @onSubmit = (=>
 
-        $.get('/quizes')
+      $.get('/quizes')
         .done (returnedData) =>
           @questions.removeAll()
-          console.log(returnedData)
           for value in returnedData
             @questions.push(value)
         .fail (returnedData) =>
-      ).bind(this)
+          console.log('error loading')
+
+      @getQuestion = (questionNumber) =>
+        @currentQuestion(@questions()[questionNumber])
+
+
 
   ko.applyBindings  new ReportViewModel()
