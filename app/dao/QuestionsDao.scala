@@ -52,7 +52,7 @@ class QuestionsDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfig
   val questions = TableQuery[Questions]
 
   override def create(question: Question): Future[Int] = {
-    logger.info(s"Dao: Creating user=$question")
+    logger.info(s"Dao: Creating question=$question")
     db.run(questions += question)
   }
 

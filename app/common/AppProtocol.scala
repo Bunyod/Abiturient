@@ -24,6 +24,19 @@ object AppProtocol {
     rAns: Option[String]
   )
 
+  case class Theme
+  (
+    id: Option[Int] = None,
+    subjectId: Option[Int],
+    name: Option[String]
+  )
+
+  case class Subject
+  (
+    id: Option[Int] = None,
+    name: String
+  )
+
   implicit val questionsFormat = Json.format[Question]
 
   case class CreateQuestions(questions: List[Question])
