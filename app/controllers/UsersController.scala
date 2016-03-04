@@ -69,7 +69,7 @@ class UsersController @Inject() (val actorSystem: ActorSystem,
   }
 
   def logout = Action { implicit request =>
-    Ok(views.html.index()).withNewSession
+    Redirect(routes.Application.index()).withNewSession
   }
 
 

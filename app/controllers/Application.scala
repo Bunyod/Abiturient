@@ -9,11 +9,9 @@ import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
 import common.AppProtocol.{GeneralAuthFailure, LoginUser, UserAuthFailure}
 import common.entities.SessionUser
 import dao.{QuestionsDao, UsersDao}
-import play.api.Play.current
 import play.api._
 import play.api.data.Forms._
 import play.api.data._
-import play.api.i18n.Messages.Implicits._
 import play.api.i18n.MessagesApi
 import play.api.libs.json.Json
 import play.api.libs.mailer.MailerClient
@@ -132,7 +130,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
             (userManager ? LoginUser(username, password)).mapTo[Either[UserAuthFailure, String]].map {
               case Right(user)=>
                 val modifiedRequest = updateRequestSession(request, List(("user" -> user)))
-                Ok(views.html.logged_in.testing()).withSession(request.session + ("ab-user", username))
+                Redirect(routes.QuizController.tests()).withSession(request.session + ("ab-user", username))
               case Left(GeneralAuthFailure(_)) =>
                 Redirect(routes.Application.pageC())
             }
