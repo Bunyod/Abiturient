@@ -7,7 +7,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
 import common.AppProtocol.{GeneralAuthFailure, LoginUser, UserAuthFailure}
-import common.entities.SessionUser
+import common.entities.{AbUser, SessionUser}
 import dao.{QuestionsDao, UsersDao}
 import play.api._
 import play.api.data.Forms._
@@ -18,6 +18,8 @@ import play.api.libs.mailer.MailerClient
 import play.api.libs.ws.WSClient
 import play.api.mvc._
 import security.MyDeadboltHandler
+import views.html.admin._
+
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration.DurationInt
@@ -127,10 +129,14 @@ class Application @Inject() (val messagesApi: MessagesApi,
         },
         {
           case LoginForm(username, password) =>
-            (userManager ? LoginUser(username, password)).mapTo[Either[UserAuthFailure, String]].map {
+            (userManager ? LoginUser(username, password)).mapTo[Either[UserAuthFailure, AbUser]].map {
               case Right(user)=>
-                val modifiedRequest = updateRequestSession(request, List(("user" -> user)))
-                Redirect(routes.QuizController.tests()).withSession(request.session + ("ab-user", username))
+                val modifiedRequest = updateRequestSession(request, List(("user" -> user.login)))
+                if (user.roles.contains("ADMIN")) {
+                  Redirect(controllers.admins.routes.SubjectController.subjects()).withSession(request.session + ("ab-admin", username))
+                } else {
+                  Redirect(routes.QuizController.tests()).withSession(request.session + ("ab-user", username))
+                }
               case Left(GeneralAuthFailure(_)) =>
                 Redirect(routes.Application.pageC())
             }
@@ -139,8 +145,6 @@ class Application @Inject() (val messagesApi: MessagesApi,
         }
       )
   }
-
-
 
   private def updateRequestSession(request: Request[Any], additionalSessionParams: List[(String, String)]): Request[Any] = {
     import scala.language.reflectiveCalls

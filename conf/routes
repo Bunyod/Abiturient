@@ -25,6 +25,7 @@ GET     /addQuestion                controllers.Application.addQuestion
 
 GET		/logout						controllers.UsersController.logout
 GET     /tests                      controllers.QuizController.tests
+GET     /subjects                   controllers.admins.SubjectController.subjects
 
 POST     /user/registration         controllers.UsersController.registration
 GET      /test/                     controllers.FileReader.ind

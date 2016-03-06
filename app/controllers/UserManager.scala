@@ -39,13 +39,13 @@ class UserManager(usersDao: UsersDao) extends Actor with ActorLogging {
     usersDao.create(user)
   }
 
-  private def checkLoginPassword(login: String, password: String): Future[Either[UserAuthFailure, String]] = {
+  private def checkLoginPassword(login: String, password: String): Future[Either[UserAuthFailure, AbUser]] = {
 
     require(!login.isEmpty)
 
     usersDao.findByLogin(login).map(_.map { user =>
       if (user.password == password) {
-        Right(login)
+        Right(user)
       } else {
         Left(GeneralAuthFailure("password does not match"))
       }
