@@ -35,7 +35,7 @@ class SubjectController @Inject()(val actorSystem: ActorSystem,
 
   def subjects = deadbolt.Restrict(List(Array("ADMIN"))) {
     Action { implicit request =>
-      Ok(views.html.admin.addQuestion())
+      Ok(views.html.admin.addSubject())
     }
   }
 

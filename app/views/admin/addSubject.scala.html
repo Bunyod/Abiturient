@@ -1,5 +1,8 @@
-@main("addQuestion") {
-    @navbar()
+@import views.html.admin
+@()(implicit session: play.api.mvc.Session)
+
+@main("Add Subject") {
+    @admin.adminNavbar()
     <section class="title">
         <div class="container">
             <div class="row-fluid">

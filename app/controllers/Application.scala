@@ -133,7 +133,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
               case Right(user)=>
                 val modifiedRequest = updateRequestSession(request, List(("user" -> user.login)))
                 if (user.roles.contains("ADMIN")) {
-                  Redirect(controllers.admins.routes.SubjectController.subjects()).withSession(request.session + ("ab-admin", username))
+                  Redirect(controllers.admins.routes.SubjectController.subjects()).withSession(request.session + ("ab-user", username))
                 } else {
                   Redirect(routes.QuizController.tests()).withSession(request.session + ("ab-user", username))
                 }
