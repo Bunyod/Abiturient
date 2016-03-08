@@ -49,3 +49,4 @@ $ ->
 
 
   ko.applyBindings  new ReportViewModel()
+

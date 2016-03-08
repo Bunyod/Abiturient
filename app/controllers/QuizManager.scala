@@ -3,8 +3,8 @@ package controllers
 import akka.actor.{Actor, ActorLogging, Props}
 import akka.util.Timeout
 import akka.pattern.pipe
-import common.AppProtocol.{GetQuestions, CreateQuestions, Question}
-import dao.QuestionsDao
+import common.AppProtocol._
+import dao.{SubjectsDao, QuestionsDao}
 
 import scala.annotation.tailrec
 import scala.concurrent.Future
@@ -15,11 +15,11 @@ import scala.concurrent.duration.DurationInt
   */
 
 object QuizManager {
-  def props(questionsDao: QuestionsDao) =
-    Props(new QuizManager(questionsDao))
+  def props(questionsDao: QuestionsDao, subjectsDao: SubjectsDao) =
+    Props(new QuizManager(questionsDao, subjectsDao))
 }
 
-class QuizManager (questionsDao: QuestionsDao) extends Actor with ActorLogging {
+class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao) extends Actor with ActorLogging {
 
   log.info("Entry")
 
@@ -35,6 +35,12 @@ class QuizManager (questionsDao: QuestionsDao) extends Actor with ActorLogging {
     case GetQuestions =>
       getQuestions.pipeTo(sender())
 
+    case AddSubject(name) =>
+      createSubject(name).pipeTo(sender())
+
+    case GetSubjects =>
+      getSubjects().pipeTo(sender())
+
     case _ =>
       log.info(s"Receive: None")
 
@@ -46,6 +52,14 @@ class QuizManager (questionsDao: QuestionsDao) extends Actor with ActorLogging {
     }
     Future.successful(())
 
+  }
+
+  private def createSubject(name: String): Future[Int] = {
+    subjectsDao.create(Subject(name=name))
+  }
+
+  private def getSubjects() = {
+    subjectsDao.getSubjects()
   }
 
   @tailrec

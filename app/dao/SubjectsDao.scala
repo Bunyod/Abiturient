@@ -18,7 +18,7 @@ trait SubjectsComponent
 { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
   import driver.api._
-  class Subjects(tag: Tag) extends Table[Subject](tag, "Subjuects") {
+  class Subjects(tag: Tag) extends Table[Subject](tag, "Subjects") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
 
@@ -26,7 +26,7 @@ trait SubjectsComponent
   }
 }
 
-@ImplementedBy(classOf[QuestionsDaoImpl])
+@ImplementedBy(classOf[SubjectsDaoImpl])
 trait SubjectsDao {
   def create(subject: Subject): Future[Int]
   def getSubjects(): Future[Seq[Subject]]

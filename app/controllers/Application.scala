@@ -8,7 +8,7 @@ import akka.util.Timeout
 import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
 import common.AppProtocol.{GeneralAuthFailure, LoginUser, UserAuthFailure}
 import common.entities.{AbUser, SessionUser}
-import dao.{QuestionsDao, UsersDao}
+import dao.{SubjectsDao, QuestionsDao, UsersDao}
 import play.api._
 import play.api.data.Forms._
 import play.api.data._
@@ -37,6 +37,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
                              actorSystem: ActorSystem,
                              usersDao: UsersDao,
                              questionsDao: QuestionsDao,
+                             subjectsDao: SubjectsDao,
                              deadbolt: DeadboltActions,
                              actionBuilder: ActionBuilders)
                            (implicit ec: ExecutionContext) extends Controller {
@@ -50,7 +51,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
   implicit val defaultTimeout = Timeout(5.seconds)
   //  val config = current.configuration.getConfig("web-server").get
   val userManager = actorSystem.actorOf(UserManager.props(usersDao), "user-manager")
-  val quizManager = actorSystem.actorOf(QuizManager.props(questionsDao), "quiz-manager")
+  val quizManager = actorSystem.actorOf(QuizManager.props(questionsDao, subjectsDao), "quiz-manager")
 
   val logger = Logger(this.getClass())
 
@@ -73,6 +74,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
 
   def services = Action { implicit request =>
     Ok(views.html.services())
+
   }
 
   def portfolio = Action { implicit request =>
@@ -133,7 +135,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
               case Right(user)=>
                 val modifiedRequest = updateRequestSession(request, List(("user" -> user.login)))
                 if (user.roles.contains("ADMIN")) {
-                  Redirect(controllers.admins.routes.SubjectController.subjects()).withSession(request.session + ("ab-user", username))
+                  Redirect(controllers.admins.routes.SubjectController.showAddQuiz()).withSession(request.session + ("ab-user", username))
                 } else {
                   Redirect(routes.QuizController.tests()).withSession(request.session + ("ab-user", username))
                 }

@@ -7,24 +7,11 @@ $ ->
 
       @initFields = ->
         emptyServerData =
-          productType: 'uloc'
-          messageType: null
-          phonePart1: ''
-          phonePart2: ''
-          phonePart3: ''
-          confirmPhonePart1: ''
-          confirmPhonePart2: ''
-          confirmPhonePart3: ''
-          email: ''
-          confirmEmail: ''
-
-        if !@isFirstInit
-          emptyServerData.productType = @productType()
+          productType: 'subject'
 
         ko.mapping.fromJS emptyServerData, {}, @
 
         @currentVM().initFields()
-        @isFirstInit = false
 
       @subjectVM = new SubjectViewModel(this)
       @themeVM = new ThemeViewModel(this)
@@ -33,10 +20,44 @@ $ ->
 
       @initFields()
 
-      @smsFailedShown = ko.observable false
-      @smsSucceededShown = ko.observable false
-      @emailFailedShown = ko.observable false
-      @emailSucceededShown = ko.observable false
+      @selectedSection = ko.observable()
+#      @selectedSection(self.sections()[0])
+      @subjects = ko.observableArray()
+
+      $.get '/subjects'
+      .done (returnedData) =>
+        for subject in returnedData
+          @subjects.push(subject)
+        console.log(returnedData)
+
+      @addSubject = =>
+        if !my.hasText(@currentVM().name)
+          alert "Zarur maydonlarni to'ldiring"
+          return
+
+        vmDataForServer = @currentVM().getDataForServer()
+        subjectName = vmDataForServer.name.trim()
+        if subjectName.length < 1
+          alert 'Xato nom tanlandi'
+          return
+
+        for subject in @subjects()
+          if subject.name.toUpperCase() == subjectName.toUpperCase()
+            alert 'Iltimos, boshqa fan kiriting. Bunday fan mavjud'
+            return
+        sendUrl = "/admin/add-subject"
+
+#        ownDataForServer = ko.mapping.toJS @
+#        dataForServer = _.extend {}, vmDataForServer, ownDataForServer
+#        console.log 'addSubject', dataForServer
+
+        $.post sendUrl, JSON.stringify(subjectName)
+        .done (returnedData) =>
+          @subjects.push(subjectName)
+          console.log(returnedData)
+        .fail (error) ->
+          console.log(error)
+          alert 'Something went wrong! Please try again.'
 
       @subjectShown = ko.pureComputed(->
         @currentVM() == @subjectVM
@@ -46,33 +67,13 @@ $ ->
         @currentVM() == @themeVM
       , @)
 
-
       @productTypeSelected = ->
-        if @productType() == 'uloc'
+        if @productType() == 'subject'
           @currentVM(@subjectVM)
-        else if @productType() == 'loan'
+        else if @productType() == 'theme'
           @currentVM(@themeVM)
 
         @currentVM().initFields()
-
-
-      @readyForSending = ko.pureComputed(->
-        @messageType() != null and
-          @email() == @confirmEmail() and
-          @phonePart1() == @confirmPhonePart1() and
-          @phonePart2() == @confirmPhonePart2() and
-          @phonePart3() == @confirmPhonePart3() and
-          (!@needPhoneNumber() or my.isValidPhone(@getPhoneNumber())) and
-          (!@needEmail() or my.isValidEmail(@email()))
-      , @)
-
-      @needPhoneNumber = ko.pureComputed(->
-        @messageType() == "sms"
-      , @)
-
-      @needEmail = ko.pureComputed(->
-        @messageType() == "email"
-      , @)
 
       @sendMessage = ->
         if !my.hasText(@currentVM().fullName())
@@ -83,19 +84,6 @@ $ ->
 
           return
 
-        if @currentVM() == @themeVM && @currentVM().isPayoutClose()
-          isClosePayoutExist = false
-          for obj in @currentVM().payouts()
-            if obj.isClose()
-              isClosePayoutExist = true
-          if !isClosePayoutExist
-            if @language() == 'fr'
-              window.alert "You've selected 'Payout & Close' but no payouts are marked as 'close'."
-            else
-              window.alert "You've selected 'Payout & Close' but no payouts are marked as 'close'."
-
-            return
-
         vmDataForServer = @currentVM().getDataForServer()
         sendUrl = "/TD_disclosure/assist/#{@currentVM().getSendActionName()}"
 
@@ -104,12 +92,7 @@ $ ->
 
         $.post sendUrl, JSON.stringify(dataForServer)
         .done (returnedData) =>
-          if returnedData.isSent
-            my.showSendingSucceeded @
-            @initFields()
-          else
-            window.alert "Sending message failed.\n\nReason: #{returnedData.failReason}"
-            my.showSendingFailed @
+          console.log("Data was sent")
         .fail (returnedData) =>
           my.showSendingFailed @
 
@@ -126,15 +109,12 @@ $ ->
 
       @initFields()
 
-
-
       @getSendActionName = ->
         'sendUloc'
 
       @getDataForServer = ->
         dataForServer = ko.mapping.toJS @
         dataForServer
-
 
   class ThemeViewModel
     constructor: (parentVM) ->
@@ -147,77 +127,26 @@ $ ->
 
         ko.mapping.fromJS emptyServerData, {}, @
 
-      @currentStep = ko.observable 1
-
       @initFields()
 
-      @toStep1 = ->
-        @currentStep(1)
+  class QuestionViewModel
+    constructor: (parentVM) ->
+      @parentVM = parentVM
 
-      @toStep2 = ->
-        if !@isCampaign()
-          if @parentVM.language() == 'fr'
-            window.alert "Please Select Campaign"
-          else
-            window.alert "Please Select Campaign"
+      @initFields = ->
+        emptyServerData =
+          subject: ''
+          theme: ''
+          difficulty: ''
+          question: ''
+          ansA: ''
+          ansB: ''
+          ansC: ''
+          ansD: ''
+          rAns: ''
 
-          return
+        ko.mapping.fromJS emptyServerData, {}, @
 
-        @currentStep(2)
-
-      @isOnStep1 = ko.pureComputed(->
-        @currentStep() == 1
-      , @)
-
-      @isOnStep2 = ko.pureComputed(->
-        @currentStep() == 2
-      , @)
-
-      @isPhoneEmailPartShown = ko.pureComputed(->
-        @isOnStep2()
-      , @)
-
-      @isFixedInterestRateType = ko.pureComputed(->
-        @interestRate.interestRateType() == 'fixed'
-      , @)
-
-      @interestRateTypeChanged = ->
-        @interestRate.fixedInterestRate(null)
-        @interestRate.primeInterestRate(null)
-        @interestRate.varianceInterestRate(null)
-
-      @isTdctPaymentType = ko.pureComputed(->
-        @paymentType() == 'tdct'
-      , @)
-
-      @paymentTypeChanged = ->
-        @paymentAccount(null)
-        @finInst.instNumber(null)
-        @finInst.branch(null)
-        @finInst.accountNumber(null)
-
-      @totalVariableRate = ko.pureComputed(->
-        if @isFixedInterestRateType()
-          ''
-        else
-          totalRate = parseFloat(@interestRate.primeInterestRate()) + parseFloat(@interestRate.varianceInterestRate())
-          if isNaN(totalRate)
-            ''
-          else
-            totalRate.toFixed(2)
-      , @)
-
-      @isPayoutsTablesShown = ko.pureComputed(->
-        @payoutType() == 'payout' || @payoutType() == 'payoutClose'
-      , @)
-
-      @issueDateChanged = ->
-        firstP = if my.hasText(@loanDates.issueDate())
-          moment(@loanDates.issueDate(), 'MM/DD/YYYY').add(1, 'months').format('MM/DD/YYYY')
-        else
-          ''
-        @loanDates.firstPaymentDate(firstP)
-      #        $('#firstPaymentDate').datepicker("update", firstP)
-
+      @initFields()
 
   ko.applyBindings new MasterViewModel()

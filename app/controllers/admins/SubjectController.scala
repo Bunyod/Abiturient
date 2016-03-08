@@ -12,7 +12,6 @@ import dao.UsersDao
 import play.api.Play._
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
-import security.MyDeadboltHandler
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.DurationInt
@@ -30,18 +29,32 @@ class SubjectController @Inject()(val actorSystem: ActorSystem,
 
   implicit val defaultTimeout = Timeout(5.seconds)
   val config = current.configuration.getConfig("web-server").get
-  val quizManger = actorSystem.actorSelection(config.getString("quiz-manager-actor-path").get)
+  val quizManager = actorSystem.actorSelection(config.getString("quiz-manager-actor-path").get)
 
 
-  def subjects = deadbolt.Restrict(List(Array("ADMIN"))) {
+  def showAddQuiz() = deadbolt.Restrict(List(Array("ADMIN"))) {
     Action { implicit request =>
       Ok(views.html.admin.addSubject())
     }
   }
 
+  def subjects() =  Action.async { implicit request =>
+    (quizManager ? GetSubjects).mapTo[Seq[Subject]].map {subjects =>
+      Ok(Json.toJson(subjects))
+    }
+  }
+
+  def addSubject() = deadbolt.Restrict(List(Array("ADMIN"))) {
+    Action.async(parse.json[String]) { implicit request =>
+      val subjectName = request.body
+      (quizManager ? AddSubject(subjectName)).mapTo[Int].map { _ =>
+        Ok(Json.toJson("Successfully added"))
+      }
+  }}
+
   def getQuestions() = Action.async { implicit request =>
 
-    (quizManger ? GetQuestions).mapTo[Seq[Question]].map { questions =>
+    (quizManager ? GetQuestions).mapTo[Seq[Question]].map { questions =>
       Ok(Json.toJson(questions))
     }
 
