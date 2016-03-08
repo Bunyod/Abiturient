@@ -20,15 +20,26 @@ $ ->
 
       @initFields()
 
-      @selectedSection = ko.observable()
+#      @selectedSection = ko.observable()
 #      @selectedSection(self.sections()[0])
       @subjects = ko.observableArray()
 
-      $.get '/subjects'
-      .done (returnedData) =>
-        for subject in returnedData
-          @subjects.push(subject)
-        console.log(returnedData)
+      @loadServerData = =>
+        $.get '/subjects'
+        .done (returnedData) =>
+          for subject in returnedData
+            @subjects.push(subject)
+
+
+      @loadServerData()
+
+      @changeActiveTab = ->
+        @loadServerData()
+        @currentVM(@themeVM)
+        $('#subjTab').removeClass('active')
+        $('#themeTab').addClass('active')
+        $('#addTheme').addClass('active in')
+        $('#addSubject').toggleClass('tab-pane fade active in', 'tab-pane fade')
 
       @addSubject = =>
         if !my.hasText(@currentVM().name)
@@ -52,12 +63,13 @@ $ ->
 #        console.log 'addSubject', dataForServer
 
         $.post sendUrl, JSON.stringify(subjectName)
-        .done (returnedData) =>
-          @subjects.push(subjectName)
-          console.log(returnedData)
+        .done (resp) =>
+          @changeActiveTab()
+          console.log(resp)
         .fail (error) ->
           console.log(error)
           alert 'Something went wrong! Please try again.'
+
 
       @subjectShown = ko.pureComputed(->
         @currentVM() == @subjectVM

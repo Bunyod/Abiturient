@@ -24,10 +24,10 @@
     <br>
     <div class="container">
         <ul class="nav nav-tabs nav-justified navFont">
-            <li  class="active" ><a href="#addSubject" data-toggle="tab" >Fan qo'shish</a></li>
-            <li ><a href="#addTheme" data-toggle="tab" >Mavzu qo'shish</a></li>
-            <li ><a href="#addQuestion" data-toggle="tab" >Savo'l qo'shish</a></li>
-            <li ><a href="#uploadQuestion" data-toggle="tab" >Savo'l yuklash</a></li>
+            <li id="subjTab" class="active" ><a href="#addSubject" data-toggle="tab" >Fan qo'shish</a></li>
+            <li id="themeTab"><a href="#addTheme" data-toggle="tab" >Mavzu qo'shish</a></li>
+            <li id="questTab"><a href="#addQuestion" data-toggle="tab" >Savo'l qo'shish</a></li>
+            @*<li id="themeAdd"><a href="#uploadQuestion" data-toggle="tab" >Savo'l yuklash</a></li>*@
         </ul>
         <br/>
         <div class="tab-content">
@@ -41,7 +41,7 @@
 
             </div>
             <div class="tab-pane fade " id="addTheme">
-                <form class="loan" data-bind="with: themeVM, visible: themeShown">
+                <form data-bind="with: themeVM, visible: themeShown">
                     @admin.theme()
                 </form>
             </div>
