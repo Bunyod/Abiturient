@@ -24,8 +24,16 @@
     <br>
     <div class="container">
         <ul class="nav nav-tabs nav-justified navFont">
-            <li id="subjTab" class="active" ><a href="#addSubject" data-toggle="tab" >Fan qo'shish</a></li>
-            <li id="themeTab"><a href="#addTheme" data-toggle="tab" >Mavzu qo'shish</a></li>
+            <li id="subjTab" class="active" >
+                <a href="#addSubject" data-toggle="tab" data-bind="click: function(){ productTypeSelected('subject'); }">
+                    Fan qo'shish
+                </a>
+            </li>
+            <li id="themeTab">
+                <a href="#addTheme" data-toggle="tab" data-bind="click: function(){ productTypeSelected('theme'); }">
+                    Mavzu qo'shish
+                </a>
+            </li>
             <li id="questTab"><a href="#addQuestion" data-toggle="tab" >Savo'l qo'shish</a></li>
             @*<li id="themeAdd"><a href="#uploadQuestion" data-toggle="tab" >Savo'l yuklash</a></li>*@
         </ul>

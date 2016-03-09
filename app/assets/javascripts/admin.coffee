@@ -79,10 +79,10 @@ $ ->
         @currentVM() == @themeVM
       , @)
 
-      @productTypeSelected = ->
-        if @productType() == 'subject'
+      @productTypeSelected = (productType)->
+        if productType == 'subject'
           @currentVM(@subjectVM)
-        else if @productType() == 'theme'
+        else if productType == 'theme'
           @currentVM(@themeVM)
 
         @currentVM().initFields()
@@ -127,6 +127,7 @@ $ ->
       @getDataForServer = ->
         dataForServer = ko.mapping.toJS @
         dataForServer
+
 
   class ThemeViewModel
     constructor: (parentVM) ->
