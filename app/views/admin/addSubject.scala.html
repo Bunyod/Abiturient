@@ -35,13 +35,14 @@
                 </a>
             </li>
             <li id="questTab"><a href="#addQuestion" data-toggle="tab" >Savol qo'shish</a></li>
-            @*<li id="themeAdd"><a href="#uploadQuestion" data-toggle="tab" >Savo'l yuklash</a></li>*@
+            @*<li id="themeAdd"><a href="#uploadQuestion" data-toggle="tab" >Savol yuklash</a></li>*@
         </ul>
         <br/>
         <div class="tab-content">
-            <select data-bind="options: subjects,
-                                    value: 'id',
-                                    optionsText: 'name'"></select>
+            <select name="subject" data-bind="options: subjects,
+                                    value: 'subjectId',
+                                    optionsText: 'name'">
+            </select>
             <div class="tab-pane fade active in" id="addSubject">
                 <form data-bind="with: subjectVM, visible: subjectShown">
                     @admin.subject()

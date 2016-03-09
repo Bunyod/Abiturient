@@ -52,6 +52,14 @@ class SubjectController @Inject()(val actorSystem: ActorSystem,
       }
   }}
 
+  def addTheme() = deadbolt.Restrict(List(Array("ADMIN"))) {
+    Action.async(parse.json[AddTheme]) { implicit request =>
+      val theme = request.body
+      (quizManager ? theme).mapTo[Int].map { _ =>
+        Ok(Json.toJson("Successfully added"))
+      }
+  }}
+
   def getQuestions() = Action.async { implicit request =>
 
     (quizManager ? GetQuestions).mapTo[Seq[Question]].map { questions =>

@@ -8,6 +8,7 @@ $ ->
       @initFields = ->
         emptyServerData =
           productType: 'subject'
+          subjectId: 0
 
         ko.mapping.fromJS emptyServerData, {}, @
 
@@ -29,6 +30,7 @@ $ ->
         .done (returnedData) =>
           @subjects.removeAll()
           for subject in returnedData
+            subject.subjectId = subject.id
             @subjects.push(subject)
 
 
@@ -80,7 +82,7 @@ $ ->
         @currentVM() == @themeVM
       , @)
 
-      @productTypeSelected = (productType)->
+      @productTypeSelected = (productType) ->
         if productType == 'subject'
           @currentVM(@subjectVM)
         else if productType == 'theme'
@@ -88,26 +90,17 @@ $ ->
 
         @currentVM().initFields()
 
-      @sendMessage = ->
-        if !my.hasText(@currentVM().fullName())
-          if @language() == 'fr'
-            window.alert "Les données suivantes sont invalides:\n- Nom du client"
-          else
-            window.alert "The following fields values are invalid:\n- Customer's name"
-
+      @addTheme = =>
+        if !my.hasText(@currentVM().name)
+          alert "Zarur maydonlarni to'ldiring"
           return
 
         vmDataForServer = @currentVM().getDataForServer()
-        sendUrl = "/TD_disclosure/assist/#{@currentVM().getSendActionName()}"
-
         ownDataForServer = ko.mapping.toJS @
-        dataForServer = _.extend {}, vmDataForServer, ownDataForServer
-
-        $.post sendUrl, JSON.stringify(dataForServer)
-        .done (returnedData) =>
-          console.log("Data was sent")
-        .fail (returnedData) =>
-          my.showSendingFailed @
+        themeName = vmDataForServer.name.trim()
+        if themeName .length < 1
+          alert 'Xato nom tanlandi'
+          return
 
 
   class SubjectViewModel
@@ -122,9 +115,6 @@ $ ->
 
       @initFields()
 
-      @getSendActionName = ->
-        'sendUloc'
-
       @getDataForServer = ->
         dataForServer = ko.mapping.toJS @
         dataForServer
@@ -136,12 +126,16 @@ $ ->
 
       @initFields = ->
         emptyServerData =
-          subjectName: ''
+          subjectId: ''
           name: ''
 
         ko.mapping.fromJS emptyServerData, {}, @
 
       @initFields()
+
+      @getDataForServer = ->
+        dataForServer = ko.mapping.toJS @
+        dataForServer
 
   class QuestionViewModel
     constructor: (parentVM) ->

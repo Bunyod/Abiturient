@@ -8,7 +8,7 @@ import akka.util.Timeout
 import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
 import common.AppProtocol.{GeneralAuthFailure, LoginUser, UserAuthFailure}
 import common.entities.{AbUser, SessionUser}
-import dao.{SubjectsDao, QuestionsDao, UsersDao}
+import dao.{ThemesDao, SubjectsDao, QuestionsDao, UsersDao}
 import play.api._
 import play.api.data.Forms._
 import play.api.data._
@@ -38,6 +38,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
                              usersDao: UsersDao,
                              questionsDao: QuestionsDao,
                              subjectsDao: SubjectsDao,
+                             themesDao: ThemesDao,
                              deadbolt: DeadboltActions,
                              actionBuilder: ActionBuilders)
                            (implicit ec: ExecutionContext) extends Controller {
@@ -51,7 +52,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
   implicit val defaultTimeout = Timeout(5.seconds)
   //  val config = current.configuration.getConfig("web-server").get
   val userManager = actorSystem.actorOf(UserManager.props(usersDao), "user-manager")
-  val quizManager = actorSystem.actorOf(QuizManager.props(questionsDao, subjectsDao), "quiz-manager")
+  val quizManager = actorSystem.actorOf(QuizManager.props(questionsDao, subjectsDao, themesDao: ThemesDao), "quiz-manager")
 
   val logger = Logger(this.getClass())
 

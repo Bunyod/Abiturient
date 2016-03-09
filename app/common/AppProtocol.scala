@@ -43,8 +43,10 @@ object AppProtocol {
   case object GetQuestions
 
   case class AddSubject(name: String)
+  case class AddTheme(subjectId: Int, name: String)
   case object GetSubjects
 
   implicit val subjectsFormat = Json.format[Subject]
+  implicit val addThemeFormat = Json.format[AddTheme]
 
 }

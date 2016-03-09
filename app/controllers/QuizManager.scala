@@ -4,7 +4,7 @@ import akka.actor.{Actor, ActorLogging, Props}
 import akka.util.Timeout
 import akka.pattern.pipe
 import common.AppProtocol._
-import dao.{SubjectsDao, QuestionsDao}
+import dao.{ThemesDao, SubjectsDao, QuestionsDao}
 
 import scala.annotation.tailrec
 import scala.concurrent.Future
@@ -15,11 +15,11 @@ import scala.concurrent.duration.DurationInt
   */
 
 object QuizManager {
-  def props(questionsDao: QuestionsDao, subjectsDao: SubjectsDao) =
-    Props(new QuizManager(questionsDao, subjectsDao))
+  def props(questionsDao: QuestionsDao, subjectsDao: SubjectsDao, themesDao: ThemesDao) =
+    Props(new QuizManager(questionsDao, subjectsDao, themesDao))
 }
 
-class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao) extends Actor with ActorLogging {
+class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao, themesDao: ThemesDao) extends Actor with ActorLogging {
 
   log.info("Entry")
 
@@ -37,6 +37,9 @@ class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao) extends
 
     case AddSubject(name) =>
       createSubject(name).pipeTo(sender())
+
+    case AddTheme(subjectId, name) =>
+      addTheme(subjectId, name).pipeTo(sender())
 
     case GetSubjects =>
       getSubjects().pipeTo(sender())
@@ -62,6 +65,9 @@ class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao) extends
     subjectsDao.getSubjects()
   }
 
+  private def addTheme(subjectId: Int, name: String) = {
+    themesDao.create(Theme(subjectId = Some(subjectId), name = Some(name)))
+  }
   @tailrec
   private def replacer(str: String): String = {
     if (str.contains("%%")) {
