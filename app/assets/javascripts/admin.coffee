@@ -27,6 +27,7 @@ $ ->
       @loadServerData = =>
         $.get '/subjects'
         .done (returnedData) =>
+          @subjects.removeAll()
           for subject in returnedData
             @subjects.push(subject)
 
