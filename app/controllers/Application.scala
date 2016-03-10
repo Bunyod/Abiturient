@@ -134,11 +134,11 @@ class Application @Inject() (val messagesApi: MessagesApi,
           case LoginForm(username, password) =>
             (userManager ? LoginUser(username, password)).mapTo[Either[UserAuthFailure, AbUser]].map {
               case Right(user)=>
-                val modifiedRequest = updateRequestSession(request, List(("user" -> user.login)))
+                updateRequestSession(request, List(("ab-user" -> user.login)))
                 if (user.roles.contains("ADMIN")) {
-                  Redirect(controllers.admins.routes.SubjectController.showAddQuiz()).withSession(request.session + ("ab-user", username))
+                  Redirect(controllers.admins.routes.SubjectController.showAddQuiz()).addingToSession("ab-user" -> username, "user-role" -> user.roles)
                 } else {
-                  Redirect(routes.QuizController.tests()).withSession(request.session + ("ab-user", username))
+                  Redirect(routes.QuizController.tests()).addingToSession("ab-user" -> username, "user-role" -> user.roles)
                 }
               case Left(GeneralAuthFailure(_)) =>
                 Redirect(routes.Application.pageC())
