@@ -10,27 +10,25 @@
       <a id="logo" class="pull-left" href="@routes.Application.index()"></a>
       <div class="nav-collapse collapse pull-right">
         <ul class="nav">
-          <li class="active"><a href="@routes.Application.index">Bosh sahifa</a></li>
-          <li><a href="@routes.Application.about">Xabarlar</a></li>
-          <li><a href="@routes.Application.about">Reyting</a></li>
-          <li><a href="@routes.Application.about">Savollar</a></li>
-          <li><a href="@routes.Application.blog">Blog</a></li>
+          <li class="active"><a href="@routes.Application.index()">Bosh sahifa</a></li>
+          <li><a href="@routes.Application.about()">Xabarlar</a></li>
+          <li><a href="@routes.Application.services()">Reyting</a></li>
+          <li><a href="@routes.Application.portfolio()">Savollar</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sahifalar<i class="icon-angle-down"></i></a>
             <ul class="dropdown-menu">
-              <li><a href="@routes.Application.career">Biz haqimizda</a></li>
-              <li><a href="@routes.Application.blogItem">Xizmatlar</a></li>
-              <li><a href="@routes.Application.addQuestion">Bog'lanish</a></li>
+              <li><a href="@routes.Application.blogItem()">Biz haqimizda</a></li>
+              <li><a href="@routes.Application.contactUs()">Xizmatlar</a></li>
               <li class="divider"></li>
-              <li><a href="@routes.Application.privacy">Privacy Policy</a></li>
-              <li><a href="@routes.Application.terms">Terms of Use</a></li>
+              <li><a href="@routes.Application.privacy()">Privacy Policy</a></li>
+              <li><a href="@routes.Application.terms()">Terms of Use</a></li>
             </ul>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">@session.get("ab-user")<i class="icon-angle-down"></i></a>
             <ul class="dropdown-menu">
-              <li><a href="@routes.Application.career">Sozlamalar</a></li>
-              <li><a href="@routes.QuizController.tests">Test</a></li>
+              <li><a href="@routes.Application.career()">Sozlamalar</a></li>
+              <li><a href="@routes.QuizController.tests()">Test</a></li>
               <li class="divider"></li>
               <li><a href="@routes.UsersController.logout">Chiqish</a></li>
             </ul>

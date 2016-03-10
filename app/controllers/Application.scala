@@ -120,7 +120,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
     Ok(views.html.results())
   }
   def addQuestion = Action { implicit  request =>
-    Ok(views.html.addQuestion())
+    Ok(views.html.admin.addQuestion())
 
   }
 

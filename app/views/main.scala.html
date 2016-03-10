@@ -1,5 +1,7 @@
 @import helper._
-@(title: String)(content: Html)
+@import views.html.logged_in
+@import views.html.admin
+@(title: String)(content: Html)(implicit session: play.api.mvc.Session)
 
 <!DOCTYPE html>
 <html>
@@ -42,6 +44,11 @@
 
     </head>
     <body>
+        @session.get("user-role") match {
+            case Some("USER") => { @logged_in.userNavbar() }
+            case Some("ADMIN") => { @admin.adminNavbar() }
+            case _ => { @navbar() }
+        }
 
         @content
 

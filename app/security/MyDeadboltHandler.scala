@@ -39,6 +39,6 @@ class MyDeadboltHandler(dynamicResourceHandler: Option[DynamicResourceHandler] =
   }
 
   def onAuthFailure[A](request: Request[A]): Future[Result] = {
-    Future {Results.Forbidden(views.html.accessFailed())}
+    Future {Results.Forbidden(views.html.authFailed())}
   }
 }

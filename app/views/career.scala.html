@@ -2,11 +2,6 @@
 @()(implicit session: play.api.mvc.Session)
 
 @main("") {
-    @if(session.get("ab-user")) {
-        @logged_in.userNavbar()
-    } else {
-        @navbar()
-    }
   <section class="title">
     <div class="container">
       <div class="row-fluid">

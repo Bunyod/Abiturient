@@ -4,11 +4,6 @@
 
 @main("") {
 
-    @session.get("user-role") match {
-        case Some("USER") => { @logged_in.userNavbar() }
-        case Some("ADMIN") => { @admin.adminNavbar() }
-        case _ => { @navbar() }
-    }
 <!--Slider-->
 <section id="slide-show">
  <div id="slider" class="sl-slider-wrapper">
