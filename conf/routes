@@ -30,6 +30,7 @@ GET     /themes                     controllers.admins.SubjectController.themes
 GET     /admin/quiz-manager         controllers.admins.SubjectController.showAddQuiz
 POST    /admin/add-subject          controllers.admins.SubjectController.addSubject
 POST    /admin/add-theme            controllers.admins.SubjectController.addTheme
+POST    /admin/add-question         controllers.admins.SubjectController.addQuestion
 
 POST     /user/registration         controllers.UsersController.registration
 GET      /test/                     controllers.FileReader.ind

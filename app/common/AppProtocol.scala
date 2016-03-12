@@ -16,6 +16,8 @@ object AppProtocol {
   case class Question
   (
     id: Option[Int] = None,
+    subjectId: Option[Int] = None,
+    themeId: Option[Int] = None,
     question: Option[String],
     ansA: Option[String],
     ansB: Option[String],
@@ -44,6 +46,7 @@ object AppProtocol {
 
   case class AddSubject(name: String)
   case class AddTheme(subjectId: Int, name: String)
+  case class CreateQuestion(question: Question)
   case object GetSubjects
   case object GetThemes
 

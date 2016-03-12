@@ -15,12 +15,17 @@ import scala.concurrent.Future
   * @author Bunyod (bunyodreal@gmail.com). Created at 2/11/16.
   */
 
-trait QuestionsComponent
+trait QuestionsComponent extends SubjectsComponent with ThemesComponent
 { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
   import driver.api._
   class Questions(tag: Tag) extends Table[Question](tag, "Questions") with Date2SqlDate {
+    val subjects = TableQuery[Subjects]
+    val themes = TableQuery[Themes]
+
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+    def subjectId = column[Int]("subjectId")
+    def themeId = column[Int]("themeId")
     def question = column[String]("question")
     def ansA = column[String]("ansA")
     def ansB = column[String]("ansB")
@@ -28,7 +33,11 @@ trait QuestionsComponent
     def ansD= column[String]("ansD")
     def rAns = column[String]("rAns")
 
-    def * = (id.?, question.?, ansA.?, ansB.?, ansC.?, ansD.?, rAns.?) <>(Question.tupled, Question.unapply)
+    def * = (id.?, subjectId.?, themeId.?, question.?, ansA.?, ansB.?, ansC.?, ansD.?, rAns.?) <>(Question.tupled, Question.unapply)
+
+    def subject = foreignKey("questionsFkSubjectId", subjectId, subjects)(_.id)
+    def theme = foreignKey("questionsFkThemeId", themeId, themes)(_.id)
+
   }
 }
 

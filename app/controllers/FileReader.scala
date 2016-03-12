@@ -68,7 +68,7 @@ class FileReader @Inject() (val actorSystem: ActorSystem)
 
     val m = pattern.findAllIn(wx.getText).toList
 
-    val quest = Question(None,None,None,None,None,None, None)
+    val quest = Question(None,None,None,None,None,None, None,None,None)
     val quests = List[Question](quest)
 
     val result = recQuest(m, quests).filter(_.question.isDefined).map { q =>
@@ -133,7 +133,7 @@ class FileReader @Inject() (val actorSystem: ActorSystem)
             ansD = Some(tail(3).replaceAll("\n", ""))
           )
 
-          val withEmpty =  List(quest) ::: List(Question(None,None,None,None,None,None, None))
+          val withEmpty =  List(quest) ::: List(Question(None,None,None,None,None,None,None,None,None))
           recQuest(tail.takeRight(tail.size - 4), quests.take(quests.size - 1) ::: withEmpty)
         } else {
           val quest = quests.last
