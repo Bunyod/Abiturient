@@ -38,11 +38,10 @@
                     Savol qo'shish
                 </a>
             </li>
-            @*<li id="themeAdd"><a href="#uploadQuestion" data-toggle="tab" >Savol yuklash</a></li>*@
         </ul>
         <br/>
         <div class="tab-content">
-            <select name="subject" data-bind="options: subjects, value: 'subjectId', optionsText: 'name'"></select>
+            <select name="subject" data-bind="options: subjects, optionsText: 'name', value: selectedSubject"></select>
 
             <div class="tab-pane fade active in" id="addSubject">
                 <form data-bind="with: subjectVM, visible: subjectShown">

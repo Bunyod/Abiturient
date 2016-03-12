@@ -1,17 +1,16 @@
 @()
 
-<select name="themes" data-bind="options: $root.themes, value: 'themeId', optionsText: 'name'"></select>
-<select name="difficulty" id="#" class="inputText">
+<select data-bind="options: $root.themes, optionsText: 'name', value: selectedTheme"></select>
+<select class="inputText">
     <option value="1">easy</option>
     <option value="2">normal</option>
     <option value="3">difficult</option>
 </select>
-<div class="control-group " >
-    <input type="text" placeholder="Savolni kiriting" class="inputText inputQuestion">
-    <br> <span>A. </span> <input type="text" placeholder="A javobni kiriting kiriting" class="inputText inputAnswer">
-    <br> <span>B. </span> <input type="text" placeholder="B javobni kiriting kiriting" class="inputText inputAnswer">
-    <br> <span>C. </span> <input type="text" placeholder="C javobni kiriting kiriting" class="inputText inputAnswer">
-    <br> <span>D. </span> <input type="text" placeholder="D javobni kiriting kiriting" class="inputText inputAnswer">
+<div class="control-group" >
+    <input type="text" placeholder="Savolni kiriting" class="inputText inputQuestion" data-bind="value: question">
+    <br> <span>A. </span> <input type="text" placeholder="A javobni kiriting kiriting" class="inputText inputAnswer" data-bind="value: ansA">
+    <br> <span>B. </span> <input type="text" placeholder="B javobni kiriting kiriting" class="inputText inputAnswer" data-bind="value: ansB">
+    <br> <span>C. </span> <input type="text" placeholder="C javobni kiriting kiriting" class="inputText inputAnswer" data-bind="value: ansC">
+    <br> <span>D. </span> <input type="text" placeholder="D javobni kiriting kiriting" class="inputText inputAnswer" data-bind="value: ansD">
     <button type="button" class="btn btn-info btnLg" data-bind="click: $root.addQuestion">Qo'shish</button>
-
 </div>

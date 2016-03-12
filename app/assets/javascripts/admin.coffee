@@ -42,6 +42,7 @@ $ ->
             theme.subjectId = theme.subjectId
             @themes.push(theme)
 
+
       @loadSubjects()
       @loadThemes()
 
@@ -90,6 +91,11 @@ $ ->
         @currentVM() == @questionVM
       , @)
 
+      @selectedSubject = ko.observable()
+      @selectedValue = ko.computed(->
+        @selectedSubject() && @selectedSubject().subjectId
+      , @)
+
       @productTypeSelected = (productType) ->
         if productType == 'subject'
           @currentVM(@subjectVM)
@@ -106,14 +112,27 @@ $ ->
           return
 
         vmDataForServer = @currentVM().getDataForServer()
-        ownDataForServer = ko.mapping.toJS @
         themeName = vmDataForServer.name.trim()
-        vmDataForServer.subjectId = ownDataForServer.subjectId
+        vmDataForServer.subjectId = @selectedValue()
+        console.log(vmDataForServer)
         if themeName .length < 1
           alert 'Xato nom tanlandi'
           return
 
         sendUrl = "/admin/add-theme"
+        $.post sendUrl, JSON.stringify(vmDataForServer)
+        .done (resp) =>
+#          @changeActiveTab()
+          alert(resp)
+        .fail (error) ->
+          console.log(error)
+          alert 'Something went wrong! Please try again.'
+
+      @addQuestion = =>
+        vmDataForServer = @currentVM().getDataForServer()
+        sendUrl = "/admin/add-question"
+        vmDataForServer.subjectId = @selectedValue()
+        console.log(vmDataForServer)
         $.post sendUrl, JSON.stringify(vmDataForServer)
         .done (resp) =>
 #          @changeActiveTab()
@@ -163,7 +182,7 @@ $ ->
       @initFields = ->
         emptyServerData =
           subjectId: ''
-          theme: ''
+          themeId: ''
           difficulty: ''
           question: ''
           ansA: ''
@@ -176,9 +195,14 @@ $ ->
 
       @initFields()
 
+      @selectedTheme = ko.observable()
+      @selectedValue = ko.computed(->
+        @selectedTheme() && @selectedTheme().themeId
+      , @)
 
       @getDataForServer = ->
         dataForServer = ko.mapping.toJS @
+        dataForServer.themeId = @selectedValue()
         dataForServer
 
   ko.applyBindings new MasterViewModel()
