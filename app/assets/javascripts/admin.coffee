@@ -16,16 +16,16 @@ $ ->
 
       @subjectVM = new SubjectViewModel(this)
       @themeVM = new ThemeViewModel(this)
+      @questionVM = new QuestionViewModel(this)
 
       @currentVM = ko.observable @subjectVM
 
       @initFields()
 
-#      @selectedSection = ko.observable()
-#      @selectedSection(self.sections()[0])
       @subjects = ko.observableArray()
+      @themes = ko.observableArray()
 
-      @loadServerData = =>
+      @loadSubjects = =>
         $.get '/subjects'
         .done (returnedData) =>
           @subjects.removeAll()
@@ -34,10 +34,21 @@ $ ->
             @subjects.push(subject)
 
 
-      @loadServerData()
+      @loadThemes = =>
+        $.get '/themes'
+        .done (returnedData) =>
+          @themes.removeAll()
+          for theme in returnedData
+            theme.themeId = theme.id
+            theme.subjectId = theme.subjectId
+            @themes.push(theme)
+
+
+      @loadSubjects()
+      @loadThemes()
 
       @changeActiveTab = ->
-        @loadServerData()
+        @loadSubjects()
         @currentVM(@themeVM)
         $('#subjTab').removeClass('active')
         $('#themeTab').addClass('active')
@@ -61,10 +72,6 @@ $ ->
             return
         sendUrl = "/admin/add-subject"
 
-#        ownDataForServer = ko.mapping.toJS @
-#        dataForServer = _.extend {}, vmDataForServer, ownDataForServer
-#        console.log 'addSubject', dataForServer
-
         $.post sendUrl, JSON.stringify(subjectName)
         .done (resp) =>
           @changeActiveTab()
@@ -82,11 +89,17 @@ $ ->
         @currentVM() == @themeVM
       , @)
 
+      @questionShown = ko.pureComputed(->
+        @currentVM() == @questionVM
+      , @)
+
       @productTypeSelected = (productType) ->
         if productType == 'subject'
           @currentVM(@subjectVM)
         else if productType == 'theme'
           @currentVM(@themeVM)
+        else if productType == 'question'
+          @currentVM(@questionVM)
 
         @currentVM().initFields()
 
@@ -98,9 +111,13 @@ $ ->
         vmDataForServer = @currentVM().getDataForServer()
         ownDataForServer = ko.mapping.toJS @
         themeName = vmDataForServer.name.trim()
+        console.log(themeName)
+        console.log(themeName)
+        console.log(ownDataForServer)
         if themeName .length < 1
           alert 'Xato nom tanlandi'
           return
+
 
 
   class SubjectViewModel

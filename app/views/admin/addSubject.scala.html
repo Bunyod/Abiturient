@@ -33,53 +33,33 @@
                     Mavzu qo'shish
                 </a>
             </li>
-            <li id="questTab"><a href="#addQuestion" data-toggle="tab" >Savol qo'shish</a></li>
+            <li id="questTab">
+                <a href="#addQuestion" data-toggle="tab" data-bind="click: function(){ productTypeSelected('question'); }">
+                    Savol qo'shish
+                </a>
+            </li>
             @*<li id="themeAdd"><a href="#uploadQuestion" data-toggle="tab" >Savol yuklash</a></li>*@
         </ul>
         <br/>
         <div class="tab-content">
-            <select name="subject" data-bind="options: subjects,
-                                    value: 'subjectId',
-                                    optionsText: 'name'">
-            </select>
+            <select name="subject" data-bind="options: subjects, value: 'subjectId', optionsText: 'name'"></select>
+
             <div class="tab-pane fade active in" id="addSubject">
                 <form data-bind="with: subjectVM, visible: subjectShown">
                     @admin.subject()
                 </form>
-
             </div>
+
             <div class="tab-pane fade " id="addTheme">
                 <form data-bind="with: themeVM, visible: themeShown">
                     @admin.theme()
                 </form>
             </div>
-            <div class="tab-pane fade " id="addQuestion" >
-                <select name="subjects" id="#" class="inputText">
-                    <option value="1">Matematika</option>
-                    <option value="2">Kimyo</option>
-                    <option value="3">Biologiya</option>
-                    <option value="4">Fizika</option>
-                </select>
-                <select name="themes" id="#" class="inputText">
-                    <option value="1">theme1</option>
-                    <option value="2">theme2</option>
-                    <option value="3">theme3</option>
-                    <option value="4">theme4</option>
-                </select>
-                <select name="difficulty" id="#" class="inputText">
-                    <option value="1">easy</option>
-                    <option value="2">normal</option>
-                    <option value="3">difficult</option>
-                </select>
-                <div class="control-group " >
-                    <input type="text" placeholder="Savolni kiriting" class="inputText inputQuestion">
-                    <br> <span>A. </span> <input type="text" placeholder="A javobni kiriting kiriting" class="inputText inputAnswer">
-                    <br> <span>B. </span> <input type="text" placeholder="B javobni kiriting kiriting" class="inputText inputAnswer">
-                    <br> <span>C. </span> <input type="text" placeholder="C javobni kiriting kiriting" class="inputText inputAnswer">
-                    <br> <span>D. </span> <input type="text" placeholder="D javobni kiriting kiriting" class="inputText inputAnswer">
-                    <button type="button" class="btn btn-info btnLg ">Qo'shish</button>
 
-                </div>
+            <div class="tab-pane fade " id="addQuestion">
+                <form data-bind="with: questionVM, visible: questionShown">
+                    @admin.question()
+                </form>
             </div>
             <div class="tab-pane fade" id="uploadQuestion">
                 <select name="subjects" id="#" class="inputText">
@@ -103,6 +83,5 @@
                 <button type="button" class="btn btn-info btnLg ">Qo'shish</button>
             </div>
         </div>
-
     </div>
 }

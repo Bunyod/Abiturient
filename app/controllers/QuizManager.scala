@@ -44,6 +44,9 @@ class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao, themesD
     case GetSubjects =>
       getSubjects().pipeTo(sender())
 
+    case GetThemes =>
+      getThemes().pipeTo(sender())
+
     case _ =>
       log.info(s"Receive: None")
 
@@ -68,6 +71,11 @@ class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao, themesD
   private def addTheme(subjectId: Int, name: String) = {
     themesDao.create(Theme(subjectId = Some(subjectId), name = Some(name)))
   }
+
+  private def getThemes() = {
+    themesDao.getThemes()
+  }
+
   @tailrec
   private def replacer(str: String): String = {
     if (str.contains("%%")) {

@@ -16,7 +16,6 @@ import play.api.mvc.{Action, Controller}
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.DurationInt
 
-
 /**
  * @author Bunyod (bunyodreal@gmail.com). Created at 20/02/16.
  */
@@ -39,8 +38,14 @@ class SubjectController @Inject()(val actorSystem: ActorSystem,
   }
 
   def subjects() =  Action.async { implicit request =>
-    (quizManager ? GetSubjects).mapTo[Seq[Subject]].map {subjects =>
+    (quizManager ? GetSubjects).mapTo[Seq[Subject]].map { subjects =>
       Ok(Json.toJson(subjects))
+    }
+  }
+
+  def themes() =  Action.async { implicit request =>
+    (quizManager ? GetThemes).mapTo[Seq[Theme]].map { themes =>
+      Ok(Json.toJson(themes))
     }
   }
 
