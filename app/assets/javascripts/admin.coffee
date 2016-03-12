@@ -8,7 +8,7 @@ $ ->
       @initFields = ->
         emptyServerData =
           productType: 'subject'
-          subjectId: 0
+          subjectId: 1
 
         ko.mapping.fromJS emptyServerData, {}, @
 
@@ -33,7 +33,6 @@ $ ->
             subject.subjectId = subject.id
             @subjects.push(subject)
 
-
       @loadThemes = =>
         $.get '/themes'
         .done (returnedData) =>
@@ -42,7 +41,6 @@ $ ->
             theme.themeId = theme.id
             theme.subjectId = theme.subjectId
             @themes.push(theme)
-
 
       @loadSubjects()
       @loadThemes()
@@ -70,8 +68,8 @@ $ ->
           if subject.name.toUpperCase() == subjectName.toUpperCase()
             alert 'Iltimos, boshqa fan kiriting. Bunday fan mavjud'
             return
-        sendUrl = "/admin/add-subject"
 
+        sendUrl = "/admin/add-subject"
         $.post sendUrl, JSON.stringify(subjectName)
         .done (resp) =>
           @changeActiveTab()
@@ -79,7 +77,6 @@ $ ->
         .fail (error) ->
           console.log(error)
           alert 'Something went wrong! Please try again.'
-
 
       @subjectShown = ko.pureComputed(->
         @currentVM() == @subjectVM
@@ -111,13 +108,19 @@ $ ->
         vmDataForServer = @currentVM().getDataForServer()
         ownDataForServer = ko.mapping.toJS @
         themeName = vmDataForServer.name.trim()
-        console.log(themeName)
-        console.log(themeName)
-        console.log(ownDataForServer)
+        vmDataForServer.subjectId = ownDataForServer.subjectId
         if themeName .length < 1
           alert 'Xato nom tanlandi'
           return
 
+        sendUrl = "/admin/add-theme"
+        $.post sendUrl, JSON.stringify(vmDataForServer)
+        .done (resp) =>
+#          @changeActiveTab()
+          alert(resp)
+        .fail (error) ->
+          console.log(error)
+          alert 'Something went wrong! Please try again.'
 
 
   class SubjectViewModel
@@ -135,7 +138,6 @@ $ ->
       @getDataForServer = ->
         dataForServer = ko.mapping.toJS @
         dataForServer
-
 
   class ThemeViewModel
     constructor: (parentVM) ->
@@ -160,7 +162,7 @@ $ ->
 
       @initFields = ->
         emptyServerData =
-          subject: ''
+          subjectId: ''
           theme: ''
           difficulty: ''
           question: ''
@@ -173,5 +175,10 @@ $ ->
         ko.mapping.fromJS emptyServerData, {}, @
 
       @initFields()
+
+
+      @getDataForServer = ->
+        dataForServer = ko.mapping.toJS @
+        dataForServer
 
   ko.applyBindings new MasterViewModel()
