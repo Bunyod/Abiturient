@@ -1,5 +1,8 @@
 package common
 
+import java.util.Date
+
+import ab.utils.EnumMappedToDb
 import play.api.libs.json.Json
 
 /**
@@ -8,6 +11,37 @@ import play.api.libs.json.Json
  */
 
 object AppProtocol {
+
+  object GenderType extends EnumMappedToDb {
+    val Male = Value(0)
+    val Female = Value(1)
+  }
+
+  object UserRoleType extends EnumMappedToDb {
+    val User = Value(0)
+    val Admin = Value(1)
+  }
+
+  case class AbUser
+  (
+    id: Option[Int] = None,
+    firstName: Option[String],
+    lastName: Option[String],
+    secondName: Option[String],
+    login: String,
+    password: String,
+    gender: Option[GenderType.Value],
+    bDay: Option[Date],
+    roles: String
+  )
+
+  case class SessionUser
+  (
+    login: String,
+    password: String
+  )
+
+  case class RegUser(user: AbUser)
 
   case class LoginUser(login: String, password: String)
   sealed trait UserAuthFailure

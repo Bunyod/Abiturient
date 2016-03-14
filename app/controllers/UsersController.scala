@@ -9,7 +9,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
 import com.typesafe.scalalogging.slf4j.LazyLogging
-import common.entities.{AbUser, GenderType, RegUser}
+import common.AppProtocol._
 import play.api.Play.current
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._

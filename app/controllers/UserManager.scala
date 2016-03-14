@@ -4,7 +4,7 @@ import akka.actor._
 import akka.pattern.pipe
 import akka.util.Timeout
 import common.AppProtocol.{GeneralAuthFailure, UserAuthFailure, LoginUser}
-import common.entities.{RegUser, AbUser}
+import common.AppProtocol._
 import dao.UsersDao
 
 import scala.concurrent.Future

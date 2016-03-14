@@ -7,7 +7,7 @@ import akka.pattern.ask
 import akka.util.Timeout
 import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
 import common.AppProtocol.{GeneralAuthFailure, LoginUser, UserAuthFailure}
-import common.entities.{AbUser, SessionUser}
+import common.AppProtocol._
 import dao.{ThemesDao, SubjectsDao, QuestionsDao, UsersDao}
 import play.api._
 import play.api.data.Forms._
