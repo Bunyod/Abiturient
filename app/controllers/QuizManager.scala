@@ -106,6 +106,7 @@ class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao, themesD
       val ansB = question.ansB
       val ansC = question.ansC
       val ansD = question.ansD
+      val rAns = question.rAns
 
       val rQuest = replacer(quest.get)
       val rAnsA = replacer(ansA.get)
