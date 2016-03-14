@@ -60,7 +60,6 @@ trait InfoPageController { self: Application =>
   }
   def addQuestion = Action { implicit  request =>
     Ok(views.html.admin.question())
-
   }
 
 
