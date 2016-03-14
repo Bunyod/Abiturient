@@ -7,7 +7,7 @@ import ab.utils.Date2SqlDate
 import be.objectify.deadbolt.core.models.Subject
 import com.google.inject.ImplementedBy
 import com.typesafe.scalalogging.slf4j.LazyLogging
-import common.entities._
+import common.AppProtocol._
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 
