@@ -55,11 +55,17 @@ trait InfoPageController { self: Application =>
   def registration = Action { implicit request =>
     Ok(views.html.registration())
   }
+
   def results = Action { implicit request =>
     Ok(views.html.results())
   }
+
   def addQuestion = Action { implicit  request =>
     Ok(views.html.admin.question())
+  }
+
+  def authFailed = Action { implicit  request =>
+    Ok(views.html.failed())
   }
 
 

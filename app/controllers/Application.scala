@@ -49,10 +49,9 @@ class Application @Inject() (val messagesApi: MessagesApi,
   (
     login: String = "",
     password: String = ""
-    )
+  )
 
   implicit val defaultTimeout = Timeout(5.seconds)
-  //  val config = current.configuration.getConfig("web-server").get
   val userManager = actorSystem.actorOf(UserManager.props(usersDao), "user-manager")
   val quizManager = actorSystem.actorOf(QuizManager.props(questionsDao, subjectsDao, themesDao: ThemesDao), "quiz-manager")
 
@@ -88,7 +87,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
                   Redirect(routes.QuizController.tests()).addingToSession("ab-user" -> username, "user-role" -> user.roles)
                 }
               case Left(GeneralAuthFailure(_)) =>
-                Redirect(routes.Application.pageC())
+                Redirect(routes.Application.authFailed())
             }
           case _ =>
             Future.successful(Redirect(routes.Application.index()).flashing("error" -> "loginFailed"))
@@ -119,22 +118,5 @@ class Application @Inject() (val messagesApi: MessagesApi,
     Request[Any](request.copy(headers = theHeaders), request.body)
   }
 
-  def pageB = deadbolt.SubjectPresent(new MyDeadboltHandler(None, usersDao)) {
-    Action { implicit request =>
-      Ok(views.html.pageB())
-    }
-  }
-
-  def pageC = deadbolt.Restrict(List(Array("ADMIN"))) {
-    Action { implicit request =>
-      Ok(views.html.pageC())
-    }
-  }
-
-  def pageD = deadbolt.Restrict(List(Array("USER"))) {
-    Action { implicit request =>
-      Ok(views.html.pageD())
-    }
-  }
 
 }
