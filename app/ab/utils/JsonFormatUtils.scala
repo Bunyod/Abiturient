@@ -1,14 +1,10 @@
 package ab.utils
 
 import java.text.SimpleDateFormat
-import java.util.Date
 
 import org.apache.commons.lang3.StringUtils
-import play.api.data.Form
-import play.api.data.Forms._
-import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
-import play.api.libs.json.{Json, _}
+import play.api.libs.json._
 
 import scala.util.Try
 

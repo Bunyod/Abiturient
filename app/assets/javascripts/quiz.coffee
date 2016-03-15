@@ -12,12 +12,6 @@ $ ->
     window.alert("Your session has been expired!\nPlease log in.")
     window.location.href = '/logout'
 
-  handleError = (error) ->
-    if error.status is 401
-      logout()
-    else
-      alert 'Something went wrong! Please try again.'
-
   emptyServerData =
     spacialization: ""
 
