@@ -24,7 +24,7 @@ $ ->
 #  convertIntToDateTime = (intDate)->
 #    moment(intDate).format('MMM DD, YYYY HH:mm:ss')
 
-  class ReportViewModel
+  class TestingViewModel
     constructor: ->
       @initFields = ->
         ko.mapping.fromJS emptyServerData, {}, @
@@ -48,5 +48,5 @@ $ ->
 
 
 
-  ko.applyBindings  new ReportViewModel()
+  ko.applyBindings  new TestingViewModel()
 

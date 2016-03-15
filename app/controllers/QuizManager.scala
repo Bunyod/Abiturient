@@ -113,12 +113,16 @@ class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao, themesD
       val rAnsC = replacer(ansC.get)
       val rAnsD = replacer(ansD.get)
 
-      question.copy(
-        question = Some(rQuest.toString()),
-        ansA = Some(rAnsA.toString()),
-        ansB = Some(rAnsB.toString()),
-        ansC = Some(rAnsC.toString()),
-        ansD = Some(rAnsD.toString())
+      Question(
+        id = question.id,
+        question = Some(rQuest),
+        ansA = Some(rAnsA),
+        ansB = Some(rAnsB),
+        ansC = Some(rAnsC),
+        ansD = Some(rAnsD),
+        rAns = None,
+        themeId = question.themeId,
+        subjectId = question.subjectId
       )
     })
   }
