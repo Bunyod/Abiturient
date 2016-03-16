@@ -29,9 +29,9 @@ GET     /admin/quiz-manager         controllers.admins.SubjectController.showAdd
 POST    /admin/add-subject          controllers.admins.SubjectController.addSubject
 POST    /admin/add-theme            controllers.admins.SubjectController.addTheme
 POST    /admin/add-question         controllers.admins.SubjectController.addQuestion
+POST    /admin/upload-questions     controllers.admins.SubjectController.addQuestionByFile
 
 POST     /user/registration         controllers.UsersController.registration
-GET      /test/                     controllers.FileReader.ind
 GET  	/auth-failed				controllers.Application.authFailed
 
 

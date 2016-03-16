@@ -132,14 +132,33 @@ $ ->
         vmDataForServer = @currentVM().getDataForServer()
         sendUrl = "/admin/add-question"
         vmDataForServer.subjectId = @selectedValue()
+        fd = new FormData($('#question-form')[0])
+        fd.append("dataForServer", JSON.stringify(vmDataForServer))
+        console.log(fd)
+        console.log($('#question-form'))
+        dfd = $.ajax({
+          url: "/admin/upload-questions",
+          type: "POST",
+          data: fd,
+          processData: false,
+          contentType: false
+        })
+        dfd.done( ->
+          alert('Successfully uploaded')
+        $('#fd-upload').val(null)
+        )
+        .fail((error) ->
+          alert("Error occurred. " + error.responseText)
+        )
+
         console.log(vmDataForServer)
-        $.post sendUrl, JSON.stringify(vmDataForServer)
-        .done (resp) =>
-#          @changeActiveTab()
-          alert(resp)
-        .fail (error) ->
-          console.log(error)
-          alert 'Something went wrong! Please try again.'
+#        $.post sendUrl, JSON.stringify(vmDataForServer)
+#        .done (resp) =>
+##          @changeActiveTab()
+#          alert(resp)
+#        .fail (error) ->
+#          console.log(error)
+#          alert 'Something went wrong! Please try again.'
 
 
   class SubjectViewModel
@@ -196,6 +215,17 @@ $ ->
       @initFields()
 
       @selectedTheme = ko.observable()
+
+      @inputMode = ko.observable('byHand')
+
+      @fileUploadShown = ko.pureComputed(->
+        @inputMode() == 'fileUpload'
+      , @)
+
+      @byHandShown = ko.pureComputed(->
+        @inputMode() == 'byHand'
+      , @)
+
       @selectedValue = ko.computed(->
         @selectedTheme() && @selectedTheme().themeId
       , @)
@@ -203,6 +233,7 @@ $ ->
       @getDataForServer = ->
         dataForServer = ko.mapping.toJS @
         dataForServer.themeId = @selectedValue()
+        dataForServer.inputMode = @inputMode()
         dataForServer
 
   ko.applyBindings new MasterViewModel()

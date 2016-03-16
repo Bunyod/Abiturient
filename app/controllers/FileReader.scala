@@ -5,43 +5,26 @@ package controllers
   */
 
 
-import java.io.{FileOutputStream, File}
+import java.io.{File, FileOutputStream}
 import java.util.Date
-import javax.inject.Inject
 
-import akka.actor.ActorSystem
-import akka.util.Timeout
-import akka.pattern.ask
-import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
-import common.AppProtocol.{CreateQuestions, Question}
+import common.AppProtocol.Question
 import org.apache.poi.openxml4j.opc.OPCPackage
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor
 import org.apache.poi.xwpf.usermodel.XWPFDocument
+import play.api.Play
 import play.api.Play.current
-import play.api.mvc.{Action, Controller}
-import play.api.{Logger, Play}
 
 import scala.annotation.tailrec
-import scala.concurrent.ExecutionContext
-import scala.concurrent.duration.DurationInt
 
 
-class FileReader @Inject() (val actorSystem: ActorSystem)
-                           (implicit ec: ExecutionContext) extends Controller {
+object FileReader {
 
-  implicit val defaultTimeout = Timeout(5.seconds)
-  val config = current.configuration.getConfig("web-server").get
-  val quizManger = actorSystem.actorSelection(config.getString("quiz-manager-actor-path").get)
-
-  def ind() = Action.async { implicit req =>
-
-    val docFile = new File(Play.getFile("public/"), "savollar.docx")
+  def parseFile(docFile: File, subjectId: Option[Int], themeId: Option[Int]) = {
     val docx = new XWPFDocument(OPCPackage.openOrCreate(docFile))
     val picData = docx.getAllPictures.get(0).getData
     val picName = docx.getAllPictures.get(0).getFileName
     val picType = docx.getAllPictures.get(0).getPictureType
-
-
     val paragraphs = docx.getParagraphs
     for (i <- 0 to paragraphs.size() - 1) {
       val paragraph = paragraphs.get(i)
@@ -68,10 +51,15 @@ class FileReader @Inject() (val actorSystem: ActorSystem)
 
     val m = pattern.findAllIn(wx.getText).toList
 
-    val quest = Question(None,None,None,None,None,None, None,None,None)
+    val quest = Question(None, subjectId, themeId,None,None,None, None,None,None)
     val quests = List[Question](quest)
 
-    val result = recQuest(m, quests).filter(_.question.isDefined).map { q =>
+    val result = recQuest(m, quests).filter(_.question.isDefined).map { parsedQuestion =>
+
+      val q = parsedQuestion.copy(
+        subjectId = subjectId,
+        themeId = themeId
+      )
 
       if (q.ansA.get.contains("A)*")) {
           q.copy(
@@ -110,9 +98,7 @@ class FileReader @Inject() (val actorSystem: ActorSystem)
       }
     }
 
-    (quizManger ? CreateQuestions(result)).map { _ =>
-      Ok("asdf")
-    }
+    result
 
   }
 
