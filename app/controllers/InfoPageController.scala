@@ -7,7 +7,6 @@ import play.api.mvc.Action
   */
 trait InfoPageController { self: Application =>
 
-
   def about = Action { implicit request =>
     Ok(views.html.about())
   }
@@ -21,16 +20,13 @@ trait InfoPageController { self: Application =>
     Ok(views.html.portfolio())
   }
 
-
   def career = Action { implicit request =>
     Ok(views.html.career())
   }
 
-
   def blogItem = Action { implicit request =>
     Ok(views.html.blogItem())
   }
-
 
   def faq = Action { implicit request =>
     Ok(views.html.faq())
