@@ -130,36 +130,32 @@ $ ->
 
       @addQuestion = =>
         vmDataForServer = @currentVM().getDataForServer()
-        sendUrl = "/admin/add-question"
         vmDataForServer.subjectId = @selectedValue()
-        fd = new FormData($('#question-form')[0])
-        fd.append("dataForServer", JSON.stringify(vmDataForServer))
-        console.log(fd)
-        console.log($('#question-form'))
-        dfd = $.ajax({
-          url: "/admin/upload-questions",
-          type: "POST",
-          data: fd,
-          processData: false,
-          contentType: false
-        })
-        dfd.done( ->
-          alert('Successfully uploaded')
-        $('#fd-upload').val(null)
-        )
-        .fail((error) ->
-          alert("Error occurred. " + error.responseText)
-        )
-
-        console.log(vmDataForServer)
-#        $.post sendUrl, JSON.stringify(vmDataForServer)
-#        .done (resp) =>
-##          @changeActiveTab()
-#          alert(resp)
-#        .fail (error) ->
-#          console.log(error)
-#          alert 'Something went wrong! Please try again.'
-
+        if vmDataForServer.inputMode == 'fileUpload'
+          fd = new FormData($('#question-form')[0])
+          fd.append("dataForServer", JSON.stringify(vmDataForServer))
+          dfd = $.ajax({
+            url: "/admin/upload-questions",
+            type: "POST",
+            data: fd,
+            processData: false,
+            contentType: false
+          })
+          dfd.done( ->
+            alert('Successfully uploaded')
+          $('#fd-upload').val(null)
+          )
+          .fail((error) ->
+            alert("Error occurred. " + error.responseText)
+          )
+        else
+          sendUrl = "/admin/add-question"
+          $.post sendUrl, JSON.stringify(vmDataForServer)
+          .done (resp) =>
+            alert(resp)
+          .fail (error) ->
+            console.log(error)
+            alert 'Something went wrong! Please try again.'
 
   class SubjectViewModel
     constructor: (parentVM) ->
