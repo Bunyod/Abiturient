@@ -1,0 +1,60 @@
+@import views.html.logged_in
+@()(implicit session: play.api.mvc.Session)
+@()
+@main("") {
+
+    <br>
+<div class="row" align="center">
+    <h3 class="text-center">Passing Tests by Themes</h3>
+    <select name="Select Subject" id="#">
+        <option value="1">Matematika</option>
+        <option value="2">Fizika</option>
+        <option value="3">Ingliz tili</option>
+    </select>
+
+
+    <select name="Select Theme" id="#">
+        <option value="1">Kasrlar</option>
+        <option value="2">Chiziqli</option>
+        <option value="3">Trigonometriya</option>
+    </select>
+
+    <select name="Complicated" id="#">
+        <option value="1">easy</option>
+        <option value="2">normal</option>
+        <option value="3">hard</option>
+    </select>
+
+    <button type="submit" class="btn btn-success btn-large right" style="margin-top: -10px; border-radius: 4px; background-color: mediumpurple ">Show tests</button>
+
+</div>
+
+
+<div class="row" align="center">
+
+    <h3 class="text-center">Passing Tests by 3 Subjects</h3>
+
+    <select name="First Subject" id="#">
+        <option value="1">Matematika</option>
+        <option value="2">Fizika</option>
+        <option value="3">Ingliz tili</option>
+    </select>
+
+
+    <select name="Second Subject" id="#">
+        <option value="1">Matematika</option>
+        <option value="2">Fizika</option>
+        <option value="3">Ingliz tili</option>
+    </select>
+
+    <select name="Third Subject" id="#">
+        <option value="1">Matematika</option>
+        <option value="2">Fizika</option>
+        <option value="3">Ingliz tili</option>
+    </select>
+
+    <a  href="@routes.QuizController.tests()" type="submit" class="btn btn-success btn-large right"  style="margin-top: -10px; border-radius: 4px; background-color: mediumpurple">Begin</a>
+
+</div>
+
+}

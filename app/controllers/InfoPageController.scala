@@ -48,6 +48,7 @@ trait InfoPageController { self: Application =>
     Ok(views.html.terms())
   }
 
+
   def registration = Action { implicit request =>
     Ok(views.html.registration())
   }

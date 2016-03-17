@@ -33,6 +33,10 @@ class QuizController @Inject() (val actorSystem: ActorSystem,
   val quizManger = actorSystem.actorSelection(config.getString("quiz-manager-actor-path").get)
 
 
+  def passingTest = Action {
+    implicit  request => Ok(views.html.logged_in.selectTest())
+  }
+
   def tests = deadbolt.SubjectPresent(new MyDeadboltHandler(None, usersDao)) {
     Action {
       implicit request => Ok(views.html.logged_in.tests())
