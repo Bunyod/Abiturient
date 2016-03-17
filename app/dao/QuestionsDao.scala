@@ -45,6 +45,7 @@ trait QuestionsComponent extends SubjectsComponent with ThemesComponent
 trait QuestionsDao {
   def create(question: Question): Future[Int]
   def getQuestions(): Future[Seq[Question]]
+  def getQuestionsByParams(subjectId: Option[Int], themeId: Option[Int], level: Option[Int], limit: Option[Int])
 }
 
 @Singleton
@@ -59,6 +60,8 @@ class QuestionsDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfig
   import driver.api._
 
   val questions = TableQuery[Questions]
+  val subjects = TableQuery[Subjects]
+  val themes = TableQuery[Themes]
 
   override def create(question: Question): Future[Int] = {
     logger.info(s"Dao: Creating question=$question")
@@ -71,5 +74,12 @@ class QuestionsDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfig
     }
   }
 
+  override def getQuestionsByParams(subjectId: Option[Int], themeId: Option[Int], level: Option[Int], limit: Option[Int]) = {
+
+    val query = questions
+        .join(subjects).on(_.subjectId === _.id).filter(_._2.id === subjectId)
+        .join(themes).on(_._1.themeId === themeId).filter(_._2.id === themeId)
+        .result
+  }
 }
 
