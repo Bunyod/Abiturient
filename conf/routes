@@ -3,37 +3,38 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET     /                                                       controllers.Application.index
 
-POST	/login						controllers.Application.loginPost
-GET		/about						controllers.Application.about
-GET		/services					controllers.Application.services
-GET		/portfolio					controllers.Application.portfolio
-GET		/career						controllers.Application.career
-GET		/blogItem					controllers.Application.blogItem
-GET		/faq						controllers.Application.faq
-GET		/results    				controllers.Application.results
-GET		/privacy					controllers.Application.privacy
-GET		/terms						controllers.Application.terms
-GET		/admin/passingTest			controllers.QuizController.passingTest()
-GET		/blog						controllers.Application.blog
-GET		/contact-us					controllers.Application.contactUs
-GET		/registration				controllers.Application.registration
-GET     /quizes                     controllers.QuizController.getQuestions()
-GET     /addQuestion                controllers.Application.addQuestion
+POST	/login						                            controllers.Application.loginPost
+GET		/about						                            controllers.Application.about
+GET		/services					                            controllers.Application.services
+GET		/portfolio					                            controllers.Application.portfolio
+GET		/career						                            controllers.Application.career
+GET		/blogItem					                            controllers.Application.blogItem
+GET		/faq						                            controllers.Application.faq
+GET		/results    				                            controllers.Application.results
+GET		/privacy					                            controllers.Application.privacy
+GET		/terms						                            controllers.Application.terms
+GET		/admin/passingTest			                            controllers.QuizController.passingTest()
+GET		/blog						                            controllers.Application.blog
+GET		/contact-us					                            controllers.Application.contactUs
+GET		/registration				                            controllers.Application.registration
+GET     /quizes                                                 controllers.QuizController.getQuestions()
+GET     /addQuestion                                            controllers.Application.addQuestion
 
-GET		/logout						controllers.UsersController.logout
-GET     /tests                      controllers.QuizController.tests
-GET     /subjects                   controllers.admins.SubjectController.subjects
-GET     /themes                     controllers.admins.SubjectController.themes
-GET     /admin/quiz-manager         controllers.admins.SubjectController.showAddQuiz
-POST    /admin/add-subject          controllers.admins.SubjectController.addSubject
-POST    /admin/add-theme            controllers.admins.SubjectController.addTheme
-POST    /admin/add-question         controllers.admins.SubjectController.addQuestion
-POST    /admin/upload-questions     controllers.admins.SubjectController.addQuestionByFile
+GET		/logout						                            controllers.UsersController.logout
+GET     /tests                                                  controllers.QuizController.tests
+GET     /subjects                                               controllers.admins.SubjectController.subjects
+GET     /themes                                                 controllers.admins.SubjectController.themes
+GET     /admin/quiz-manager                                     controllers.admins.SubjectController.showAddQuiz
+POST    /admin/add-subject                                      controllers.admins.SubjectController.addSubject
+POST    /admin/add-theme                                        controllers.admins.SubjectController.addTheme
+POST    /admin/add-question                                     controllers.admins.SubjectController.addQuestion
+POST    /admin/upload-questions                                 controllers.admins.SubjectController.addQuestionByFile
 
-POST     /user/registration         controllers.UsersController.registration
-GET  	/auth-failed				controllers.Application.authFailed
+POST    /user/registration                                      controllers.UsersController.registration
+GET  	/auth-failed				                            controllers.Application.authFailed
+GET     /savol/test/:subjectId/:themeId/                        controllers.QuizController.getQuestionsByParams(subjectId, themeId)
 
 
 # Map static resources from the /public folder to the /assets URL path

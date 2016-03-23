@@ -50,4 +50,12 @@ class QuizController @Inject() (val actorSystem: ActorSystem,
     }
 
   }
+
+  def getQuestionsByParams(subjectId: String, themeId: String) = Action.async { implicit request =>
+
+    (quizManger ? GetQuestionsByParams(Some(subjectId.toInt), Some(themeId.toInt), None, None)).mapTo[Seq[Question]].map { questions =>
+      Ok(Json.toJson(questions))
+    }
+
+  }
 }

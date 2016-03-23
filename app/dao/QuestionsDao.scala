@@ -9,16 +9,20 @@ import common.AppProtocol.Question
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 
+import scala.collection.TraversableOnce.MonadOps
 import scala.concurrent.Future
 
 /**
   * @author Bunyod (bunyodreal@gmail.com). Created at 2/11/16.
   */
 
-trait QuestionsComponent extends SubjectsComponent with ThemesComponent
+trait QuestionsComponent
+  extends SubjectsComponent
+  with ThemesComponent
 { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
   import driver.api._
+
   class Questions(tag: Tag) extends Table[Question](tag, "Questions") with Date2SqlDate {
     val subjects = TableQuery[Subjects]
     val themes = TableQuery[Themes]
@@ -45,7 +49,7 @@ trait QuestionsComponent extends SubjectsComponent with ThemesComponent
 trait QuestionsDao {
   def create(question: Question): Future[Int]
   def getQuestions(): Future[Seq[Question]]
-  def getQuestionsByParams(subjectId: Option[Int], themeId: Option[Int], level: Option[Int], limit: Option[Int])
+  def getQuestionsByParams(subjectId: Option[Int], themeId: Option[Int], level: Option[Int], limit: Option[Int]): Future[Seq[Question]]
 }
 
 @Singleton
@@ -58,6 +62,7 @@ class QuestionsDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfig
 {
 
   import driver.api._
+  import scala.concurrent.ExecutionContext.Implicits.global
 
   val questions = TableQuery[Questions]
   val subjects = TableQuery[Subjects]
@@ -74,12 +79,20 @@ class QuestionsDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfig
     }
   }
 
-  override def getQuestionsByParams(subjectId: Option[Int], themeId: Option[Int], level: Option[Int], limit: Option[Int]) = {
+  override def getQuestionsByParams(subjectId: Option[Int], themeId: Option[Int],
+                                    level: Option[Int], limit: Option[Int]): Future[Seq[Question]] = {
 
     val query = questions
-        .join(subjects).on(_.subjectId === _.id).filter(_._2.id === subjectId)
-        .join(themes).on(_._1.themeId === themeId).filter(_._2.id === themeId)
-        .result
+      .join(subjects).on(_.subjectId === _.id).filter(_._2.id === subjectId)
+      .join(themes).on(_._1.themeId === _.id).filter(_._2.id === themeId)
+      .result
+
+    db.run(query).map {
+      _.map { case ((question, subject), theme) =>
+          question
+      }
+    }
   }
+
 }
 
