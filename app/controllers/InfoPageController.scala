@@ -9,6 +9,8 @@ trait InfoPageController { self: Application =>
 
   def about = Action { implicit request =>
     Ok(views.html.about())
+
+
   }
 
   def services = Action { implicit request =>

@@ -42,6 +42,11 @@ class QuizController @Inject() (val actorSystem: ActorSystem,
       implicit request => Ok(views.html.logged_in.tests())
     }
   }
+  def info = deadbolt.SubjectPresent(new MyDeadboltHandler(None, usersDao)) {
+    Action {
+      implicit request => Ok(views.html.logged_in.info())
+    }
+  }
 
   def getQuestions() = Action.async { implicit request =>
 

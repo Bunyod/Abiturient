@@ -24,6 +24,7 @@ GET     /addQuestion                                            controllers.Appl
 
 GET		/logout						                            controllers.UsersController.logout
 GET     /tests                                                  controllers.QuizController.tests
+GET     /info                                                   controllers.QuizController.info
 GET     /subjects                                               controllers.admins.SubjectController.subjects
 GET     /themes                                                 controllers.admins.SubjectController.themes
 GET     /admin/quiz-manager                                     controllers.admins.SubjectController.showAddQuiz
