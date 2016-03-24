@@ -50,6 +50,9 @@ class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao, themesD
     case GetThemes =>
       getThemes().pipeTo(sender())
 
+    case GetQuestionsByParams(subjectId, themeId, level, limit) =>
+      getQuestionsByParams(subjectId, themeId, level, limit).pipeTo(sender())
+
     case _ =>
       log.info(s"Receive: None")
 
@@ -127,4 +130,31 @@ class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao, themesD
     })
   }
 
+  private def getQuestionsByParams(subjectId: Option[Int], themeId: Option[Int], level: Option[Int], limit: Option[Int]) = {
+    questionsDao.getQuestionsByParams(subjectId, themeId, level, limit).map(_.map { question =>
+      val quest = question.question
+      val ansA = question.ansA
+      val ansB = question.ansB
+      val ansC = question.ansC
+      val ansD = question.ansD
+
+      val rQuest = replacer(quest.get)
+      val rAnsA = replacer(ansA.get)
+      val rAnsB = replacer(ansB.get)
+      val rAnsC = replacer(ansC.get)
+      val rAnsD = replacer(ansD.get)
+
+      Question(
+        id = question.id,
+        question = Some(rQuest),
+        ansA = Some(rAnsA),
+        ansB = Some(rAnsB),
+        ansC = Some(rAnsC),
+        ansD = Some(rAnsD),
+        rAns = None,
+        themeId = question.themeId,
+        subjectId = question.subjectId
+      )
+    })
+  }
 }

@@ -17,6 +17,7 @@ $ ->
       @subjectVM = new SubjectViewModel(this)
       @themeVM = new ThemeViewModel(this)
       @questionVM = new QuestionViewModel(this)
+#      @uploadVM = new UploadViewModel(this)
 
       @currentVM = ko.observable @subjectVM
 
@@ -53,6 +54,9 @@ $ ->
         $('#themeTab').addClass('active')
         $('#addTheme').addClass('active in')
         $('#addSubject').toggleClass('tab-pane fade active in', 'tab-pane fade')
+
+      @removeClassHide = ->
+        $('#changePassword').removeClass('hide')
 
       @addSubject = =>
         if !my.hasText(@currentVM().name)
@@ -96,6 +100,7 @@ $ ->
         @selectedSubject() && @selectedSubject().subjectId
       , @)
 
+
       @productTypeSelected = (productType) ->
         if productType == 'subject'
           @currentVM(@subjectVM)
@@ -115,7 +120,7 @@ $ ->
         themeName = vmDataForServer.name.trim()
         vmDataForServer.subjectId = @selectedValue()
         console.log(vmDataForServer)
-        if themeName .length < 1
+        if themeName.length < 1
           alert 'Xato nom tanlandi'
           return
 
@@ -190,6 +195,7 @@ $ ->
         dataForServer = ko.mapping.toJS @
         dataForServer
 
+
   class QuestionViewModel
     constructor: (parentVM) ->
       @parentVM = parentVM
@@ -231,5 +237,6 @@ $ ->
         dataForServer.themeId = @selectedValue()
         dataForServer.inputMode = @inputMode()
         dataForServer
+
 
   ko.applyBindings new MasterViewModel()

@@ -42,10 +42,23 @@ class QuizController @Inject() (val actorSystem: ActorSystem,
       implicit request => Ok(views.html.logged_in.tests())
     }
   }
+  def info = deadbolt.SubjectPresent(new MyDeadboltHandler(None, usersDao)) {
+    Action {
+      implicit request => Ok(views.html.logged_in.info())
+    }
+  }
 
   def getQuestions() = Action.async { implicit request =>
 
     (quizManger ? GetQuestions).mapTo[Seq[Question]].map { questions =>
+      Ok(Json.toJson(questions))
+    }
+
+  }
+
+  def getQuestionsByParams(subjectId: String, themeId: String) = Action.async { implicit request =>
+
+    (quizManger ? GetQuestionsByParams(Some(subjectId.toInt), Some(themeId.toInt), None, None)).mapTo[Seq[Question]].map { questions =>
       Ok(Json.toJson(questions))
     }
 

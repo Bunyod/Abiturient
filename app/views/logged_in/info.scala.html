@@ -1,0 +1,41 @@
+@()(implicit session: play.api.mvc.Session)
+
+@main("") {
+    <script type='text/javascript' src='@controllers.routes.Assets.versioned("javascripts/admin.js")'></script>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Foydalanuvchi xaqida ma'lumotlar</h4>
+                    </div>
+                    <div class="panel-body row">
+                        <form action="GET" class="form-group col-md-8 col-md-offset-1">
+                            <div class="row">
+                                <label for="name" class="inline-element col-md-4 biggerFont"><b>FirstName:</b></label>
+                                <input type="text" id="name" class="form-control col-md-6" value="@session.get("username")"><br>
+                                <label for="name" class="inline-element col-md-4 biggerFont"><b>LastName:</b></label>
+                                <input type="text" id="name" class="form-control col-md-6"><br>
+                                <label for="name" class="inline-element col-md-4 biggerFont"><b>SecondName:</b></label>
+                                <input type="text" id="name" class="form-control col-md-6"><br>
+                                <label for="name" class="inline-element col-md-4 biggerFont"><b>login:</b></label>
+                                <input type="text" id="name" class="form-control col-md-6" value="@session.get("ab-user")"><br>
+                                <button type="button" class="btn btn-inverse btn-radius" data-bind="click: function(){removeClassHide}">change password</button><br><br>
+                                <div id="changePassword" class="hide">
+                                    <label for="name" class="inline-element col-md-4 bigFont"><b>oldPassword:</b></label>
+                                    <input type="text" id="name" class="form-control col-md-6"><br>
+                                    <label for="name" class="inline-element col-md-4 bigFont"><b>NewPassword:</b></label>
+                                    <input type="text" id="name" class="form-control col-md-6"><br>
+                                    <label for="name" class="inline-element col-md-4 bigFont"><b>ConfirmNewPassword:</b></label>
+                                    <input type="text" id="name" class="form-control col-md-6"><br>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
