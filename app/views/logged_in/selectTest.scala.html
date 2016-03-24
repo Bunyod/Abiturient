@@ -1,23 +1,13 @@
 @import views.html.logged_in
 @()(implicit session: play.api.mvc.Session)
-@()
-@main("") {
 
+@main("") {
+    <script type='text/javascript' src='@controllers.routes.Assets.versioned("javascripts/admin.js")'></script>
 <br>
 <div class="row" align="center">
     <h3 class="text-center">Passing Tests by Themes</h3>
-    <select name="Select Subject" id="#">
-        <option value="1">Matematika</option>
-        <option value="2">Fizika</option>
-        <option value="3">Ingliz tili</option>
-    </select>
-
-
-    <select name="Select Theme" id="#">
-        <option value="1">Kasrlar</option>
-        <option value="2">Chiziqli</option>
-        <option value="3">Trigonometriya</option>
-    </select>
+    <select name="subject" data-bind="options: subjects, optionsText: 'name', value: selectedSubject"></select>
+    <select name="theme" data-bind="options: themes, optionsText: 'name', value: selectedTheme"></select>
 
     <select name="Complicated" id="#">
         <option value="1">easy</option>

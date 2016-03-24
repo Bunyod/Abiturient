@@ -55,8 +55,8 @@ $ ->
         $('#addTheme').addClass('active in')
         $('#addSubject').toggleClass('tab-pane fade active in', 'tab-pane fade')
 
-      @removeClassHide = ->
-        $('#changePassword').removeClass('hide')
+#      @removeClassHide = ->
+#        $('#changePassword').removeClass('hide')
 
       @addSubject = =>
         if !my.hasText(@currentVM().name)

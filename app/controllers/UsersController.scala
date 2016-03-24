@@ -10,7 +10,6 @@ import akka.util.Timeout
 import be.objectify.deadbolt.scala.{ActionBuilders, DeadboltActions}
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import common.AppProtocol._
-import dao.UsersDao
 import play.api.Play.current
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
@@ -73,10 +72,6 @@ class UsersController @Inject() (val actorSystem: ActorSystem,
     Redirect(routes.Application.index()).withNewSession
   }
 
-//  def info (user: UsersDao) = Action { implicit request =>
-//    val username:Option[String] = user.findByLogin(request.session.get("ab-user"))
-//    Ok(views.html.Application.index(username)
-//  }
 
 
 }
