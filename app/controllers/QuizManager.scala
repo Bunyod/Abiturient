@@ -50,6 +50,9 @@ class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao, themesD
     case GetThemes =>
       getThemes().pipeTo(sender())
 
+    case GetThemesBySubject(subjectId) =>
+      getThemesBySubjectId(subjectId).pipeTo(sender())
+
     case GetQuestionsByParams(subjectId, themeId, level, limit) =>
       getQuestionsByParams(subjectId, themeId, level, limit).pipeTo(sender())
 
@@ -80,6 +83,10 @@ class QuizManager (questionsDao: QuestionsDao, subjectsDao: SubjectsDao, themesD
 
   private def getThemes() = {
     themesDao.getThemes()
+  }
+
+  private def getThemesBySubjectId(subjectId: Int) = {
+    themesDao.getThemesBySubjectId(subjectId)
   }
 
   private def createQuestion(question: Question) = {

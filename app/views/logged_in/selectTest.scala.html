@@ -2,11 +2,13 @@
 @()(implicit session: play.api.mvc.Session)
 
 @main("") {
-    <script type='text/javascript' src='@controllers.routes.Assets.versioned("javascripts/admin.js")'></script>
+    <script type='text/javascript' src='@controllers.routes.Assets.versioned("javascripts/testing_mode.js")'></script>
 <br>
 <div class="row" align="center">
     <h3 class="text-center">Passing Tests by Themes</h3>
-    <select name="subject" data-bind="options: subjects, optionsText: 'name', value: selectedSubject"></select>
+    <select name="subject" data-bind="options: subjects, optionsText: 'name', value: selectedSubject,  event: {change: onSubjectChange}">
+        <option>Select Subject</option>
+    </select>
     <select name="theme" data-bind="options: themes, optionsText: 'name', value: selectedTheme"></select>
 
     <select name="Complicated" id="#">

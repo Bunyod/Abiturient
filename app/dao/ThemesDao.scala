@@ -36,6 +36,7 @@ trait ThemesComponent extends SubjectsComponent
 trait ThemesDao {
   def create(theme: Theme): Future[Int]
   def getThemes(): Future[Seq[Theme]]
+  def getThemesBySubjectId(subjectId: Int): Future[Seq[Theme]]
 }
 
 @Singleton
@@ -58,6 +59,12 @@ class ThemesDaoImpl @Inject() (protected val dbConfigProvider: DatabaseConfigPro
   override def getThemes(): Future[Seq[Theme]] = {
     db.run {
       themes.result
+    }
+  }
+
+  def getThemesBySubjectId(subjectId: Int): Future[Seq[Theme]] = {
+    db.run {
+      themes.filter(_.subjectId === subjectId).result
     }
   }
 
