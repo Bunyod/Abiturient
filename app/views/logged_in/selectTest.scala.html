@@ -11,40 +11,30 @@
     </select>
     <select name="theme" data-bind="options: themes, optionsText: 'name', value: selectedTheme"></select>
 
-    <select name="Complicated" id="#">
-        <option value="1">easy</option>
-        <option value="2">normal</option>
-        <option value="3">hard</option>
-    </select>
-
-    <button type="submit" class="btn btn-success btn-large right" style="margin-top: -10px; border-radius: 4px; background-color: mediumpurple ">Show tests</button>
+    @*<select name="Complicated" data-bind="option " id="#"></select>*@
+    <a  href="@routes.QuizController.tests()">
+        <button type="submit" class="btn btn-success btn-large right" style="margin-top: -10px; border-radius: 4px; background-color: mediumpurple ">Show tests</button>
+    </a>
 
 </div>
-
 
 <div class="row" align="center">
 
     <h3 class="text-center">Passing Tests by 3 Subjects</h3>
-
-    <select name="First Subject" id="#">
-        <option value="1">Matematika</option>
-        <option value="2">Fizika</option>
-        <option value="3">Ingliz tili</option>
+@*firstBlock*@
+    <select name="firstSubject" data-bind="options: subjects, optionsText: 'name', value: firstBlock">
+        <option>Subject</option>
     </select>
 
-
-    <select name="Second Subject" id="#">
-        <option value="1">Matematika</option>
-        <option value="2">Fizika</option>
-        <option value="3">Ingliz tili</option>
+@*secondBlock*@
+    <select name="secondSubject" data-bind="options: subjects, optionsText: 'name', value: secondBlock">
+        <option>Subject</option>
     </select>
 
-    <select name="Third Subject" id="#">
-        <option value="1">Matematika</option>
-        <option value="2">Fizika</option>
-        <option value="3">Ingliz tili</option>
+    @*thirdBlock*@
+    <select name="thirdSubject" data-bind="options: subjects, optionsText: 'name', value: thirdBlock">
+        <option>Subject</option>
     </select>
-
     <a  href="@routes.QuizController.tests()" type="submit" class="btn btn-success btn-large right"  style="margin-top: -10px; border-radius: 4px; background-color: mediumpurple">Begin</a>
 
 </div>

@@ -31,6 +31,9 @@ $ ->
       @themes = ko.observableArray([])
       @selectedSubject = ko.observable()
       @selectedTheme = ko.observable()
+      @firstBlock = ko.observable()
+      @secondBlock = ko.observable()
+      @thirdBlock = ko.observable()
 
       @onSubjectChange = =>
         $.get "/themes/#{@selectedSubject().subjectId}"
@@ -51,4 +54,3 @@ $ ->
           @subjects.push(subject)
 
   ko.applyBindings  new TestingModeViewModel()
-
